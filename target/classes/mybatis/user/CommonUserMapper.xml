@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gilogin.common.common.user.CommonUserMapper">
+    <sql id="sortFilter">
+        ORDER BY
+        <choose>
+            <when test="sort_id != null and sort_id != null">
+                ${sort_id} ${sort_order}
+            </when>
+            <otherwise>
+                system_create_date DESC
+            </otherwise>
+        </choose>
+    </sql>
+	<select id="SELECT_PAGE" resultType="com.gilogin.common.common.user.CommonUser">
+		SELECT * FROM(
+            SELECT
+                rownum AS no,
+                id,
+                email,
+                password,
+                role,
+                user_id,
+                office_code,
+                FN_GET_OFFICE_NAME(office_code) as office_name,
+                user_name,
+                tel,
+                address,
+                address_detail,
+                postal_code,
+                uuid,
+                system_update_userid,
+                system_update_date,
+                system_create_userid,
+                system_create_date
+		    FROM COMMON_USER
+            <where>
+                1=1
+
+                <if test="id != null and id != ''">AND id=#{id}</if>
+                <if test="email != null and email != ''">AND email=#{email}</if>
+                <if test="password != null and password != ''">AND password=#{password}</if>
+                <if test="role != null and role != ''">AND role=#{role}</if>
+                <if test="user_id != null and user_id != ''">AND user_id=#{user_id}</if>
+                <if test="office_code != null and office_code != ''">AND office_code=#{office_code}</if>
+                <if test="user_name != null and user_name != ''">AND user_name=#{user_name}</if>
+                <if test="tel != null and tel != ''">AND tel=#{tel}</if>
+                <if test="address != null and address != ''">AND address=#{address}</if>
+                <if test="address_detail != null and address_detail != ''">AND address_detail=#{address_detail}</if>
+                <if test="postal_code != null and postal_code != ''">AND postal_code=#{postal_code}</if>
+                <if test="uuid != null and uuid != ''">AND uuid=#{uuid}</if>
+                <choose>
+                    <when test="(from_date != null and from_date != '') and (to_date == null or to_date == '')">
+                        AND TO_CHAR(system_create_date, 'yyyyMMdd') BETWEEN #{from_date} AND '99999999'
+                    </when>
+                    <when test="(from_date == null or from_date == '') and (to_date != null and to_date != '')">
+                        AND TO_CHAR(system_create_date, 'yyyyMMdd') BETWEEN '00000000' AND #{to_date}
+                    </when>
+                    <when test="(from_date != null and from_date != '') and (to_date != null and to_date != '')">
+                        AND TO_CHAR(system_create_date,'yyyyMMdd') BETWEEN #{from_date} AND #{to_date}
+                    </when>
+                </choose>
+                <if test="_id != null and  _id != ''">AND id like '%'||#{_id}||'%'</if>
+                <if test="_email != null and  _email != ''">AND email like '%'||#{_email}||'%'</if>
+                <if test="_password != null and  _password != ''">AND password like '%'||#{_password}||'%'</if>
+                <if test="_role != null and  _role != ''">AND role like '%'||#{_role}||'%'</if>
+                <if test="_user_id != null and  _user_id != ''">AND user_id like '%'||#{_user_id}||'%'</if>
+                <if test="_user_name != null and  _user_name != ''">AND user_name like '%'||#{_user_name}||'%'</if>
+                <if test="_office_code != null and  _office_code != ''">AND office_code like '%'||#{_office_code}||'%'</if>
+            </where>
+	    )
+        <where>
+            no BETWEEN ((#{page_no} -1) * #{row_range} + 1) AND (#{row_range} * #{page_no})
+        </where>
+        <include refid="sortFilter"/>
+	</select>
+
+    <select id="SELECT_PAGING_TOTAL_NUMBER" resultType="int">
+            SELECT CEIL(COUNT(*)/#{row_range}) FROM COMMON_USER
+            <where>
+                1=1
+                
+                <if test="id != null and id != ''">AND id=#{id}</if>
+                <if test="email != null and email != ''">AND email=#{email}</if>
+                <if test="password != null and password != ''">AND password=#{password}</if>
+                <if test="role != null and role != ''">AND role=#{role}</if>
+                <if test="user_id != null and user_id != ''">AND user_id=#{user_id}</if>
+                <if test="office_code != null and office_code != ''">AND office_code=#{office_code}</if>
+                <if test="user_name != null and user_name != ''">AND user_name=#{user_name}</if>
+                <if test="tel != null and tel != ''">AND tel=#{tel}</if>
+                <if test="address != null and address != ''">AND address=#{address}</if>
+                <if test="address_detail != null and address_detail != ''">AND address_detail=#{address_detail}</if>
+                <if test="postal_code != null and postal_code != ''">AND postal_code=#{postal_code}</if>
+                <if test="uuid != null and uuid != ''">AND uuid=#{uuid}</if>
+                <choose>
+                    <when test="(from_date != null and from_date != '') and (to_date == null or to_date == '')">
+                        AND TO_CHAR(system_create_date, 'yyyyMMdd') BETWEEN #{from_date} AND '99999999'
+                    </when>
+                    <when test="(from_date == null or from_date == '') and (to_date != null and to_date != '')">
+                        AND TO_CHAR(system_create_date, 'yyyyMMdd') BETWEEN '00000000' AND #{to_date}
+                    </when>
+                    <when test="(from_date != null and from_date != '') and (to_date != null and to_date != '')">
+                        AND TO_CHAR(system_create_date,'yyyyMMdd') BETWEEN #{from_date} AND #{to_date}
+                    </when>
+                </choose>
+            </where>
+    </select>
+
+    <select id="SELECT_JOIN_INSPECTION_STATION_INSPECTOR_PAGE" resultType="com.gilogin.common.common.user.CommonUser">
+        SELECT * FROM(
+        SELECT
+        rownum AS no,
+        id,
+        email,
+        password,
+        role,
+        user_id,
+        office_code,
+        FN_GET_OFFICE_NAME(office_code) as office_name,
+        user_name,
+        tel,
+        address,
+        address_detail,
+        postal_code,
+        uuid,
+        system_update_userid,
+        system_update_date,
+        system_create_userid,
+        system_create_date
+        FROM COMMON_USER
+        <where>
+            1=1
+
+            <if test="id != null and id != ''">AND id=#{id}</if>
+            <if test="inspector_group_id != null and inspector_group_id != ''">AND not EXISTS(select * from INSPECTION_STATION_INSPECTOR where inspection_station_id = office_code and inspector_group_id =#{inspector_group_id})</if>
+            <if test="email != null and email != ''">AND email=#{email}</if>
+            <if test="password != null and password != ''">AND password=#{password}</if>
+            <if test="role != null and role != ''">AND role=#{role}</if>
+            <if test="user_id != null and user_id != ''">AND user_id=#{user_id}</if>
+            <if test="office_code != null and office_code != ''">AND office_code=#{office_code}</if>
+            <if test="user_name != null and user_name != ''">AND user_name=#{user_name}</if>
+            <if test="tel != null and tel != ''">AND tel=#{tel}</if>
+            <if test="address != null and address != ''">AND address=#{address}</if>
+            <if test="address_detail != null and address_detail != ''">AND address_detail=#{address_detail}</if>
+            <if test="postal_code != null and postal_code != ''">AND postal_code=#{postal_code}</if>
+            <if test="uuid != null and uuid != ''">AND uuid=#{uuid}</if>
+            <choose>
+                <when test="(from_date != null and from_date != '') and (to_date == null or to_date == '')">
+                    AND TO_CHAR(system_create_date, 'yyyyMMdd') BETWEEN #{from_date} AND '99999999'
+                </when>
+                <when test="(from_date == null or from_date == '') and (to_date != null and to_date != '')">
+                    AND TO_CHAR(system_create_date, 'yyyyMMdd') BETWEEN '00000000' AND #{to_date}
+                </when>
+                <when test="(from_date != null and from_date != '') and (to_date != null and to_date != '')">
+                    AND TO_CHAR(system_create_date,'yyyyMMdd') BETWEEN #{from_date} AND #{to_date}
+                </when>
+            </choose>
+            <if test="_id != null and  _id != ''">AND id like '%'||#{_id}||'%'</if>
+            <if test="_email != null and  _email != ''">AND email like '%'||#{_email}||'%'</if>
+            <if test="_password != null and  _password != ''">AND password like '%'||#{_password}||'%'</if>
+            <if test="_role != null and  _role != ''">AND role like '%'||#{_role}||'%'</if>
+            <if test="_user_id != null and  _user_id != ''">AND user_id like '%'||#{_user_id}||'%'</if>
+            <if test="_user_name != null and  _user_name != ''">AND user_name like '%'||#{_user_name}||'%'</if>
+            <if test="_office_code != null and  _office_code != ''">AND office_code like '%'||#{_office_code}||'%'</if>
+        </where>
+        )
+        <where>
+            no BETWEEN ((#{page_no} -1) * #{row_range} + 1) AND (#{row_range} * #{page_no})
+        </where>
+        <include refid="sortFilter"/>
+    </select>
+
+    <select id="SELECT_JOIN_INSPECTION_STATION_INSPECTOR__PAGING_TOTAL_NUMBER" resultType="int">
+        SELECT CEIL(COUNT(*)/#{row_range}) FROM COMMON_USER
+        <where>
+            1=1
+
+            <if test="id != null and id != ''">AND id=#{id}</if>
+            <if test="inspector_group_id != null and inspector_group_id != ''">AND not EXISTS(select * from INSPECTION_STATION_INSPECTOR where inspection_station_id = office_code and inspector_group_id =#{inspector_group_id})</if>
+            <if test="email != null and email != ''">AND email=#{email}</if>
+            <if test="password != null and password != ''">AND password=#{password}</if>
+            <if test="role != null and role != ''">AND role=#{role}</if>
+            <if test="user_id != null and user_id != ''">AND user_id=#{user_id}</if>
+            <if test="office_code != null and office_code != ''">AND office_code=#{office_code}</if>
+            <if test="user_name != null and user_name != ''">AND user_name=#{user_name}</if>
+            <if test="tel != null and tel != ''">AND tel=#{tel}</if>
+            <if test="address != null and address != ''">AND address=#{address}</if>
+            <if test="address_detail != null and address_detail != ''">AND address_detail=#{address_detail}</if>
+            <if test="postal_code != null and postal_code != ''">AND postal_code=#{postal_code}</if>
+            <if test="uuid != null and uuid != ''">AND uuid=#{uuid}</if>
+            <choose>
+                <when test="(from_date != null and from_date != '') and (to_date == null or to_date == '')">
+                    AND TO_CHAR(system_create_date, 'yyyyMMdd') BETWEEN #{from_date} AND '99999999'
+                </when>
+                <when test="(from_date == null or from_date == '') and (to_date != null and to_date != '')">
+                    AND TO_CHAR(system_create_date, 'yyyyMMdd') BETWEEN '00000000' AND #{to_date}
+                </when>
+                <when test="(from_date != null and from_date != '') and (to_date != null and to_date != '')">
+                    AND TO_CHAR(system_create_date,'yyyyMMdd') BETWEEN #{from_date} AND #{to_date}
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <select id="SELECT" resultType="com.gilogin.common.common.user.User">
+        SELECT
+            rownum AS no,
+             
+            id,
+            email,
+            password,
+            role,
+            user_id,
+            office_code,
+            FN_GET_OFFICE_NAME(office_code) AS office_name,
+            FN_GET_OFFICE_TYPE(office_code) AS office_type,
+            user_name,
+            tel,
+            address,
+            address_detail,
+            postal_code,
+            uuid,
+            system_update_userid,
+            system_update_date,
+            system_create_userid,
+            system_create_date
+        FROM COMMON_USER
+        <where>
+            1=1
+            <if test="id != null and id != ''">AND id=#{id}</if>
+            <if test="email != null and email != ''">AND email=#{email}</if>
+            <if test="password != null and password != ''">AND password=#{password}</if>
+            <if test="role != null and role != ''">AND role=#{role}</if>
+            <if test="user_id != null and user_id != ''">AND user_id=#{user_id}</if>
+            <if test="office_code != null and office_code != ''">AND office_code=#{office_code}</if>
+            <if test="user_name != null and user_name != ''">AND user_name=#{user_name}</if>
+            <if test="tel != null and tel != ''">AND tel=#{tel}</if>
+            <if test="address != null and address != ''">AND address=#{address}</if>
+            <if test="address_detail != null and address_detail != ''">AND address_detail=#{address_detail}</if>
+            <if test="postal_code != null and postal_code != ''">AND postal_code=#{postal_code}</if>
+            <if test="uuid != null and uuid != ''">AND uuid=#{uuid}</if>
+        </where>
+    </select>
+
+
+	<insert id="INSERT">
+		INSERT INTO COMMON_USER(
+			system_create_date
+			, system_update_date 
+		    , id  
+				<if test="email != null">, email</if>
+				<if test="password != null">, password</if>
+				<if test="role != null">, role</if>
+				<if test="user_id != null">, user_id</if>
+				<if test="office_code != null">, office_code</if>
+				<if test="user_name != null">, user_name</if>
+				<if test="tel != null">, tel</if>
+				<if test="address != null">, address</if>
+				<if test="address_detail != null">, address_detail</if>
+				<if test="postal_code != null">, postal_code</if>
+				<if test="uuid != null">, uuid</if>
+
+		)
+		VALUES(
+			systimestamp
+			, systimestamp 
+			, #{id}   
+				<if test="email != null">, #{email}</if>
+				<if test="password != null">, #{password}</if>
+				<if test="role != null">, #{role}</if>
+				<if test="user_id != null">, #{user_id}</if>
+				<if test="office_code != null">, #{office_code}</if>
+				<if test="user_name != null">, #{user_name}</if>
+				<if test="tel != null">, #{tel}</if>
+				<if test="address != null">, #{address}</if>
+				<if test="address_detail != null">, #{address_detail}</if>
+				<if test="postal_code != null">, #{postal_code}</if>
+				<if test="uuid != null">, #{uuid}</if>
+		)
+	</insert>
+
+
+
+	<delete id="DELETE">
+		DELETE FROM COMMON_USER
+		<where>  
+		    AND id = #{id}  
+            <if test="email != null">AND email = #{email}</if>
+            <if test="user_id != null">AND user_id = #{user_id}</if>
+		</where>
+	</delete>
+    <delete id="DELETE_TOKEN">
+        DELETE FROM TOKEN
+        <where>
+            AND user_id = #{id}
+        </where>
+    </delete>
+
+
+
+	<update id="UPDATE">
+		UPDATE  COMMON_USER
+			<set>
+				system_update_date = systimestamp 
+                , system_update_userid=#{system_update_userid}
+				<if test="email != null">, email=#{email}</if>
+				<if test="password != null">, password=#{password}</if>
+				<if test="role != null">, role=#{role}</if>
+				<if test="user_id != null">, user_id=#{user_id}</if>
+				<if test="office_code != null">, office_code=#{office_code}</if>
+				<if test="user_name != null">, user_name=#{user_name}</if>
+				<if test="tel != null">, tel=#{tel}</if>
+				<if test="address != null">, address=#{address}</if>
+				<if test="address_detail != null">, address_detail=#{address_detail}</if>
+				<if test="postal_code != null">, postal_code=#{postal_code}</if>
+				<if test="uuid != null">, uuid=#{uuid}</if>
+			</set>
+		<where> 
+		    AND id = #{id}
+            <if test="email != null">AND email = #{email}</if>
+            <if test="user_id != null">AND user_id = #{user_id}</if>
+		</where>
+	</update>
+
+
+    <select id="SELECT_JOIN_COMMON_USER_GROUP_PAGE" resultType="com.gilogin.common.common.user.CommonUser">
+        SELECT * FROM(
+            SELECT
+                rownum AS no,
+                a.id,
+                a.email,
+                a.password,
+                a.role,
+                a.user_id,
+                a.office_code
+            FROM COMMON_USER a
+        <where>
+            NOT EXISTS (
+                SELECT 1
+                FROM COMMON_USER_GROUP b
+                WHERE a.user_id = b.user_id
+                AND b.group_id = #{group_id}
+            )
+            <if test="id != null and id != ''">AND a.id=#{id}</if>
+            <if test="email != null and email != ''">AND a.email=#{email}</if>
+            <if test="password != null and password != ''">AND a.password=#{password}</if>
+            <if test="role != null and role != ''">AND a.role=#{role}</if>
+            <if test="user_id != null and user_id != ''">AND a.user_id=#{user_id}</if>
+            <if test="office_code != null and office_code != ''">AND a.office_code=#{office_code}</if>
+
+
+            <if test="_id != null and  _id != ''">AND a.id like '%'||#{_id}||'%'</if>
+            <if test="_email != null and  _email != ''">AND a.email like '%'||#{_email}||'%'</if>
+            <if test="_password != null and  _password != ''">AND a.password like '%'||#{_password}||'%'</if>
+            <if test="_role != null and  _role != ''">AND a.role like '%'||#{_role}||'%'</if>
+            <if test="_user_id != null and  _user_id != ''">AND a.user_id like '%'||#{_user_id}||'%'</if>
+            <if test="_office_code != null and  _office_code != ''">AND a.office_code like '%'||#{_office_code}||'%'</if>
+        </where>
+        )
+        <where>
+            no BETWEEN ((#{page_no} -1) * #{row_range} + 1) AND (#{row_range} * #{page_no})
+        </where>
+    </select>
+
+    <select id="SELECT_JOIN_COMMON_USER_GROUP_PAGING_TOTAL_NUMBER" resultType="int">
+        SELECT CEIL(COUNT(*)/#{row_range}) FROM COMMON_USER a
+        <where>
+            NOT EXISTS (
+                SELECT 1
+                FROM COMMON_USER_GROUP b
+                WHERE a.user_id = b.user_id
+                AND b.group_id = #{group_id}
+            )
+            <if test="id != null and id != ''">AND a.id=#{id}</if>
+            <if test="email != null and email != ''">AND a.email=#{email}</if>
+            <if test="password != null and password != ''">AND a.password=#{password}</if>
+            <if test="role != null and role != ''">AND a.role=#{role}</if>
+            <if test="user_id != null and user_id != ''">AND a.user_id=#{user_id}</if>
+            <if test="office_code != null and office_code != ''">AND a.office_code=#{office_code}</if>
+        </where>
+    </select>
+
+    <select id="GET_USER_IMAGE_FILE_NAME_BY_EMAIL">
+        SELECT FILE_ID || '.' || COMMON_FILE_DETAIL.FILE_EXTENSION
+        FROM COMMON_FILE_DETAIL
+        WHERE UUID = (
+            SELECT UUID
+            FROM COMMON_USER
+            WHERE EMAIL = #{EMAIL}
+        )
+    </select>
+
+
+</mapper>
