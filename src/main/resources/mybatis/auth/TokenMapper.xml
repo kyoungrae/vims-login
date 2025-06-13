@@ -9,7 +9,7 @@
             TOKEN T
         INNER JOIN
             COMMON_USER U ON T.user_id = U.id
-        WHERE (T.expired = 0 OR T.revoked = 0) AND T.id = 1
+        WHERE (T.expired = 0 OR T.revoked = 0) AND T.id = 12
     </select>
 
 </mapper>
