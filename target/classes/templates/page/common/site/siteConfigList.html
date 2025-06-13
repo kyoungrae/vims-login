@@ -1,0 +1,538 @@
+<article class="gi-article-content gi-col-95 gi-row-90">
+    <section class="gi-col-100 gi-row-100">
+        <header class="gi-flex gi-flex-center gi-col-10">
+            <h1 class="gi-page-title">사이트 설정코드 관리</h1>
+        </header>
+        <article class=" gi-col-90 gi-row-100">
+            <!--      그리드 영역      -->
+            <div class="gi-row-100 gi-col-90 gi-flex">
+                <div class="gi-row-30 gi-col-90">
+                    <!--      검색기능 영역      -->
+                    <div id="search-area" class="gi-row-100 gi-col-35px gi-flex gi-grid-gap-10px" style="padding: 0 20px;">
+                        <!--      검색설정 영역      -->
+                        <div class="gi-row-35 gi-col-100 gi-input-container gi-input-container-box-shadow gi-flex gi-flex-center" data-focus-line="false">
+                            <label for="search_config_group_id" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="center" data-required="false">그룹</label>
+                            <input class="gi-input gi-margin-1px" data-required="false" type="text" id="search_config_group_id" name="search_config_group_id" data-focus-input-text-align="center" autocomplete="off"/>
+                        </div>
+                        <button id="reset-btn" class="gi-btn-reset gi-input-container-box-shadow" type="button"><i class="fa-solid fa-rotate-right gi-row-30px"></i>초기화</button>
+                        <button id="search-btn" class="gi-btn-search gi-row-40px gi-input-container-box-shadow" type="button" style="margin-left: auto; margin-right: 0;">조회</button>
+                    </div>
+                    <!--/     검색기능 영역      -->
+                    <div id="gi-Grid"></div>
+                </div>
+
+                <div class="gi-row-75 gi-col-90">
+                    <!--      검색기능 영역      -->
+                    <div id="search-area2" class="gi-row-100 gi-col-35px gi-flex gi-grid-gap-10px" style="padding: 0 20px;">
+                        <div class="gi-row-15 gi-col-100 gi-input-container gi-input-container-box-shadow" data-focus-line="false">
+                            <label for="search_use_yn" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="center" data-required="false">사용여부</label>
+                            <input gi-selectbox data-selectbox-field="USE_YN" class="gi-input gi-margin-1px" data-required="false" type="text" id="search_use_yn" name="search_use_yn" data-focus-input-text-align="center" autocomplete="off"/>
+                        </div>
+                        <div class="gi-row-15 gi-col-100 gi-input-container gi-input-container-box-shadow gi-flex gi-flex-center" data-focus-line="false">
+                            <label for="search_config_key" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="center" data-required="false">설정 키</label>
+                            <input class="gi-input gi-margin-1px" data-required="false" type="text" id="search_config_key" name="search_config_key" data-focus-input-text-align="center" autocomplete="off"/>
+                        </div>
+                        <button id="reset-btn2" class="gi-btn-reset gi-input-container-box-shadow" type="button"><i class="fa-solid fa-rotate-right gi-row-30px"></i>초기화</button>
+                        <button id="search-btn2" class="gi-btn-search gi-row-40px gi-input-container-box-shadow" type="button" style="margin-left: auto; margin-right: 0;">조회</button>
+                    </div>
+                    <!--/     검색기능 영역      -->
+                    <div id="gi-Grid2" class="gi-Grid"></div>
+                    <div id="register-area" class="gi-col-25px gi-padding-left-right-20px gi-flex">
+                        <div class="gi-row-100 gi-flex">
+                            <div class="gi-row-100 gi-flex gi-flex-align-items-center gi-flex-justify-content-flex-end">
+                                <div class="gi-btn-section gi-row-20 gi-col-100 gi-flex gi-flex-justify-content-flex-end">
+                                    <button id="register-btn" class="gi-btn" type="button" gi-popup-open-id="gi-popup">코드 추가</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+</article>
+<article id="gi-popup" class="gi-popup" data-popup-open="false">
+    <div class="gi-popup-body">
+        <div class="gi-popup-header">
+            <span>설정코드 <span id="register-or-modify-span"></span></span>
+        </div>
+        <div class="gi-popup-contents">
+            <!--      팝업내용 삽입 영역      -->
+            <div class="gi-row-100 gi-col-100 gi-flex gi-flex-center">
+                <form id="siteConfigRegisterOrModify" class="gi-row-100">
+                    <div class="gi-row-100 gi-padding-5px gi-grid-container gi-grid gi-grid-justify-items-center gi-grid-gap-10px gi-margin-bottom-15px">
+                        <div class="gi-row-60 gi-col-100 gi-grid gi-grid-template-columns-repeat-1-1fr-2fr gi-grid-rows-container">
+                            <div class="gi-row-100 gi-col-100 gi-flex gi-flex-center">
+                                <span>설정그룹</span>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-flex">
+                                <div id="config_group_id-div" class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center">
+                                    <label for="config_group_id" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">설정그룹</label>
+                                    <input gi-selectbox-custom data-field="config_group_id" id="config_group_id" name="config_group_id" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                                </div>
+                                <div id="add-group-button-div" class="gi-grid gi-input-container gi-flex gi-flex-center " style="width: 30%;">
+                                    <button id="add-group-btn" class="gi-input-btn" type="button" style="box-shadow: 2px 2px 4px #9999995c; border-radius: 5px;">추가</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gi-row-60 gi-col-100 gi-grid gi-grid-template-columns-repeat-1-1fr-2fr gi-grid-rows-container">
+                            <div class="gi-row-100 gi-col-100 gi-flex gi-flex-center">
+                                <span>설정키</span>
+                            </div>
+                            <div class="gi-row-100 gi-col-100">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                                    <label for="config_key" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">설정키</label>
+                                    <input data-field="config_key" id="config_key" name="config_key" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" gi-maxlength="500"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gi-row-60 gi-col-100 gi-grid gi-grid-template-columns-repeat-1-1fr-2fr gi-grid-rows-container">
+                            <div class="gi-row-100 gi-col-100 gi-flex gi-flex-center">
+                                <span>설정값</span>
+                            </div>
+                            <div class="gi-row-100 gi-col-100">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                                    <label for="config_value" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">설정값</label>
+                                    <input data-field="config_value" id="config_value" name="config_value" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" gi-maxlength="100"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gi-row-60 gi-col-100 gi-grid gi-grid-template-columns-repeat-1-1fr-2fr gi-grid-rows-container">
+                            <div class="gi-row-100 gi-col-100 gi-flex gi-flex-center">
+                                <span>설명</span>
+                            </div>
+                            <div class="gi-row-100 gi-col-100">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                                    <label for="description" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">설명</label>
+                                    <input data-field="description" id="description" name="description" class="gi-input" data-focus-span-text-align="default" data-required="false" autocomplete="off" gi-maxlength="500"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gi-row-60 gi-col-100 gi-grid gi-grid-template-columns-repeat-1-1fr-2fr gi-grid-rows-container">
+                            <div class="gi-row-100 gi-col-100 gi-flex gi-flex-center">
+                                <span>사용여부</span>
+                            </div>
+                            <div class="gi-row-100 gi-col-100">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                                    <label for="use_yn" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">사용여부</label>
+                                    <input gi-selectbox data-selectbox-field="use_yn" data-field="use_yn" id="use_yn" name="use_yn" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--/      팝업내용 삽입 영역      -->
+        </div>
+        <div class="gi-popup-footer">
+            <div class="gi-btn-section gi-row-30 gi-col-30px gi-padding-left-right-20px gi-flex gi-flex-justify-content-center gi-flex-align-items-center">
+                <button id="siteConfigRegisterOrModify-btn" class="gi-popup-register-btn" type="button"></button>
+                <button class="gi-popup-close-btn" type="button">닫기</button>
+            </div>
+        </div>
+    </div>
+</article>
+<script type="text/javascript">
+    var PRGMID = "siteConfigList";	//page id
+    var FORMID = "siteConfigRegisterOrModify";
+    var newSession = new session();
+    var data_binding = new dataBinding();
+
+    var configGroupId;
+    var giSelectBoxCustom;
+    var registerOrModify; // 'REGISTER' | 'MODIFY'
+
+    init();
+
+    function init() {
+
+
+        //초기화
+        resetEvent();
+
+        //데이터 조회
+        findBySiteConfigGroupList();
+        findBySiteConfigList(); // 'No Data' 표시하기 위해
+
+        setTimeout(function () {
+            //페이지 초기설정
+            new PageInit();
+
+            //클릭 이벤트
+            clickEvent();
+        });
+    }
+
+    function resetEvent() {
+        //검색영역 값 초기화
+        $("#search-area input").val("");
+        $("#search-area select").val("");
+
+        //데이터 호출 후 이벤트 재설정
+        new afterLoadDataEvent();
+
+        resetEvent2();
+        configGroupId = null;
+    }
+
+    function resetEvent2() {
+        //검색영역 값 초기화
+        $("#search-area2 input").val("");
+        $("#search-area2 select").val("");
+
+        //데이터 호출 후 이벤트 재설정
+        new afterLoadDataEvent();
+    }
+
+    //클릭 이벤트
+    function clickEvent() {
+        $("#reset-btn").click(function () {
+            resetEvent();
+
+            findBySiteConfigGroupList();
+            findBySiteConfigList();
+        });
+        $("#reset-btn2").click(function () {
+            resetEvent2();
+
+            findBySiteConfigList();
+        });
+        $("#search-btn").click(function () {
+            findBySiteConfigGroupList();
+        });
+        $("#search-btn2").click(function () {
+            findBySiteConfigList();
+        });
+        $("#register-btn").click(function () {
+            togglePopup('REGISTER');
+            findAllGroups();
+        });
+        $('#add-group-btn').click(async function () {
+            const newConfigGroupId = await formUtil.prompt(Message.Label.Array["SITE_CONFIG.CHECK.NEW_CONFIG_GROUP_ID"], 100);
+            if (!newConfigGroupId) {
+                return false;
+            }
+
+            const groups = $("#config_group_id-div li button").map((_, btn) => $(btn).val()).get();
+            if (groups.includes(newConfigGroupId)) {
+                formUtil.alertPopup(Message.Label.Array["SITE_CONFIG.VALID.CONFIG_GROUP_ID"]);
+                return false;
+            }
+
+            giSelectBoxCustom.addOption('config_group_id', {code_id: newConfigGroupId, code_name: newConfigGroupId});
+            giSelectBoxCustom.selectValue('config_group_id', newConfigGroupId);
+            commonTag.tagDisabled(true, ['config_group_id', 'config_group_id_select']);
+        });
+        $('#siteConfigRegisterOrModify-btn').click(function () {
+            registerOrModify === 'REGISTER' ? register() : modify();
+        });
+
+    }
+
+    function findBySiteConfigGroupList(page, range, sortId, sortOrder) {
+        //default page
+        if (!formUtil.checkEmptyValue(page)) page = 1;
+        //default range(row)
+        if (!formUtil.checkEmptyValue(range)) range = 10;
+
+        let url = "/common/site/siteConfig/findGroupPage";
+        let param = {
+            page_no: page,
+            row_range: range
+        };
+        // 검색조건 설정 (추가해서 사용)
+        let cont1 = $("#search_config_group_id").val();
+        if (formUtil.checkEmptyValue(cont1)) param._config_group_id = cont1;
+
+        // 정렬조건추가 (기준id, 순서)
+        if (formUtil.checkEmptyValue(sortId)) param.sort_id = sortId;
+        if (formUtil.checkEmptyValue(sortOrder)) param.sort_order = sortOrder;
+
+        axios.post(url, param).then(response => {
+            let status = response.status;
+            if (status === 200) {
+                let data = response.data.DATA;
+                let paging = response.data.TOTAL_PAGING[0];
+
+                // 그리드 헤더 설정
+                let siteConfig_menuGrid_header = {
+                    title: " 목록",
+                    list: [
+                        {HEADER: "No", ID: "no", WIDTH: "7", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        {HEADER: "그룹", ID: "config_group_id", WIDTH: "70", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        <!--{HEADER:"사이드 그리드",  ID:"sideGridOpen_btn",  WIDTH:"15",TYPE:"button",FONT_SIZE:"12px",TEXT_ALIGN:"center",HIDDEN:false}-->
+                    ]
+                }
+                //그리드 생성 <div id="gi-Grid"></div>
+                let siteConfig_menu_grid = formUtil.giGrid(siteConfig_menuGrid_header, paging, page);
+
+                //그리드 하이라키 구조로 변경
+                //let siteConfig_menu_grid = formUtil.giGridHierarchy(siteConfig_menuGrid_header,paging,page);
+                //siteConfig_menu_grid.HierarchyOption({level_column:"",parent_depth_column:"",child_depth_column:""});
+
+                //사이드 그리드 설정
+                //siteConfig_menu_grid.sideOpenBtnClick("gi-Grid-side","sideGridOpen_btn");
+
+                //그리드 데이터 설정
+                siteConfig_menu_grid.DataSet(data);
+
+                //그리드 row 개수 변경 및 페이징 버튼 이벤트 설정
+                siteConfig_menu_grid.pagingSet(findBySiteConfigList);
+
+                //그리스 내부의 header click 정렬 이벤트 설정
+                siteConfig_menu_grid.sortDataSet(findBySiteConfigList);
+
+                //그리드 row 선택 이벤트 설정
+                siteConfig_menu_grid.rowClick(siteConfigRowClickEvent);
+
+                function siteConfigRowClickEvent(row) {
+                    configGroupId = row.config_group_id;
+                    resetEvent2();
+                    findBySiteConfigList(null, null, null, null);
+                }
+            } else {
+                formUtil.alertPopup("response status is :" + status);
+            }
+        }).catch(error => {
+            formUtil.alertPopup(error);
+        })
+    }
+
+    function findBySiteConfigList(page, range, sortId, sortOrder) {
+        //default page
+        if (!formUtil.checkEmptyValue(page)) page = 1;
+        //default range(row)
+        if (!formUtil.checkEmptyValue(range)) range = 10;
+
+        let url = "/common/site/siteConfig/findPage";
+        let param = {
+            page_no: configGroupId ? page : 0, // configGroupId 없을 때 'No Data' 표시하기 위해
+            row_range: range,
+            config_group_id: configGroupId,
+        };
+        // 검색조건 설정 (추가해서 사용)
+        let cont1 = $("#search_use_yn").val();
+        let cont2 = $("#search_config_key").val();
+        if (formUtil.checkEmptyValue(cont1)) param.use_yn = cont1;
+        if (formUtil.checkEmptyValue(cont2)) param._config_key = cont2;
+
+        // 정렬조건추가 (기준id, 순서)
+        if (formUtil.checkEmptyValue(sortId)) param.sort_id = sortId;
+        if (formUtil.checkEmptyValue(sortOrder)) param.sort_order = sortOrder;
+
+        axios.post(url, param).then(response => {
+            let status = response.status;
+            if (status === 200) {
+                let data = response.data.DATA;
+                let paging = response.data.TOTAL_PAGING[0];
+
+                // 그리드 헤더 설정
+                let siteConfig_menuGrid_header = {
+                    title: " 목록",
+                    list: [
+                        {HEADER: "No", ID: "no", WIDTH: "7", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        {HEADER: "그룹", ID: "config_group_id", WIDTH: "40", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        {HEADER: "설정 키", ID: "config_key", WIDTH: "40", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        {HEADER: "설정 값", ID: "config_value", WIDTH: "20", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        {HEADER: "설명", ID: "description", WIDTH: "60", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        {HEADER: "사용여부", ID: "use_yn", WIDTH: "40", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: true},
+                        {HEADER: "사용여부", ID: "use_yn_name", WIDTH: "20", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        {HEADER: "작성일자", ID: "system_create_date", WIDTH: "40", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: true},
+                        {HEADER: "작성자ID", ID: "system_create_userid", WIDTH: "40", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: true},
+                        {HEADER: "수정일자", ID: "system_update_date", WIDTH: "40", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: true},
+                        {HEADER: "수정자ID", ID: "system_update_userid", WIDTH: "40", TYPE: "text", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: true},
+                        {HEADER: "수정", ID: "modify_btn", WIDTH: "15", TYPE: "button", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        {HEADER: "삭제", ID: "delete_btn", WIDTH: "15", TYPE: "button", FONT_SIZE: "12px", TEXT_ALIGN: "center", HIDDEN: false},
+                        <!--{HEADER:"사이드 그리드",  ID:"sideGridOpen_btn",  WIDTH:"15",TYPE:"button",FONT_SIZE:"12px",TEXT_ALIGN:"center",HIDDEN:false}-->
+                    ]
+                }
+                //그리드 생성 <div id="gi-Grid"></div>
+                let siteConfig_menu_grid = formUtil.giGrid(siteConfig_menuGrid_header, paging, page, 'gi-Grid2');
+
+                //그리드 하이라키 구조로 변경
+                //let siteConfig_menu_grid = formUtil.giGridHierarchy(siteConfig_menuGrid_header,paging,page);
+                //siteConfig_menu_grid.HierarchyOption({level_column:"",parent_depth_column:"",child_depth_column:""});
+
+                //사이드 그리드 설정
+                //siteConfig_menu_grid.sideOpenBtnClick("gi-Grid-side","sideGridOpen_btn");
+
+                //그리드 데이터 설정
+                siteConfig_menu_grid.DataSet(data);
+
+                //그리드 row 개수 변경 및 페이징 버튼 이벤트 설정
+                siteConfig_menu_grid.pagingSet(findBySiteConfigList);
+
+                //그리스 내부의 header click 정렬 이벤트 설정
+                siteConfig_menu_grid.sortDataSet(findBySiteConfigList);
+
+                //그리드 row 선택 이벤트 설정
+                siteConfig_menu_grid.rowClick(siteConfigRowClickEvent);
+
+                function siteConfigRowClickEvent(rows) {
+                }
+
+                //그리드 내부의 수정 버튼 클릭 이벤트 설정
+                siteConfig_menu_grid.updateBtnClick(openModifyPopup, "modify_btn");
+
+                //그리드 내부의 삭제 버튼 클릭 이벤트 설정
+                siteConfig_menu_grid.deleteBtnClick(remove, "delete_btn");
+            } else {
+                formUtil.alertPopup("response status is :" + status);
+            }
+        }).catch(error => {
+            formUtil.alertPopup(error);
+        })
+    }
+
+    function togglePopup(mode) {
+        registerOrModify = mode;
+
+        if (registerOrModify === 'REGISTER') {
+            $('#register-or-modify-span, #siteConfigRegisterOrModify-btn').text('등록');
+            $('#add-group-button-div').removeClass('gi-hidden');
+            commonTag.tagDisabled(false, ['config_group_id', 'config_group_id_select', 'config_key']);
+
+            $(`#${FORMID} input`).val('');
+            $(`#${FORMID} select`).val('');
+            new afterLoadDataEvent();
+
+        } else {
+            $('#register-or-modify-span, #siteConfigRegisterOrModify-btn').text('수정');
+            $('#add-group-button-div').addClass('gi-hidden');
+            commonTag.tagDisabled(true, ['config_group_id', 'config_group_id_select', 'config_key']);
+        }
+    }
+
+    function findAllGroups() {
+        let url = "/common/site/siteConfig/findGroup";
+        axios.post(url, {}).then(response => {
+            let status = response.status;
+            if (status === 200) {
+                const selectBoxOptions = response?.data?.map(d => ({
+                    code_id: d,
+                    code_name: d
+                }));
+
+                giSelectBoxCustom = new GiSelectBoxCustom({'config_group_id': selectBoxOptions});
+            } else {
+                formUtil.alertPopup("response status is :" + status);
+            }
+        }).catch(error => {
+            formUtil.alertPopup(error);
+        });
+    }
+
+    function checkValidation() {
+        let flag = false;
+
+        let validation = [];
+        validation.formId = FORMID;
+        $(".gi-input[data-required='true'],.gi-select[data-required='true']").map((i, item) => {
+            if ($(item).data("field")) {
+                let messageId = $(item).data("field").toUpperCase();
+                let message = Message.Label.Array["SITE_CONFIG.CHECK." + messageId];
+                validation.push({id: item.id, message: message});
+            }
+        });
+        if (formUtil.validationCheck(validation)) {
+            flag = true;
+        }
+        return flag;
+    }
+
+    function register() {
+        let flag = checkValidation();
+        if (flag) {
+            let data = new dataBinding().getData(FORMID);
+            let url = "/common/site/siteConfig/registerWithConflictCheck";
+            let param = {
+                config_group_id: data.config_group_id,
+                config_key: data.config_key,
+                config_value: data.config_value,
+                description: data.description,
+                use_yn: data.use_yn,
+            };
+            axios.post(url, param).then(response => {
+                let status = response.status;
+                if (status === 200) {
+                    resetEvent();
+                    $("#gi-popup").attr("data-popup-open", "false");
+
+                    configGroupId = param.config_group_id;
+                    findBySiteConfigGroupList();
+                    findBySiteConfigList();
+                } else {
+                    formUtil.alertPopup("response status is :" + status);
+                }
+            }).catch(error => {
+                if (error.response?.data && Message.Label.Array["SITE_CONFIG.ERROR." + error.response?.data]) {
+                    formUtil.alertPopup(Message.Label.Array["SITE_CONFIG.ERROR." + error.response.data]);
+                } else {
+                    formUtil.alertPopup(error);
+                }
+            })
+        }
+    }
+
+    async function openModifyPopup(row) {
+        togglePopup('MODIFY');
+
+        newSession.setItem("DATA", row);
+        await data_binding.setData(FORMID);
+        giSelectBoxCustom?.selectValue('config_group_id', row.config_group_id)
+
+        $("#gi-popup").attr("data-popup-open", "true");
+    }
+
+    function modify() {
+        let flag = checkValidation();
+        if (flag) {
+            let data = new dataBinding().getData(FORMID);
+            let url = "/common/site/siteConfig/update";
+            //console.log(data);
+            let param = {
+                config_key: data.config_key,
+                config_value: data.config_value,
+                description: data.description,
+                use_yn: data.use_yn,
+            };
+            axios.post(url, param).then(response => {
+                let status = response.status;
+                if (status === 200) {
+                    formUtil.showMessage(Message.Label.Array["COMPLETE.UPDATE"]);
+                    findBySiteConfigList();
+                    $("#gi-popup").attr("data-popup-open", "false");
+                } else {
+                    resetEvent();
+                    formUtil.alertPopup("response status is :" + status);
+                }
+            }).catch(error => {
+                resetEvent();
+                formUtil.alertPopup(error);
+            })
+        }
+    }
+
+
+    function remove(row) {
+        const url = "/common/site/siteConfig/remove";
+        const param = {
+            config_key: row.config_key
+        };
+
+        axios.post(url, param).then(response => {
+            let status = response.status;
+            if (status === 200) {
+                formUtil.showMessage(Message.Label.Array["COMPLETE.DELETE"]);
+
+                $("#gi-popup").attr("data-popup-open", "false");
+
+                findBySiteConfigList();
+            } else {
+                formUtil.alertPopup("response status is :" + status);
+            }
+        }).catch(error => {
+            formUtil.alertPopup(error);
+        })
+    }
+</script>

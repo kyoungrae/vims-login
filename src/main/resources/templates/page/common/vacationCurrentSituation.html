@@ -1,0 +1,150 @@
+<style>
+    .vacation-list-header{
+        border-bottom: 1px solid #bbbbbb6e;
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(10px);
+        color:#4f4f4f;
+    }
+    .vacation-list-header  > li:not(:last-child){
+        border-right: 1px solid #bbbbbb6e;
+    }
+    .vacation-list{
+        margin: 1% 0 ;
+    }
+</style>
+<article class="gi-article-content gi-col-98 gi-row-90 gi-flex gi-flex-column gi-flex-justify-content-space-evenly">
+    <header class="gi-col-5">
+        <h1 class="gi-page-title">No Data</h1>
+    </header>
+    <section class="gi-col-45 gi-row-100 gi-flex gi-flex-justify-content-space-evenly gi-flex-wrap">
+        <section class="gi-col-100 gi-row-39 gi-margin-right-1">
+            <figure class="gi-figure-content gi-col-100 gi-row-100">
+                <canvas class="gi-chart-pie" id="vacation-chart-canvas"></canvas>
+            </figure>
+        </section>
+        <section class="gi-col-100 gi-row-60">
+            <figure class="gi-figure-content gi-col-100 gi-row-100 gi-flex gi-flex-center gi-flex-column">
+                <div id="gi-calendar" class="gi-row-100 gi-col-90"></div>
+                <div class="gi-row-100 gi-col-10">
+                    <div class="gi-btn-section gi-col-100 gi-flex gi-flex-center">
+                        <button id="vacationRegister" type="button" class="gi-btn gi-col-100 gi-row-8">휴가신청</button>
+                    </div>
+                </div>
+            </figure>
+        </section>
+    </section>
+    <section class="gi-col-45 gi-row-100 gi-flex gi-flex-justify-content-space-evenly gi-flex-wrap">
+        <section class="gi-col-100 gi-row-100  gi-flex gi-flex-direction-column">
+            <figure class="gi-figure-content gi-col-100 gi-row-100 gi-flex gi-flex-justify-content-center">
+                <div class="gi-article-content gi-col-100 gi-row-100">
+                    <header class="gi-row-100 gi-col-10 gi-margin-bottom-1"><h4>신청내역</h4></header>
+                    <div class="gi-row-100 gi-col-90 gi-overflow-scroll">
+                        <ul class="vacation-list-header gi-row-100 gi-col-10 gi-ul gi-flex gi-flex-justify-content-space-evenly">
+                            <li class="gi-row-14 gi-flex gi-flex-center">신청일</li>
+                            <li class="gi-row-9 gi-flex gi-flex-center">신청자</li>
+                            <li class="gi-row-26 gi-flex gi-flex-center">결재라인</li>
+                            <li class="gi-row-12 gi-flex gi-flex-center">최종결재자</li>
+                            <li class="gi-row-10 gi-flex gi-flex-center">결재상태</li>
+                            <li class="gi-row-5 gi-flex gi-flex-center">일수</li>
+                            <li class="gi-row-14 gi-flex gi-flex-center">최종결재일</li>
+                            <li class="gi-row-8 gi-flex gi-flex-center"> - </li>
+                        </ul>
+                        <ul class="vacation-list gi-row-100 gi-ul gi-flex gi-flex-justify-content-space-evenly">
+                            <li class="gi-row-14 gi-flex gi-flex-center">2024-06-24</li>
+                            <li class="gi-row-9 gi-flex gi-flex-center">이경태</li>
+                            <li class="gi-row-26 gi-flex gi-flex-justify-content-space-between gi-flex-wrap">
+                                <span class="gi-tag">이현준</span>
+                                <span class="gi-tag">김완수</span>
+                                <span class="gi-tag">심규욱</span>
+                                <span class="gi-tag">홍성은</span>
+                            </li>
+                            <li class="gi-row-12 gi-flex gi-flex-center">윤미옥</li>
+                            <li class="gi-row-10 gi-flex gi-flex-center"><span class="gi-tag-blue">승인</span></li>
+                            <li class="gi-row-5 gi-flex gi-flex-center"><span class="gi-tag-blue gi-row-50">1</span></li>
+                            <li class="gi-row-14 gi-flex gi-flex-center">2024-06-24</li>
+                            <li class="gi-row-8 gi-flex gi-flex-center"><button class="gi-btn gi-col-100">보기</button></li>
+                        </ul>
+                        <ul class="vacation-list gi-row-100 gi-ul gi-flex gi-flex-justify-content-space-evenly">
+                            <li class="gi-row-14 gi-flex gi-flex-center">2024-06-24</li>
+                            <li class="gi-row-9 gi-flex gi-flex-center">이경태</li>
+                            <li class="gi-row-26 gi-flex gi-flex-justify-content-space-between gi-flex-wrap">
+                                <span class="gi-tag">이현준</span>
+                                <span class="gi-tag">김완수</span>
+                                <span class="gi-tag">심규욱</span>
+                                <span class="gi-tag">홍성은</span>
+                            </li>
+                            <li class="gi-row-12 gi-flex gi-flex-center">윤미옥</li>
+                            <li class="gi-row-10 gi-flex gi-flex-center"><span class="gi-tag-red">반려</span></li>
+                            <li class="gi-row-5 gi-flex gi-flex-center"><span class="gi-tag-blue gi-row-50">0.5</span></li>
+                            <li class="gi-row-14 gi-flex gi-flex-center">2024-06-24</li>
+                            <li class="gi-row-8 gi-flex gi-flex-center"><button class="gi-btn gi-col-100">보기</button></li>
+                        </ul>
+                        <ul class="vacation-list gi-row-100 gi-ul gi-flex gi-flex-justify-content-space-evenly">
+                            <li class="gi-row-14 gi-flex gi-flex-center">2024-06-24</li>
+                            <li class="gi-row-9 gi-flex gi-flex-center">이경태</li>
+                            <li class="gi-row-26 gi-flex gi-flex-justify-content-space-between gi-flex-wrap">
+                                <span class="gi-tag">이현준</span>
+                                <span class="gi-tag">김완수</span>
+                                <span class="gi-tag">심규욱</span>
+                                <span class="gi-tag">홍성은</span>
+                            </li>
+                            <li class="gi-row-12 gi-flex gi-flex-center">윤미옥</li>
+                            <li class="gi-row-10 gi-flex gi-flex-center"><span class="gi-tag">기안</span></li>
+                            <li class="gi-row-5 gi-flex gi-flex-center"><span class="gi-tag-blue gi-row-50">1</span></li>
+                            <li class="gi-row-14 gi-flex gi-flex-center"> - </li>
+                            <li class="gi-row-8 gi-flex gi-flex-center"><button class="gi-btn gi-col-100">보기</button></li>
+                        </ul>
+                        <ul class="vacation-list gi-row-100 gi-ul gi-flex gi-flex-justify-content-space-evenly">
+                            <li class="gi-row-14 gi-flex gi-flex-center">2024-06-24</li>
+                            <li class="gi-row-9 gi-flex gi-flex-center">이경태</li>
+                            <li class="gi-row-26 gi-flex gi-flex-justify-content-space-between gi-flex-wrap">
+                                <span class="gi-tag">이현준</span>
+                                <span class="gi-tag">김완수</span>
+                                <span class="gi-tag">심규욱</span>
+                                <span class="gi-tag">홍성은</span>
+                            </li>
+                            <li class="gi-row-12 gi-flex gi-flex-center">윤미옥</li>
+                            <li class="gi-row-10 gi-flex gi-flex-center"><span class="gi-tag-yellow">결재중</span></li>
+                            <li class="gi-row-5 gi-flex gi-flex-center"><span class="gi-tag-blue gi-row-50">1</span></li>
+                            <li class="gi-row-14 gi-flex gi-flex-center"> - </li>
+                            <li class="gi-row-8 gi-flex gi-flex-center"><button class="gi-btn gi-col-100">보기</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </figure>
+        </section>
+    </section>
+</article>
+<script type="text/javascript">
+    init();
+
+    function init(){
+        //페이지 초기설정
+        new PageInit();
+
+        formUtil.pieChartInit("vacation-chart-canvas");
+        formUtil.giCalendar();
+
+        //초기화
+        resetEvent();
+
+        //데이터 조회
+        findByMenuList();
+
+        setTimeout(function(){
+            //클릭 이벤트
+            clickEvent();
+        },100);
+    }
+    $("#vacationRegister").on("click",function(){
+        if(formUtil.checkEmptyValue(formUtil.giCalendarSeletedDate())){
+            console.log(formUtil.giCalendarSeletedDate());
+            formUtil.loadContent("common/vacationRegister",formUtil.giCalendarSeletedDate());
+        }else{
+            formUtil.showMessage("휴가날짜를 선택해주세요")
+        }
+    })
+
+</script>
+

@@ -1,0 +1,770 @@
+<style>
+#content{
+    min-height: 300px
+}
+.use_yn{
+    color:#d0d0d0
+}
+#count{
+    text-align: right;
+    padding-right: 1rem;
+    border: none;
+    box-shadow: 0px 0px 3px #00000033;
+    border-radius: 0.5rem;
+}
+/* 미리보기 */
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#previewBox {
+    position: absolute;
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    width:100%;
+    height:100%;
+}
+
+#previewBox img{
+    max-width: 100%;
+    height: auto;
+}
+#previewContent{
+    background-color: white;
+    position: absolute;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 40px rgb(0 0 0 /6%);
+}
+
+
+</style>
+<article class="gi-article-content gi-col-95 gi-row-90">
+    <section class="gi-col-100 gi-row-100">
+        <header class="gi-flex gi-flex-center gi-col-10">
+            <h1 class="gi-page-title">사이트 공지팝업 등록</h1>
+        </header>
+        <article class="gi-col-90 gi-row-100 gi-grid gi-grid-template-rows-9fr-1fr gi-grid-gap-10px-10px">
+            <!--      등록 영역      -->
+            <form id="sitePopupNoticeRegister" class="gi-row-100 gi-col-100 gi-overflow">
+                <div class="gi-row-100 gi-padding-5px gi-grid-container gi-grid gi-grid-justify-items-center gi-grid-gap-10px gi-margin-bottom-15px">
+
+                    <div class="gi-row-60 gi-col-100 gi-grid  gi-grid-rows-container gi-grid-template-columns-8fr-2fr  ">
+                        <div class="gi-row-100 gi-col-100 gi-grid ">
+                             <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center gi-grid-input-edge-left-top">
+                                <label for="title" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">제목</label>
+                                <input data-field="title" id="title" name="title" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                            </div>
+                        </div>
+                        <div class="gi-row-100 gi-col-100 gi-grid ">
+                            <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center-left gi-grid-input-edge-right-top">
+                                <input data-field="use_yn" type="checkbox" id="use_yn" name="use_yn" class="gi-input gi-margin-left-20px" data-focus-span-text-align="default" data-required="false" value="1"/>
+                                <label for="use_yn" class="gi-input-radio-label " data-focus-label="true" data-focus-label-text-align="default" data-required="false">사용여부</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gi-row-60">
+                        <div class="">
+                            <div class="gi-row-100 gi-col-100">
+                                <div id="content" data-field="content" name="content" data-required="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gi-row-60 gi-col-100 gi-grid gi-grid-template-columns-2fr-8fr gi-grid-rows-container">
+                        <div class="gi-row-100 gi-col-100 gi-flex gi-flex-center gi-layout-detail-title gi-grid-input-edge-left-bottom">
+                            <span>팝업 옵션</span>
+                        </div>
+                        <div class="gi-row-100 gi-col-100 gi-grid gi-grid-template-columns-repeat-1-1fr-1fr">
+                            <div class="gi-row-100 gi-col-100 gi-grid gi-grid-column-span-2 gi-grid-template-columns-1fr-4fr-1fr">
+                                <div  class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-col-100 gi-flex-wrap " style="border-right:none;">
+                                    <label for="target_group-div" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="default" data-required="true">대상그룹</label></div>
+                                <div id="target_group-div" class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-col-100 gi-flex-wrap " style="border-left:none; min-height:var(--default-input-height)">
+                                </div>
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex-center gi-flex gi-col-100 gi-flex-wrap ">
+                                    <button id="select-btn" class="gi-input-btn" type="button" gi-popup-open-id="gi-group-popup">추가</button>
+                                </div>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-grid">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center ">
+                                    <label for="start_ymd" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">시작일자</label>
+                                    <input data-field="start_ymd" id="start_ymd" name="start_ymd" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" gi-datepicker/>
+                                </div>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-grid">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center ">
+                                    <label for="end_ymd" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">종료일자</label>
+                                    <input data-field="end_ymd" id="end_ymd" name="end_ymd" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" gi-datepicker data-gi-tag-disabled/>
+                                </div>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-grid">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center ">
+                                    <label for="start_time_code" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">시작시간</label>
+                                    <input gi-selectbox data-selectbox-field="time_zone" data-field="start_time_code" id="start_time_code" name="start_time_code" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                                </div>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-grid">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center ">
+                                    <label for="end_time_code" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">종료시간</label>
+                                    <input gi-selectbox data-selectbox-field="time_zone" data-field="end_time_code" id="end_time_code" name="end_time_code" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" data-gi-tag-disabled/>
+                                </div>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-grid gi-grid-column-span-2 gi-grid-template-columns-repeat-2-1fr-1fr">
+                            <div class="gi-row-100 gi-col-100 gi-grid">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center ">
+                                    <label for="left" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">수평위치(%)</label>
+                                    <input data-field="left" id="left" name="left" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" onlyNumericWithoutLeadingZero maxlength="2"/>
+                                </div>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-grid">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center ">
+                                    <label for="top" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">수직위치(%)</label>
+                                    <input data-field="top" id="top" name="top" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" onlyNumericWithoutLeadingZero maxlength="2"/>
+                                </div>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-grid">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center ">
+                                    <label for="width" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">너비(px)</label>
+                                    <input data-field="width" id="width" name="width" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" onlyNumericWithoutLeadingZero maxlength="4"/>
+                                </div>
+                            </div>
+                            <div class="gi-row-100 gi-col-100 gi-grid">
+                                <div class="gi-row-100 gi-input-container gi-input-container-box-border gi-flex gi-flex-center gi-grid-input-edge-right-bottom">
+                                    <label for="height" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="true">높이(px)</label>
+                                    <input data-field="height" id="height" name="height" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off" onlyNumericWithoutLeadingZero maxlength="3"/>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--/     업데이트 영역      -->
+            <!--      버튼 영역      -->
+            <div class="gi-row-100 gi-col-100 gi-flex gi-flex-justify-content-center gi-flex-align-items-center gi-overflow-scroll">
+                <div class="gi-btn-section gi-row-30 gi-col-30px gi-padding-left-right-20px gi-flex gi-flex-justify-content-center gi-flex-align-items-center">
+                    <button id="back-btn" class="gi-btn-back" type="button">목록</button>
+                    <button id="preview-btn" class="gi-btn" type="button">미리보기</button>
+                    <button id="register-btn" class="gi-btn-register" type="button">등록</button>
+                </div>
+            </div>
+            <!--/     버튼 영역      -->
+
+            <!-- 미리보기 모달 -->
+            <div id="previewPopup" class="popup">
+                <div id="previewContent">
+                    <div id="previewBox"></div>
+                </div>
+            </div>
+        </article>
+
+    </section>
+</article>
+<!-- search 팝업 영역-->
+<article id="gi-group-popup" class="gi-popup" data-popup-open="false">
+    <div class="gi-popup-body">
+        <div class="gi-popup-header">
+            <span>공지 대상 그룹 선택</span>
+        </div>
+        <div class="gi-popup-contents">
+            <!--      팝업내용 삽입 영역      -->
+            <!--      검색기능 영역      -->
+            <div class="gi-flex gi-flex-justify-content-flex-end gi-margin-right-2">
+            <input id="count" value="0개 선택" class="gi-row-20" readonly/>
+            <input class="gi-hidden" id="data"  />
+            <button id="reset-btn" class="gi-btn-reset gi-col-30px gi-input-container-box-shadow" type="button">
+                <i class="fa-solid fa-rotate-right gi-row-30px"></i>초기화
+            </button>
+        </div>
+<!--            <div id="search-area" class="gi-col-35px gi-padding-left-right-20px gi-flex">-->
+<!--                <div class="gi-row-100 gi-flex ">-->
+<!--                    &lt;!&ndash;      검색설정 영역      &ndash;&gt;-->
+<!--                    <div class="gi-row-20">-->
+<!--                        <div class="gi-input-container gi-col-100 gi-input-container-box-shadow gi-flex gi-flex-center" data-focus-line="false">-->
+<!--                            <label for="cont1" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="center" data-required="false">사용여부</label>-->
+<!--                            <input class="gi-input gi-margin-1px" data-required="false" type="text" id="cont1" name="cont1" data-focus-input-text-align="center" autocomplete="off" gi-selectbox data-selectbox-field="inspection_equipment_model_type_category_code"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="gi-row-20 gi-margin-left-2">-->
+<!--                        <div class="gi-input-container gi-col-100 gi-input-container-box-shadow gi-flex gi-flex-center" data-focus-line="false">-->
+<!--                            <label for="cont2" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="center" data-required="false">그룹이름</label>-->
+<!--                            <input class="gi-input gi-margin-1px" data-required="false" type="text" id="cont2" name="cont2" data-focus-input-text-align="center" autocomplete="off"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;/     검색설정 영역      &ndash;&gt;-->
+<!--                    &lt;!&ndash;      초기화 버튼 영역      &ndash;&gt;-->
+<!--                    <div class="gi-flex gi-row-15 gi-flex-align-items-center">-->
+<!--                        <div class="gi-btn-section gi-col-100 gi-flex gi-flex-justify-content-space-evenly">-->
+<!--                            <button id="reset-btn" class="gi-btn-reset  gi-input-container-box-shadow" type="button">-->
+<!--                                <i class="fa-solid fa-rotate-right gi-row-30px"></i>초기화-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;/     초기화 버튼 영역      &ndash;&gt;-->
+<!--                    &lt;!&ndash;     조회 버튼 영역      &ndash;&gt;-->
+<!--                    <div class="gi-row-45 gi-flex gi-flex-align-items-center gi-flex-justify-content-flex-end">-->
+<!--                        <div class="gi-btn-section gi-row-40 gi-col-100 gi-flex  gi-flex-justify-content-flex-end">-->
+<!--                            <button id="search-btn" class="gi-btn-search gi-row-40px gi-input-container-box-shadow" type="button">조회</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;/     조회 버튼 영역      &ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+            <!--      팝업내용 삽입 영역      -->
+            <div class="gi-row-100 gi-col-100">
+                <div id="gi-Grid"></div>
+            </div>
+        </div>
+            <!--/      팝업내용 삽입 영역      -->
+        <div class="gi-popup-footer gi-col-10">
+            <div class="gi-btn-section gi-row-30 gi-col-30px gi-padding-left-right-20px gi-flex gi-flex-justify-content-center gi-flex-align-items-center">
+                <button id="gi-popup-register-btn" class="gi-popup-register-btn" type="button">추가</button>
+                <button id="gi-popup-close-btn" class="gi-popup-close-btn" type="button">닫기</button>
+            </div>
+        </div>
+    </div>
+</article>
+<script type="text/javascript">
+    var PRGMID = "sitePopupNoticeRegister";	//page id
+    var giDatepicker = new GiDatePicker();
+    var selectedData = []  // 대상그룹 다중선택 => 전역변수로 처리
+    var tempSelectedData = []  // 대상그룹 다중선택 => 전역변수로 처리
+    init();
+    var toolbarOptions = [
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        ['link', 'image'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // 들여쓰기, 밀기
+        [{ 'color': [] }, { 'background': [] }],          // 색
+        [{ 'align': [] }],                                // 정렬
+        ['clean']                                         // 리셋
+    ];
+    var option = {
+        modules: {
+            toolbar: toolbarOptions,
+            imageResize: {
+                displaySize: true
+            }
+        },
+        placeholder: '내용을 작성해 주세요',
+        theme: 'snow'
+    }
+
+    var quill = new Quill('#content', option);
+
+    quill.getModule('toolbar').addHandler('image', function () {
+        selectLocalImage();
+    });
+
+    function init(){
+        //초기 값 셋팅
+        initValueSetting();
+
+        //초기화
+        resetEvent();
+
+        setTimeout(function(){
+            //페이지 초기설정
+            new PageInit();
+            //클릭 이벤트
+            clickEvent();
+        });
+
+    }
+
+    function initValueSetting(){
+        //파일업로드 이벤트 설정
+        let cont = {"FOLDER_NAME":"TEST","TTT1":"TTT2"};
+        formUtil.createFileUpload("fileUpload","/file/logsFileUpload","file_id",cont);
+    }
+
+    function resetEvent(){
+        //데이터 호출 후 이벤트 재설정
+        new afterLoadDataEvent();
+
+    }
+
+    //클릭 이벤트
+    function clickEvent(){
+        //뒤로가기 버튼 클릭 이벤트
+        $("#back-btn").click(function(){
+            redirectBackPage();
+        })
+
+        //미리보기 버튼 클릭 이벤트
+        $("#preview-btn").click(function(){
+            previewPopupNotice();
+        })
+
+        // 미리보기 밖 클릭 시 닫기
+        $(window).click(function(event) {
+            if ($(event.target).is('#previewPopup')) {
+                $('#previewPopup').fadeOut();
+            }
+        });
+
+        //등록 버튼 클릭 이벤트
+        $("#register-btn").click(function(){
+            register();
+        })
+
+        //팝업 - 초기화 버튼
+        $("#reset-btn").click(function(){
+            $("#gi-Grid ul").each(function() {
+                $(this).removeClass('gi-grid-list-multi_select')
+                $('#count').val('0개 선택')
+                tempSelectedData = [];
+            });
+        })
+
+        //팝업 - 여는 버튼
+        $('#select-btn').click(function() {
+            findByCommonGroupList()
+        });
+
+        //팝업 - 닫기 버튼
+        $('.close-btn').click(function() {
+            $('#previewPopup').fadeOut();
+        });
+
+        //팝업 - 추가 버튼
+        $('#gi-popup-register-btn').click(function() {
+            $('#gi-group-popup').attr("data-popup-open", "false");
+
+            // 타겟그룹에 값 추가
+            addDataToTargetGroup()
+        });
+
+        //시작일자 선택 시 종료일자 조절
+        $('#start_ymd').change(function(){
+            //초기화
+            $('#end_ymd').val('')
+            $('label[for="end_ymd"]').attr('data-focus-label', 'false');
+
+            if ($('#start_ymd').val() === ''){
+                commonTag.tagDisabled(true, ['end_ymd']);
+            } else {
+                commonTag.tagDisabled(false, ['end_ymd']);
+                let validEndDate = new Date($('#start_ymd').val());
+                validEndDate.setDate(validEndDate.getDate() + 1);
+                let extendedDate = validEndDate.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+
+                $('#end_ymd').attr('gi-datepicker', 'setRange');
+                $('#end_ymd').attr('gi-date-min', extendedDate);
+
+                let year = extendedDate.slice(0,4);
+                let month = extendedDate.slice(5,7);
+
+                giDatepicker.setDate({id:"end_ymd",yyyy:year,MM:month})
+            }
+        })
+
+        //시작시간 선택 시 종료시간 조절
+        $('#start_time_code').change(function(){
+            //초기화
+            $('#end_time_code').val('')
+            $('#end_time_code_select').val('')
+            $('label[for="end_time_code"]').attr('data-focus-label', 'false');
+
+            if ($('#start_time_code').val() === ''){
+                commonTag.tagDisabled(true,['end_time_code','end_time_code_select']);
+            } else {
+                commonTag.tagDisabled(false,['end_time_code','end_time_code_select']);
+                let startTime = parseInt($('#start_time_code').val().slice(0,2));
+
+                $("#end_time_code")
+                    .siblings("ul.slide-drop-down")
+                    .find("button")
+                    .removeClass("gi-hidden");
+
+                $("#end_time_code")
+                    .siblings("ul.slide-drop-down")
+                    .find("button")
+                    .each(function () {
+                        if (parseInt($(this).val()) <= startTime){
+                            $(this).addClass('gi-hidden')
+                        };
+                    });
+            }
+        });
+
+
+
+    }
+
+    function addDataToTargetGroup(){
+        selectedData = [...tempSelectedData];  // 임시 저장된 데이터를 selectedData에 할당
+        tempSelectedData = [];  // 임시 데이터를 비움
+
+        //값 초기화
+        $('#target_group-div').find('span').remove();  // span 요소만 제거
+
+        //input에 요소 추가 처리
+        selectedData.forEach(function (item, index) {
+            let value = $('#target_group-div')
+
+            let tagClass = (Number(item.group_level) === 0) ? 'gi-tag-blue' : 'gi-tag-gray';
+            value.append('<span class="' + tagClass + ' gi-col-24px" data-group-id="' + item.group_id + '" data-group-level="' + item.group_level + '" data-group-name="' + item.group_name + '">' + item.group_name + '</span>');
+        });
+        resetEvent()
+    }
+
+    function anotherValidation(){
+        //대상그룹 valid
+        if ($('#target_group-div span').length === 0) {
+            formUtil.alertPopup(Message.Label.Array["SITE_POPUP_NOTICE.CHECK.TARGET_GROUP"])
+            return false;
+        }
+
+        //시작일자<->종료일자 valid
+        const startDate = $('#start_ymd').val();
+        const endDate = $('#end_ymd').val();
+        if (new Date(startDate) > new Date(endDate)) {
+            formUtil.alertPopup(Message.Label.Array["SITE_POPUP_NOTICE.VALID.START_END_YMD"]);
+            return false;
+        }
+
+        //시작시간<->종료시간 valid
+        const startTime = parseInt($('#start_time_code').val(),10);
+        const endTime = parseInt($('#end_time_code').val(),10);
+
+        if (startTime > endTime) {
+            formUtil.alertPopup(Message.Label.Array["SITE_POPUP_NOTICE.VALID.START_END_YMD"]);
+            return false;
+        }
+
+        //사이즈 valid(최소300*300)
+        if (parseInt($('#width').val()) < 300 || parseInt($('#height').val()) < 300) {
+            formUtil.alertPopup(Message.Label.Array["SITE_POPUP_NOTICE.VALID.WIDTH_AND_HEIGHT"])
+            return false;
+        }
+        return true;
+    }
+
+    async function register(){
+        let data = new dataBinding().getData(PRGMID);
+        //필수값 확인 valid
+        let flag =  checkValidation();
+        if(flag){
+            if (!anotherValidation()) return false;
+
+            let content = quill.root.innerHTML;
+
+            let url = "/common/site/sitePopupNotice/registerNoticeWithTargetGroup";
+            let param = {
+                title : data.title ,
+                content : content ,
+                start_ymd : data.start_ymd ,
+                end_ymd : data.end_ymd ,
+                start_time_code : data.start_time_code ,
+                end_time_code : data.end_time_code ,
+                left : data.left ,
+                top : data.top ,
+                width : data.width ,
+                height : data.height ,
+                use_yn : data.use_yn ,
+            };
+            param['target_group_list'] = $('#target_group-div span').map(function () {
+                return $(this).data('group-id');
+            }).get();
+
+            await axios.post(url,param).then(response =>{
+                let status = response.status;
+                if (status === 200) {
+                    formUtil.showMessage(Message.Label.Array["COMPLETE.INSERT"]);
+                    redirectBackPage();
+                } else {
+                    resetEvent();
+                    formUtil.alertPopup("response status is :" + status);
+                }
+            }).catch(error => {
+                resetEvent();
+                formUtil.alertPopup(error);
+            })
+        }
+    }
+
+
+    /* 이미지 콜백 함수 */
+    function selectLocalImage() {
+        // 파일 input을 동적으로 생성
+        const fileInput = $('<input type="file" />');
+
+        // input 파일 선택 창 열기
+        fileInput.click();
+
+        // 파일이 선택된 후 처리
+        fileInput.on('change', async function () {
+            const param = new FormData();
+
+            param.append("folder_name", "popupNotice");
+            param.append("file_description", "popupNotice image");
+
+            // 파일 추가
+            const file = fileInput[0].files[0];
+            param.append('files', file);
+
+            try {
+                const response = await axios.post('/fileManager/upload', param, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
+                const data = response.data[0]; // 서버에서 받은 응답 데이터
+                const range = quill.getSelection(); // 사용자가 선택한 에디터 범위
+
+                // Quill 에디터에 이미지 삽입
+                quill.insertEmbed(range.index, 'image', "/fileManager/images?fileId=" + data.file_id + "." + file.name.split('.')[1] + "&basePath=" + data.file_path );
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    }
+
+    async function findByCommonGroupList(page,range,sortId,sortOrder) {
+        //default page
+        if(!formUtil.checkEmptyValue(page)) page = 1;
+        //default range(row)
+        if(!formUtil.checkEmptyValue(range)) range = 100;
+
+        let url = "/common/common/commonGroup/findPage";
+        let param = {
+            page_no:page,
+            row_range : range
+        };
+        // 검색조건 설정 (추가해서 사용)
+        let cont1 = $("#searchDesc1").val();
+        let cont2 = $("#from_date").val();
+        let cont3 = $("#to_date").val();
+        if(formUtil.checkEmptyValue(cont1)) param._group_name = cont1;
+        if(formUtil.checkEmptyValue(cont2)) param.from_date = cont2;
+        if(formUtil.checkEmptyValue(cont3)) param.to_date   = cont3;
+
+        // 정렬조건추가 (기준id, 순서)
+        if(formUtil.checkEmptyValue(sortId)) param.sort_id = sortId;
+        if(formUtil.checkEmptyValue(sortOrder)) param.sort_order = sortOrder;
+
+        axios.post(url, param).then(async response => {
+            let status = response.status;
+            if (status === 200) {
+                let data = response.data.DATA;
+                let paging = response.data.TOTAL_PAGING[0];
+
+                // 그리드 헤더 설정
+                let commonGroup_menuGrid_header = {
+                    title: "그룹아이디 목록",
+                    list: [
+                        {
+                            HEADER: "그룹이름",
+                            ID: "group_name",
+                            WIDTH: "20",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "left",
+                            HIDDEN: false
+                        },
+                        {
+                            HEADER: "상위그룹ID",
+                            ID: "top_group_id",
+                            WIDTH: "25",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "left",
+                            HIDDEN: false
+                        },
+                        {
+                            HEADER: "그룹ID",
+                            ID: "group_id",
+                            WIDTH: "25",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "left",
+                            HIDDEN: false
+                        },
+                        {
+                            HEADER: "레벨",
+                            ID: "group_level",
+                            WIDTH: "10",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "center",
+                            HIDDEN: false
+                        },
+                        {
+                            HEADER: "사용여부",
+                            ID: "use_yn",
+                            WIDTH: "10",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "center",
+                            COMMON_CODE_GROUP_ID: "USE_YN",
+                            HIDDEN: false
+                        },
+
+                        {
+                            HEADER: "No",
+                            ID: "no",
+                            WIDTH: "5",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "center",
+                            HIDDEN: true
+                        },
+                        {
+                            HEADER: "작성일자",
+                            ID: "system_create_date",
+                            WIDTH: "40",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "center",
+                            HIDDEN: true
+                        },
+                        {
+                            HEADER: "작성자ID",
+                            ID: "system_create_userid",
+                            WIDTH: "40",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "left",
+                            HIDDEN: true
+                        },
+                        {
+                            HEADER: "수정일자",
+                            ID: "system_update_date",
+                            WIDTH: "40",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "center",
+                            HIDDEN: true
+                        },
+                        {
+                            HEADER: "수정자ID",
+                            ID: "system_update_userid",
+                            WIDTH: "40",
+                            TYPE: "text",
+                            FONT_SIZE: "12px",
+                            TEXT_ALIGN: "center",
+                            HIDDEN: true
+                        }
+                    ]
+                }
+                //그리드 생성 <div id="gi-Grid"></div>
+                let commonGroup_menu_grid = formUtil.giGridHierarchy(commonGroup_menuGrid_header, paging, page, "gi-Grid");
+
+                commonGroup_menu_grid.HierarchyOption({
+                    level_column: "group_level",
+                    parent_depth_column: "group_id",
+                    child_depth_column: "top_group_id"
+                });
+                //그리드 데이터 설정
+                await commonGroup_menu_grid.DataSet(data);
+
+                //그리드 row 개수 변경 및 페이징 버튼 이벤트 설정
+                commonGroup_menu_grid.pagingSet(findByCommonGroupList);
+
+                //그리스 내부의 header click 정렬 이벤트 설정
+                // /commonGroup_menu_grid.sortDataSet(findByCommonGroupList);
+
+                //그리드 row 선택 이벤트 설정
+                //await commonGroup_menu_grid.rowMultiSelectClick(commonGroupRowDoubleClickEvent);
+                await commonGroup_menu_grid.Hierarchy2DepthMultiSelectClick(commonGroupRowDoubleClickEvent);
+
+                function commonGroupRowDoubleClickEvent(data) {
+                    $('#count').val(data.length+'개 선택');
+                    tempSelectedData = data;
+                }
+
+                $('#count').val('0개 선택');
+
+                // 데이터가 로딩된 후 ul 요소 처리
+                if (selectedData && selectedData.length > 0) {
+                    // #target_group에 선택된 그룹 이름들 추가
+                    await selectedData.forEach(function (item) {
+                        let number = item.no - 1
+                        $("#gi-Grid ul").each(function () {
+                            if ($(this).data('rowNum') === number) {
+                                $(this).click()
+                            }
+                        });
+                    });
+                }
+
+            } else {
+                formUtil.alertPopup("response status is :" + status);
+            }
+        }).catch(error => {
+            formUtil.alertPopup(error);
+        })
+    }
+
+    function previewPopupNotice(){
+        // //수평 수직 너비 높이 다 채워져 있어야함
+        let data = new dataBinding().getData(PRGMID);
+        if (!(data.left && data.top && data.width && data.height)) {
+            formUtil.alertPopup(Message.Label.Array["SITE_POPUP_NOTICE.CHECK.ESSENTIAL"])
+            return false;
+        }
+        if (data.width < 100 || data.height < 100) {
+            formUtil.alertPopup(Message.Label.Array["SITE_POPUP_NOTICE.VALID.WIDTH_AND_HEIGHT"])
+            return false;
+        }
+
+        let left = $('#left').val();
+        let top = $('#top').val();
+        let width = $('#width').val();
+        let height = $('#height').val();
+
+        // 미리보기 박스 스타일 업데이트
+        // 모달 띄우기
+
+        $('#previewContent').css({
+            'left': left + '%',
+            'top': top + '%',
+            'width': width + 'px',
+            'height': height + 'px',
+        });
+
+        $('#previewBox').empty();
+
+        const editorContent = $(quill.root).clone();
+        editorContent.addClass('ql-editor'); // 강제로 에디터 스타일 적용
+        editorContent.attr('contenteditable','false'); // 수정불가
+        editorContent.attr('data-placeholder',''); // 빈란일때 placeholder 생략
+
+        $('#previewBox').append(editorContent);
+
+        $('#previewPopup').fadeIn();
+    }
+
+    function checkValidation(){
+        let flag = false;
+
+        let validation = [];
+        validation.formId = PRGMID;
+        $(".gi-input[data-required='true'],.gi-select[data-required='true']").map((i,item)=>{
+            if($(item).data("field")){
+                let messageId = $(item).data("field").toUpperCase();
+                let message = Message.Label.Array["SITE_POPUP_NOTICE.CHECK."+messageId];
+                validation.push({id:item.id,message:message});
+            }
+        });
+        if(formUtil.validationCheck(validation)){
+            flag = true;
+        }
+        return flag;
+    }
+    function redirectBackPage(){
+        formUtil.loadContent("/common/site/sitePopupNoticeList", "");
+    }
+</script>
+<!--/ search 팝업 영역-->

@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--  공통으로 묶어야 하는 부분  -->
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="/common/css/common/FormUtility.css">
+    <link rel="stylesheet" href="/common/css/common/Common4.css">
+    <link rel="stylesheet" href="/common/css/common/api.css">
+
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/brands.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/regular.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/solid.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/svg-with-js.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/v4-font-face.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/v4-shims.css">
+    <link rel="stylesheet" href="/assets/fontawesome/css/v5-font-face.css">
+
+    <script type="text/javascript" src="/common/js/jquery/jquery3.6.0.js"></script>
+    <script type="text/javascript" src="/common/js/common/FormUtility.js"></script>
+    <script type="text/javascript" src="/common/js/common/DocumentsForm.js"></script>
+    <script type="text/javascript" src="/common/js/common/Common.js"></script>
+    <script type="text/javascript" src="/common/js/common/Api.js"></script>
+    <script type="text/javascript" src="/common/js/common/CommonTag.js"></script>
+    <script type="text/javascript" src="/common/js/common/JwtUtils.js"></script>
+    <script type="text/javascript" src="/common/js/common/Message.js"></script>
+    <script type="text/javascript" src="/common/js/axios/axios.js"></script>
+    <script type="text/javascript" src="/common/js/messageConfig.js"></script>
+
+    <!-- kakao 지도 -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=08b7a9bdd253ada6f1d65275b08aec58&libraries=services"></script>
+
+    <!-- kakao 주소검색 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+    <!-- Quill.js 웹에디터 -->
+    <script src="/assets/quill/quill.js"></script>
+    <link href="/assets/quill/quill.snow.css" rel="stylesheet">
+    <script src="/assets/quill/image-resize.min.js"></script>
+</head>
+    <body>
+        <main class="gi-main2">
+            <nav class="gi-side-nav expand">
+                <div class="gi-side-nav-toggle-button-area">
+                    <span class="gi-side-nav-toggle-button">
+                        <i class="gi-cursor-pointer fa-inverse fa-solid fa-angles-left gi-side-nav-toggle-icon"></i>
+                    </span>
+                </div>
+                <div class="gi-row-100 gi-side-nav-logo-area">
+                    <a href="" id="gi-logo2" class="gi-side-nav-logo"></a>
+                </div>
+                <div class="gi-home-setting"></div>
+                <!-- 여기에 search, 유저 영역 추가 -->
+                <article class="gi-col-auto side-nav-profile-container collapsed">
+                    <div class="side-nav-profile-dropdown">
+                        <div class="side-nav-profile-trigger">
+                            <div class="profile-info-frame">
+                                <img id="user-image" class="profile-picture" src="/common/img/userIcon.png" alt="user image"/>
+                                <div class="profile-info">
+                                    <span class="profile-name"><span id="user-name-span"></span> 님</span>
+                                    <span class="profile-name "><span id="office-name-span"></span></span>
+                                </div>
+                            </div>
+                            <span class="profile-name"><i class="fas fa-angle-right gi-margin-5px"></i></span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a id="myinfo-btn" href="#"><i class="fa-regular fa-user"></i><span>내 정보 수정</span></a>
+                            <hr/>
+                            <a id="logout-btn" href="#"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>로그아웃</span></a>
+                        </div>
+                    </div>
+                </article>
+                <article class="gi-home-setting-article gi-hidden slide-drop-down">
+                    <label class="gi-row-100">
+                        <select class="gi-select" style="border: 1px solid #a7a7a7 !important; border-radius: 8px;">
+                            <option>Language</option>
+                            <option value="en">English</option>
+                            <option value="mo">Монгол хэл</option>
+                            <option value="ko">한국어</option>
+                        </select>
+                    </label>
+                </article>
+
+                <div class="gi-row-100 gi-col-6 gi-margin-top-5 search-menu-container">
+                    <div class="gi-row-90 gi-col-60 gi-flex gi-flex-center search-menu-area">
+                        <img id="search" class="gi-search-icon-image" src="/common/img/search.svg" alt="user image"/>
+                        <input data-field="search_menu_name" id="search_menu_name" name="search_menu_name" class="gi-input" autocomplete="off" placeholder="Search" style="font-size:0.8rem"/>
+                    </div>
+                    <div class="gi-row-100 gi-search-menu-result-area"></div>
+                </div>
+
+                <div class="gi-row-100 gi-col-70" id="side_nav_menu_container">
+                    <ul class="gi-row-98 gi-col-100 gi-overflow gi-ul" id="side_nav_menu"></ul>
+                </div>
+                <div class="gi-row-100 gi-col-auto gi-margin-top-5 scroll-check-icon">
+                    <i class="fa-solid fa-beat-fade fa-angles-down"></i>
+                </div>
+            </nav>
+            <section id="gi-content-title-area" class="gi-main-content-title gi-hidden"></section>
+            <section id="gi-road-content" class="gi-main-content gi-col-100 gi-row-100 gi-flex gi-side-nav-toggle expand" data-animation="false" data-side-nav-toggle-area></section>
+        </main>
+    </body>
+</html>
+<article id="commonTag">
+    <div class="confirm"></div>
+    <div class="alertPopupBody"></div>
+    <div class="PopupBody"></div>
+    <div class="showMessage"></div>
+    <div id="loadingScreenBody" class="">
+        <div id="screenBody" class=""></div>
+    </div>
+    <div id="formUtil_fileUpload"></div>
+    <div id="formUtil_uncutFileUpload"></div>
+    <div id="giDatepickerBody"></div>
+</article>
+<script>
+    new loadToScript();
+    let formUtil = new FormUtility();
+    let documentsForm = new DocumentsForm();
+    var commonTag = new CommonTag();
+    var common_session = new session();
+    var changedHomeType = true;
+    var menuInfoList = "";
+    layoutInit();
+    checkScroll();
+    function layoutInit(){
+        findByMenuList();
+        layoutClickEvent();
+        animationEffect();
+        findByOfficeInfo();
+        findUserName();
+        findUserImage();
+        findNoticePopup();
+        sideNavTitleClick();
+
+        if(formUtil.checkEmptyValue(common_session.getItem("recentPage")) && common_session.getItem("recentPage").url) {
+            formUtil.loadContent(common_session.getItem("recentPage").url);
+        } else {
+            formUtil.loadContent('/index/index');
+        }
+
+        $("#search_menu_name").on("input click", function(){
+            let query = $(this).val().trim();
+
+            if(query.length !== 0){
+                if(formUtil.isSyllable(query)){
+                    let searchResult = searchMenu(query, menuInfoList);
+                    makeSearchResultArea(query, searchResult);
+                }
+            } else {
+                $(".gi-search-menu-result-area").removeClass("visible").html("");
+            }
+        });
+
+        $(".gi-search-menu-result-area").on("mousedown", function(e){
+            e.preventDefault();
+        });
+
+        $("#search_menu_name").on("focusout", function(){
+            $(".gi-search-menu-result-area").removeClass("visible");
+        });
+
+        $(".gi-side-nav-toggle-button-area").hover(
+            function () {
+                $(this).find("i").addClass("fa-beat-fade"); // hover 시 fa-fade 클래스 추가
+            },
+            function () {
+                $(this).find("i").removeClass("fa-beat-fade"); // hover 해제 시 fa-fade 클래스 제거
+            }
+        );
+
+        $(document).on({
+            mouseenter: function () {
+                $(this).find(".gi-side-nav-title-icon").addClass("fa-bounce");
+            },
+            mouseleave: function () {
+                $(this).find(".gi-side-nav-title-icon").removeClass("fa-bounce");
+            }
+        }, "#side_nav_menu .gi-side-nav-title");
+    }
+    function animationEffect(){
+        $("body").addClass("animate-content-end");
+    }
+    function layoutClickEvent(){
+        $(document).on("click", function (event) {
+            if (!$(".side-nav-profile-trigger").is(event.target) && !$(".side-nav-profile-trigger").has(event.target).length && $(".side-nav-profile-trigger").hasClass("active")) {
+                $(".side-nav-profile-trigger").trigger("click");
+            }
+        });
+
+        $(".side-nav-profile-trigger").on("click", function (e) {
+            $(".dropdown-menu").stop(true, true).slideToggle(150).css("display", "flex");
+            $(".side-nav-profile-dropdown").toggleClass("active");
+            $(".side-nav-profile-trigger").toggleClass("active");
+        });
+        $(".gi-home-setting").off("click.giHomeSettingClickEventHandler").on("click.giHomeSettingClickEventHandler",function(){
+            giHomeSettingClickEventHandler();
+        })
+        function giHomeSettingClickEventHandler(){
+            let flag = $(".gi-home-setting-article").hasClass("gi-hidden");
+            if(flag){
+                $(".gi-home-setting-article").removeClass("gi-hidden");
+            }else{
+                $(".gi-home-setting-article").addClass("gi-hidden");
+            }
+
+        }
+
+        $("#myinfo-btn").off().on("click",function(e){
+            e.preventDefault();
+            let url = "/common/myinfo";
+            let cont = {
+                url : url
+            }
+            sessionStorage.setItem("recentPage", JSON.stringify(cont));
+            loadContent(url);
+        });
+
+        $("#logout-btn").off().on("click",function(){
+            sessionStorage.removeItem("recentPage");
+            sessionStorage.removeItem("activatedMenu");
+            $("body").removeClass('animate-content-end');
+            setTimeout(function(){
+                $("body").addClass('animate-content-start');
+                window.location.href = "/api/v1/auth/logout";
+            },100);
+        });
+
+        $("#gi-logo, #gi-logo2").off().on("click",function(e){
+            e.preventDefault();
+            let url = "/index/index";
+            let cont = {
+                url : url
+            }
+            sessionStorage.setItem("recentPage", JSON.stringify(cont));
+            loadContent(url);
+
+            $(".gi-search-menu-result-area").removeClass("visible").html("");
+            existsNavSelected();
+        });
+
+        $(".gi-side-nav-toggle-button-area").on("click", function (){
+            let $toggleButton = $(this);
+
+            if($toggleButton.hasClass("collapsed")){
+                $toggleButton.removeClass("collapsed");
+                $(".main-nav-menu").removeClass("visible");
+                $(".gi-main-nav-logo-area").removeClass("visible");
+                $(".gi-side-nav").removeClass("collapsed").addClass("expand");
+            } else {
+                $toggleButton.addClass("collapsed");
+                $(".main-nav-menu").addClass("visible");
+                $(".gi-main-nav-logo-area").addClass("visible");
+                $(".gi-side-nav").removeClass("expand").addClass("collapsed");
+            }
+
+            let mainArea = $("[data-side-nav-toggle-area]");
+
+            // sideNav, mainArea handling
+            mainArea.each(function (){
+                if($(this).hasClass("expand")){
+                    $(this).removeClass("expand");
+                    $(this).addClass("collapsed");
+                } else {
+                    $(this).removeClass("collapsed");
+                    $(this).addClass("expand");
+                }
+            });
+
+            // popup area handling
+            $("#gi-search-popup").toggleClass("gi-row-84-important");
+        });
+    }
+    // function pageLoadEvent(){
+    //     $(".pageLoad").off().on("click",function(){
+    //         let url = $(this).data("pageName");
+    //         let data ={
+    //             title : $(this).text()
+    //         }
+    //         let cont = {
+    //             url : url
+    //         }
+    //         sessionStorage.setItem("recentPage", JSON.stringify(cont));
+    //         loadContent(url,data);
+    //
+    //
+    //         let allLiButtonList = $("#side_nav_menu > li");
+    //
+    //         allLiButtonList.each(function (){
+    //             let $button = $(this);
+    //             $button.find("a:not(.sideNavPageLoad)").removeClass("active").addClass("collapsed");
+    //             $button.find("a.sideNavPageLoad").removeClass("active page");
+    //             $button.find("ul").stop(true, true).slideUp(150);
+    //         });
+    //
+    //         let $activatedSideNavMenu = $("[data-page-name='" + $(this).data("page-name").toString() + "'].sideNavPageLoad");
+    //         let menuLevel1 = $activatedSideNavMenu.parents("li").last().children("a");
+    //         let menuLevel2 = $activatedSideNavMenu.closest("ul").closest("li").children("a");
+    //
+    //         if(!menuLevel1.hasClass("active")){
+    //             menuLevel1.trigger("click");
+    //         }
+    //
+    //         if(!menuLevel2.hasClass("active")) {
+    //             menuLevel2.trigger("click");
+    //         }
+    //
+    //         $activatedSideNavMenu.addClass("active page");
+    //     })
+    // }
+    // function menuOpenEvent(menuList2Depth,menuList3Depth){
+    //
+    //     $(".menu-open").on("click",function(){
+    //         let menu1DepthMenuCode = $(this).data("menuCode");
+    //         let menu1DepthMenuName = $(this).html();
+    //         let flag = $("#gi-sub-menu").data("displayHidden");
+    //
+    //         if(!flag){
+    //             menu1DepthClick(menu1DepthMenuCode,menu1DepthMenuName,menuList2Depth,menuList3Depth)
+    //             $("#gi-sub-menu").data("displayHidden",true);
+    //             $("#gi-sub-menu").attr("data-display-hidden",true);
+    //         }else{
+    //             menu1DepthClick(menu1DepthMenuCode,menu1DepthMenuName,menuList2Depth,menuList3Depth)
+    //         }
+    //     }).mouseenter(function(e){
+    //         let menu1DepthMenuCode = $(this).data("menuCode");
+    //         let menu1DepthMenuName = $(this).html();
+    //         let flag = $("#gi-sub-menu").data("displayHidden");
+    //         if(!flag){
+    //             menu1DepthClick(menu1DepthMenuCode,menu1DepthMenuName,menuList2Depth,menuList3Depth)
+    //             $("#gi-sub-menu").data("displayHidden",true);
+    //             $("#gi-sub-menu").attr("data-display-hidden",true);
+    //         }else{
+    //             menu1DepthClick(menu1DepthMenuCode,menu1DepthMenuName,menuList2Depth,menuList3Depth)
+    //         }
+    //     });
+    //     function menu1DepthClick(menu1DepthMenuCode,menu1DepthMenuName,menuList2Depth,menuList3Depth){
+    //         let menuHtml2depth = '';
+    //
+    //         // 드롭다운 내 소제목
+    //         menuHtml2depth += '<li style="width: 25%; display: flex; align-items: center;">'
+    //             + '<ul style="font-size:18px; font-weight: 700; color:var(--background-color-btn-gray-hover); margin-left:auto; margin-right:auto; display: flex; align-items: center; padding: 0;">'
+    //             +  menu1DepthMenuName
+    //             + '</ul>'
+    //             + '</li>';
+    //
+    //         menuList2Depth.map(item2 =>{
+    //             let menuHtml3depth = '';
+    //             if(menu1DepthMenuCode === item2.top_menu_code){
+    //                 depth3(item2);
+    //                 menuHtml2depth += '<li style="width:25.5%;">'
+    //                     +'    <ul class="gi-menu-sub-title">'+item2.menu_name+'</ul>'
+    //                     +'    <ul class="gi-ul">'
+    //                     +menuHtml3depth
+    //                     +'    </ul>'
+    //                     +'</li>';
+    //                 function depth3(cont){
+    //                     menuList3Depth.map(item =>{
+    //                         if(cont.menu_code === item.top_menu_code){
+    //                             menuHtml3depth += '<li class="gi-padding-top-10px"><a class="pageLoad gi-cursor-pointer" data-page-name="'+item.url+'">'+item.menu_name+'</a></li>';
+    //                         }
+    //                     })
+    //                 }
+    //             }
+    //         });
+    //         $("#gi-sub-menu").html(menuHtml2depth);
+    //         pageLoadEvent();
+    //     }
+    //     $("#gi-menubar-header").mouseleave(function(e) {
+    //         if (formUtil.checkEmptyValue($(e.relatedTarget)[0]) && !$(e.relatedTarget).closest(".gi-menubar-header").length) {
+    //             $("#gi-sub-menu").data("displayHidden", false);
+    //             $("#gi-sub-menu").attr("data-display-hidden", false);
+    //         }
+    //     });
+    // }
+    function loadContent(url,data){
+        formUtil.loadContent(url, data)
+    }
+    formUtil.pageReDirectAnimation();
+    function findByMenuList(){
+        let url = "/common/menu/findJoinCommonAccessGroupMenuList";
+        let param = {
+            use_yn:1
+        };
+        axios.post(url,param).then(response => {
+            let status = response.status;
+            if(status === 200){
+                let data = response.data;
+                // let menuHtml1depth = '';
+                // let menuList1Depth = [];
+                // let menuList2Depth = [];
+                // let menuList3Depth = [];
+
+                let sideNavMenuList1Depth = [];
+                let sideNavMenuList2Depth = [];
+                let sideNavMenuList3Depth = [];
+
+                let menuTree = [];
+                let menuMap = {};
+
+                data.sort((a, b) => parseInt(a.menu_level) - parseInt(b.menu_level));
+
+                data.map((item) => {
+                    if(!formUtil.checkEmptyValue(item.menu_level)) {
+                        formUtil.alertPopup("item.menu_level is undefined");
+                        return false;
+                    }
+
+                    switch (item.menu_level){
+                        case '0' :
+                            // menuList1Depth.push({
+                            //     menu_code : item.menu_code,
+                            //     top_menu_code : item.top_menu_code,
+                            //     menu_name : item.menu_name,
+                            //     menu_level : item.menu_level,
+                            //     url : item.URL
+                            // });
+
+                            sideNavMenuList1Depth.push({
+                                menu_code : item.menu_code,
+                                top_menu_code : item.top_menu_code,
+                                menu_name : item.menu_name,
+                                menu_level : item.menu_level,
+                                url : item.URL
+                            });
+                            break;
+
+                        case '1' :
+                            // menuList2Depth.push({
+                            //     menu_code : item.menu_code,
+                            //     top_menu_code : item.top_menu_code,
+                            //     menu_name : item.menu_name,
+                            //     menu_level : item.menu_level,
+                            //     url : item.url
+                            // });
+
+                            sideNavMenuList2Depth.push({
+                                menu_code : item.menu_code,
+                                top_menu_code : item.top_menu_code,
+                                menu_name : item.menu_name,
+                                menu_level : item.menu_level,
+                                url : item.url
+                            });
+                            break;
+
+                        case '2' :
+                            // menuList3Depth.push({
+                            //     menu_code : item.menu_code,
+                            //     top_menu_code : item.top_menu_code,
+                            //     menu_name : item.menu_name,
+                            //     menu_level : item.menu_level,
+                            //     url : item.url
+                            // });
+
+                            sideNavMenuList3Depth.push({
+                                menu_code : item.menu_code,
+                                top_menu_code : item.top_menu_code,
+                                menu_name : item.menu_name,
+                                menu_level : item.menu_level,
+                                url : item.url
+                            });
+                            break;
+                    }
+
+                    let menuItem = {
+                        menu_code: item.menu_code,
+                        top_menu_code: item.top_menu_code,
+                        menu_name: item.menu_name,
+                        menu_level: item.menu_level,
+                        url: item.url,
+                        children: [] // 하위 메뉴를 담을 배열
+                    };
+
+                    menuMap[item.menu_code] = menuItem; // 검색을 빠르게 하기 위한 맵
+
+                    // 최상위 메뉴 (level 0)
+                    if (item.menu_level === "0") {
+                        menuTree.push(menuItem);
+                    } else {
+                        // 부모 메뉴 찾기
+                        let parent = menuMap[item.top_menu_code];
+                        if (parent) {
+                            parent.children.push(menuItem);
+                        }
+                    }
+                });
+                menuInfoList = menuTree
+
+                // menuList1Depth.map(item1 =>{
+                //     menuHtml1depth += '<li><a class="menu-open gi-cursor-pointer" data-menu-code="'+item1.menu_code+'">'+item1.menu_name+'</a></li>';
+                // });
+                // $("#menu").html(menuHtml1depth);
+                // menuOpenEvent(menuList2Depth,menuList3Depth);
+
+                /* side nav */
+                let sideNavMenuHtml = createSideNavMenuList(sideNavMenuList1Depth, sideNavMenuList2Depth, sideNavMenuList3Depth);
+                $("#side_nav_menu").html(sideNavMenuHtml);
+                sideNavTitleClick();
+                existsNavSelected();
+            }else{
+                formUtil.alertPopup("response status is :"+status);
+            }
+        }).catch(error =>{
+            formUtil.alertPopup(error);
+        })
+    }
+    function findByOfficeInfo(){
+        let user_email = JwtUtils.getUserEmailFromJWT();
+        let url = "/common/common/commonUser/find";
+        let param ={
+            email : user_email
+        }
+        axios.post(url, param).then(response =>{
+            let data = response.data[0];
+            new session().setItem("officeInfo",{office_code:data.office_code , office_name:data.office_name, office_type:data.office_type});
+        }).catch(error =>{
+            formUtil.showMessage("can not find user Office_name");
+        })
+    }
+
+    // 로그인 유저의 그룹권한에 맞는 공지를 팝업으로 띄우는 함수
+    function findNoticePopup() {
+        const param = {
+            user_email : JwtUtils.getUserEmailFromJWT()
+        }
+        const url = "/common/site/sitePopupNotice/findNoticeByUserGroup";
+
+        axios.post(url, param).then(response => {
+            if (response.data.length > 0) {
+                $.each(response.data, function(index, item) {
+                    // 오늘 그만 보기 클릭 후 쿠키가 이미 설정되어 있으면 팝업을 숨김
+                    if (getNoticeCookie(`popupHidden_${item.notice_id}`) === "true") {
+                        $(`#noticePopup-${index}`).css('display', 'none');
+                        return;
+                    }
+
+                    const popupDiv = `
+                    <div id="noticePopup-${item.notice_id}" class="noticePopup">
+                        <div id='noticePopup_box-${item.notice_id}' class="noticePopup_box" style="left:${item.left}%; top:${item.top}%; width:${item.width}px; height:${item.height + 50}px;">
+                            <div id="noticePopup_content-${item.notice_id}" class="noticePopup_content ql-editor" style="height:${item.height}px">${item.content}</div>
+                            <div id="noticePopup_footer-${item.notice_id}" class="noticePopup_footer" style="height:50px">
+                                <button onclick="setNoticeCookie(${item.notice_id});">오늘 그만 보기</button> |
+                                <button onclick="$('#noticePopup-${item.notice_id}').css('display', 'none');">닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    $('#commonTag').append(popupDiv);
+                    $(`#previewPopup-${item.notice_id}`).fadeIn();
+                    $(`#noticePopup-${item.notice_id}`).css('display', 'inherit');
+                    $(`#noticePopup_content-${item.notice_id} img`).on('error', setDefaultImage);
+                    function setDefaultImage() {
+                        $(this)
+                            .attr('src', '/common/img/image_not_found.svg')
+                            .css({'width': '100%', 'height': 'auto'})
+                    }
+                });
+
+            }
+        }).catch(error => {
+            console.error(error)
+        });
+    }
+
+    // '오늘 그만 보기' 쿠키 설정 함수
+    function setNoticeCookie(notice_id) {
+        // 쿠키 유효기간 설정 (1일)
+        const d = new Date();
+        d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + d.toUTCString();
+
+        document.cookie = `popupHidden_${notice_id}=true;${expires};path=/`;
+
+        // 해당 팝업 숨기기
+        $(`#noticePopup-${notice_id}`).css('display', 'none');
+    }
+
+    // 쿠키 확인 함수
+    function getNoticeCookie(name) {
+        const nameEq = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i].trim();
+            if (c.indexOf(nameEq) === 0) {
+                return c.substring(nameEq.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function findUserName() {
+        const email = JwtUtils.getUserEmailFromJWT();
+        const url = "/common/common/commonUser/find";
+
+        axios.post(url, {email}).then(response => {
+            const data = response.data[0];
+            $('#user-name-span').text(data.user_name).css('font-size', '1rem');
+            $('#office-name-span').text(data.office_name).css('font-size', '0.8rem');
+        }).catch(error => {
+            formUtil.showMessage("can not find user name");
+        });
+    }
+
+    function findUserImage() {
+        const email = JwtUtils.getUserEmailFromJWT();
+        const url = "/common/common/commonUser/getUserImageUrlByUserEmail";
+
+        axios.post(url, {email}).then(response => {
+            const imageUrl = response.data;
+            const imageElement = $('#user-image');
+
+            if (imageUrl) {
+                imageElement
+                    .attr('src', imageUrl)
+                    .on('error', setDefaultImage);
+            } else {
+                setDefaultImage();
+            }
+        }).catch(error => {
+            formUtil.showMessage("can not find user image");
+        });
+
+        function setDefaultImage() {
+            $('#user-image')
+                .attr('src', '/common/img/userIcon.png')
+                .css({'width': '50px', 'height': '50px'});
+        }
+    }
+
+    function existsNavSelected() {
+        let recentPage = common_session.getItem("recentPage").url;
+
+        if(formUtil.checkEmptyValue(recentPage) && recentPage !== "/index/index" && recentPage !== "/common/myinfo"){
+            let $activatedMenu = $("[data-page-name='" + recentPage.toString() + "']");
+            let menuLevel1 = $activatedMenu.parents("li").last().children("a");
+            let menuLevel2 = $activatedMenu.closest("ul").closest("li").children("a");
+
+            menuLevel1.trigger("click");
+            menuLevel2.trigger("click");
+            $activatedMenu.addClass("active page");
+        }else{
+            let allLiButtonList = $("#side_nav_menu > li");
+
+            allLiButtonList.each(function (){
+                let $button = $(this);
+                $button.find("a:not(.sideNavPageLoad)").removeClass("active").addClass("collapsed");
+                $button.find("a.sideNavPageLoad").removeClass("active page");
+                $button.find("ul").stop(true, true).slideUp(150);
+            });
+        }
+    }
+
+    function sideNavTitleClick(){
+        $('.gi-side-nav-title').on('click', function(e) {
+            e.preventDefault();
+
+            let $this = $(this);
+            let $currentSubMenu = $this.nextAll(".gi-side-nav-menu-level");
+            let menuLevel = $this.data("menu-level");
+            let recentPage = common_session.getItem("recentPage").url || "";
+
+            // 비활성화 된 메뉴 클릭 시
+            if (!$this.hasClass("active")) {
+                // 그 중 최하위 메뉴 버튼을 클릭했을 때
+                if($this.hasClass("sideNavPageLoad")){
+                    // 세션에 저장된 url 없을 수가 없다 이제는!
+                    if($this.data("page-name") === recentPage.toString){
+                        // 세션에 저장된 url과 버튼 url이 동일하면 그냥 화면 다시 로드 처리
+                    }else{
+                        // 현재 url 과 동일하지 않을 경우(다른 메뉴 버튼인 경우)
+                        // 현재 선택한 버튼이 포함된 메뉴 그룹만 제외하고 나머지는 모두 비활성화 처리
+                        let liButtonList = $("#side_nav_menu > li").not($this.parents("li").last());
+
+                        liButtonList.each(function (){
+                            let $button = $(this);
+                            $button.find("a:not(.sideNavPageLoad)").removeClass("active").addClass("collapsed");
+                            $button.find("a.sideNavPageLoad").removeClass("active page");
+                            $button.find("ul").stop(true, true).slideUp(150);
+                        });
+
+                        // 현재 클릭한 버튼을 포함해서 해당 버튼과 level1 디렉토리를 공유하는 모든 버튼들은 비활성화 처리
+                        $this.parents("li").last().find(".sideNavPageLoad").removeClass("active page");
+                        let currentLevel2 = $this.closest("ul").closest("li").closest("ul");
+
+                        // 그 다음 현재 클릭한 버튼의 level2와 다른 level2 들은 모두 비활성화 처리
+                        let anotherLevel2 = $this.parents("li").last().children("ul").not(currentLevel2);
+
+                        anotherLevel2.each(function (){
+                            let menuLevel2 = $(this).children("li").children("a");
+                            if(menuLevel2.hasClass("active")){
+                                menuLevel2.removeClass("active").addClass("collapsed");
+                                menuLevel2.nextAll(".gi-side-nav-menu-level").stop(true, true).slideUp(150);
+                            }
+                        });
+
+                        // 마지막으로 클릭한 버튼 및 해당 페이지 활성화
+                        $this.addClass("active page");
+                        let url = $this.data("page-name");
+                        let urlInfo = { url : url }
+                        common_session.setItem("recentPage", urlInfo);
+                        common_session.setItem("activatedMenu", urlInfo);
+                        loadContent(url, $this.text());
+                    }
+                } else {
+                    // 메뉴 노출처리 시에는 첫 번째 메뉴와 두 번째 메뉴는 기본 처리 외 부가적인 처리가 필요 없다.
+                    $currentSubMenu.stop(true, true).slideDown(150);
+                    $this.removeClass("collapsed").addClass("active");
+                }
+            } else {
+                // 활성화 된 로드 버튼 클릭 시
+                if($this.hasClass("sideNavPageLoad")){
+                    let url = $this.data("page-name");
+                    let urlInfo = { url : url }
+                    common_session.setItem("recentPage", urlInfo);
+                    common_session.setItem("activatedMenu", urlInfo);
+                    loadContent(url, $this.text());
+                } else {
+                    // 활성화 된 최상위 메뉴 클릭 시
+                    if(menuLevel.toString() === "0"){
+                        let allSubMenu = $this.closest('li').find('ul');
+
+                        // 첫번째 메뉴 버튼이면서 하위 로드 버튼이 활성화 되어있을 때
+                        if($this.parent("li").find("a.active.page").length > 0){
+                            // 하위 메뉴 버튼과 영역들은 숨김 처리하지만 로드 버튼 비활성화 처리는 하지 않는다.
+                            allSubMenu.each(function(i, subMenu) {
+                                let $menu = $(subMenu);
+                                $menu.stop(true, true).slideUp(150);
+                                $menu.find("a:not(.sideNavPageLoad)").removeClass("active").addClass("collapsed");
+                            });
+                            $this.removeClass("active").addClass("collapsed");
+                        } else {
+                            // 첫번째 메뉴 버튼이면서 하위 로드 버튼이 활성화 되어있지 않을 때
+                            // 하위 메뉴 버튼과 영역들을 숨김 처리하면서 비활성화 처리도 한다.
+                            allSubMenu.each(function(i, subMenu) {
+                                let $menu = $(subMenu);
+                                $menu.stop(true, true).slideUp(150);
+                                $menu.find(".gi-side-nav-title").removeClass("active");
+                            });
+                            $this.removeClass("active").addClass("collapsed");
+                        }
+                    } else {
+                        // 활성화 된 두번째 메뉴 버튼 일때는 하위 ul 숨김처리하고 비활성화(remove active) 처리
+                        // 만약 하위에 활성화 된 버튼이 있다면 해당 버튼은 비활성화 하지않는다.
+                        if($this.parent("li").find("a.active.page").length > 0){
+                            $this.removeClass("active").addClass("collapsed");
+                            $currentSubMenu.stop(true, true).slideUp(150);
+                        }else{
+                            $this.removeClass("active").addClass("collapsed");
+                            $currentSubMenu.stop(true, true).slideUp(150);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function createSideNavMenuList(sideNavMenuList1Depth, sideNavMenuList2Depth, sideNavMenuList3Depth){
+        let sideNavMenuHtml = "";
+
+        // todo 메뉴 아이콘은 추후 게시판 생성 템플릿에서 게시판 생성 시 선택 된 아이콘으로 태그에 자동으로 입력처리 예상(2025-02-12)
+        const menuIcons = {
+            SPECIFICATION_MANAGEMENT: "fa-solid fa-file-invoice",                        // 제원관리
+            TECHNOLOGY_REVIEW: "fa-solid fa-list-check",                                 // 기술검토
+            SAFETY_INSPECTION: "fa-solid fa-shield-halved",                              // 안전검사
+            MAKE_MANAGEMENT: "fa-solid fa-file-lines",                                   // 제작관리
+            TEMPORARY_DRIVING: "fa-solid fa-car-on",                                     // 임시운행
+            REGISTER_MANAGEMENT: "fa-solid fa-file-signature",                           // 등록관리
+            INSPECTION_MANAGEMENT: "fa-solid fa-magnifying-glass",                       // 검사관리
+            MANAGEMENT_SERVICE: "fa-solid fa-clipboard-list",                            // 업무관리
+            COMPREHENSIVE_FUNCTIONAL_DIAGNOSIS_MANAGEMENT: "fa-solid fa-stethoscope",    // 기능종합진단
+            SETTINGS: "fa-solid fa-gear"                                                 // 설정/관리
+        };
+
+        sideNavMenuList1Depth.map(menu1 => {
+            sideNavMenuHtml +=  "<li class='gi-side-nav-menu-item gi-margin-bottom-26px'>"
+                             +      "<a href='#' class='gi-side-nav-title collapsed' data-menu-level='" + menu1.menu_level + "' data-menu-code='" + menu1.menu_code + "'>"
+                             +      "<i class='fa-inverse gi-side-nav-title-icon " + menuIcons[menu1.menu_code] + "'></i>"
+                             +          "<span>" + menu1.menu_name + "</span>"
+                             +          "<span class='fa-solid fa-angle-right'></span>"
+                             +      "</a>";
+
+            if(formUtil.checkEmptyValue(sideNavMenuList2Depth)){
+                sideNavMenuList2Depth.map(menu2 => {
+                    let list2Depth = "";
+                    if(menu1.menu_code === menu2.top_menu_code){
+                        list2Depth +=   "<ul class='gi-side-nav-menu-level'>"
+                                    +       "<li class='gi-side-nav-menu-item child'>"
+                                    +           "<a href='#' class='gi-margin-left-5 gi-side-nav-title collapsed' data-menu-level='" + menu2.menu_level + "' data-menu-code='" + menu2.menu_code + "'>"
+                                    +               "<span>" + menu2.menu_name + "</span>"
+                                    +               "<span class='fa-solid fa-angle-right'></span>"
+                                    +           "</a>";
+
+                        if(formUtil.checkEmptyValue(sideNavMenuList3Depth)){
+                            let list3Depth = "<ul class='gi-side-nav-menu-level'>";
+                            sideNavMenuList3Depth.map(menu3 => {
+                                if(menu2.menu_code === menu3.top_menu_code){
+                                    list3Depth +=   "<li class='gi-margin-left-5 gi-side-nav-menu-item child'>"
+                                                +       "<a href='#' class='sideNavPageLoad gi-side-nav-title' data-page-name='" + menu3.url + "' data-menu-level='" + menu3.menu_level + "' data-menu-code='" + menu3.menu_code + "'>"
+                                                +           "<span>" + menu3.menu_name + "</span>"
+                                                +       "</a>"
+                                                +   "</li>";
+                                }
+                            });
+                            list3Depth  +=  "</ul>";
+
+                            list2Depth +=   list3Depth
+                                        +   "</li>"
+                                        +   "</ul>";
+                        }
+                        sideNavMenuHtml += list2Depth;
+                    }
+                });
+            }
+            sideNavMenuHtml +=   "</li>";
+        });
+
+        return sideNavMenuHtml;
+    }
+
+    function searchMenu(query, menuList, parentNames = []) {
+        let result = [];
+
+        menuList.forEach((menu) => {
+            // 현재 메뉴의 부모명을 포함한 배열 생성
+            let currentParentNames = [...parentNames, menu.menu_name];
+
+            // menu_level이 "2"인 경우에만 검색 대상
+            if (menu.menu_level === "2" && menu.menu_name.toLowerCase().includes(query.toLowerCase()) && formUtil.checkEmptyValue(query)) {
+                menu.full_path = currentParentNames.join(" > ");
+                result.push(menu);
+            }
+
+            // 하위 메뉴 탐색 후 추가(재귀 호출)
+            let childrenResults = searchMenu(query, menu.children, currentParentNames);
+            result = result.concat(childrenResults);
+        });
+
+        return result;
+    }
+
+    function highlightMatch(text, query) {
+        if (!query) return text;
+        let regex = new RegExp(query, "gi"); // 대소문자 구분 없이 검색
+        return text.replace(regex, (match) => `<span class="gi-menu-highlight">${match}</span>`);
+    }
+
+    function makeSearchResultArea(query, result) {
+        let resultArea = $(".gi-search-menu-result-area");
+        resultArea.html("");
+
+        resultArea.addClass("visible");
+        let resultHtml = "";
+        if(formUtil.checkEmptyValue(result)){
+            for(let i=0; i<result.length; i++){
+                let menuParts = result[i].full_path.split(" > ");
+                let highlightedParts = highlightMatch(menuParts[menuParts.length - 1], query);
+                menuParts[menuParts.length - 1] = highlightedParts;
+                let highlightedPath = menuParts.join(" > ");
+
+                resultHtml += "<div class='gi-search-result-row gi-margin-1'>"
+                           +    "<span>"
+                           +        "<a href='#' class='gi-search-menu-title' data-page-name='"+ result[i].url + "'>" + highlightedPath + "</a>"
+                           +    "</span>"
+                           +  "</div>";
+            }
+        } else {
+            resultHtml += "<div class='gi-margin-1 gi-no-search-result-row'>"
+                       +    "<span class='gi-no-search-result-menu-title'>검색된 결과가 없습니다</span>"
+                       +  "</div>";
+        }
+        resultArea.html(resultHtml);
+        searchMenuClick();
+    }
+
+    function searchMenuClick() {
+        $(".gi-search-menu-title").on("click", function(e) {
+            e.preventDefault();
+            let $activatedMenu = $("[data-page-name='" + $(this).data("page-name").toString() + "'].sideNavPageLoad");
+            let menuLevel1 = $activatedMenu.parents("li").last().children("a");
+            let menuLevel2 = $activatedMenu.closest("ul").closest("li").children("a");
+
+            if(!menuLevel1.hasClass("active")){
+                menuLevel1.trigger("click");
+            }
+
+            if(!menuLevel2.hasClass("active")) {
+                menuLevel2.trigger("click");
+            }
+
+            $activatedMenu.trigger("click");
+
+            $(".gi-search-menu-result-area").removeClass("visible");
+        });
+    }
+
+    function isScrollbarVisible(element) {
+        return $(element).prop("scrollHeight") > Math.ceil($(element).innerHeight());
+    }
+
+    function isScrolledToBottom(element) {
+        let scrollTop = $(element).scrollTop();
+        let scrollHeight = $(element).prop("scrollHeight");
+        let innerHeight = $(element).innerHeight();
+        return Math.ceil(scrollTop + innerHeight) >= scrollHeight;
+    }
+
+    // 스크롤 가능 표시 아이콘 노출처리
+    function checkScroll() {
+        let targetElement = $("#side_nav_menu"); // 감지할 요소
+        let iconElement = $(".scroll-check-icon");
+        let lastScrollState = isScrollbarVisible(targetElement);
+        let lastBottomState = false;
+        let timer = null;
+
+        if(lastScrollState){
+            if (!isScrolledToBottom(targetElement)) {
+                iconElement.addClass("visible");
+            }
+        }
+
+        let observer = new MutationObserver(function () {
+            clearTimeout(timer); // 중복 호출 방지
+            timer = setTimeout(() => {
+                let currentScrollState = isScrollbarVisible(targetElement);
+                let currentBottomState = isScrolledToBottom(targetElement);
+
+                if (currentScrollState !== lastScrollState) {
+                    if (currentScrollState) {
+                        if (!currentBottomState) {
+                            iconElement.addClass("visible");
+                        }
+                    } else {
+                        iconElement.removeClass("visible");
+                    }
+                    lastScrollState = currentScrollState;
+                }
+
+                if (currentBottomState !== lastBottomState) {
+                    if (currentBottomState) {
+                        iconElement.removeClass("visible");
+                    } else {
+                        iconElement.addClass("visible");
+                    }
+                    lastBottomState = currentBottomState;
+                }
+            }, 100);
+        });
+
+        // 속성값 변경 감시
+        observer.observe(targetElement[0], {
+            attributes: true,
+            childList: true,
+            subtree: true
+        });
+
+        targetElement.on("scroll", function () {
+            let currentBottomState = isScrolledToBottom(targetElement);
+
+            if (currentBottomState !== lastBottomState) {
+                if (currentBottomState) {
+                    iconElement.removeClass("visible");
+                } else {
+                    iconElement.addClass("visible");
+                }
+                lastBottomState = currentBottomState;
+            }
+        });
+
+    }
+    //NOTE : 사용자 정보 조회
+    async function commonFindByUserInfo() {
+        let email = new session().getItem("userInfo").email;
+        return new Promise( resolve =>{
+            let url = "/common/common/commonUser/find";
+            let param = {
+                email : email
+            }
+
+            axios.post(url, param).then(response => {
+                let data = response.data[0];
+                return resolve(data);
+            }).catch(error => {
+                formUtil.showMessage(error + "");
+            });
+        })
+    }
+</script>

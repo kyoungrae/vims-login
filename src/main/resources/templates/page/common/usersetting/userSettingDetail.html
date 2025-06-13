@@ -1,0 +1,311 @@
+<style>
+    *{
+        --default-input-height: 45px !important;
+    }
+    .user_icon_layout_body{
+        position: relative;
+    }
+    .add_user_img-btn{
+        padding: var(--padding-btn);
+        height: 100%;
+        min-width: 30px;
+        border: none;
+        background-color: #ffffff;
+        color: #000000;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+        margin: 0 5px 0 5px;
+        background-image: url(/common/img/add.svg);
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    .add_user_img-btn:hover{
+        background-image: url(/common/img/add-hover.svg);
+    }
+    .add_user_img-btn-section{
+        position: absolute;
+        height: 30px;
+        top: 90%;
+        left: 90%;
+    }
+</style>
+<article class=" gi-overflow-scroll gi-col-100 gi-row-100 gi-flex gi-flex-justify-content-center gi-flex gi-flex-direction-column gi-grid gi-grid-template-rows-9fr-1fr">
+    <figure id="commonUserListDetail" class="gi-row-100 gi-col-92 gi-grid gi-grid-template-columns-repeat-1-1fr-1fr">
+        <article id="userProfile" class="gi-row-100 gi-col-100 gi-grid gi-grid-justify-items-center gi-grid-align-items-center">
+            <article class="gi-article-content gi-row-90 gi-col-92 gi-grid gi-grid-template-rows-repeat-1-1fr gi-grid-gap-12px-12px">
+                <div class="gi-flex gi-flex-direction-column gi-flex-center gi-flex-justify-content-space-around">
+                    <div class="user_icon_layout_body">
+                        <div class="user_icon_layout">
+                            <div class="userIcon"></div>
+                        </div>
+                        <div class="add_user_img-btn-section">
+                            <button id="imgFileUpload" class="add_user_img-btn" type="button"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center gi-hidden">
+                    <label for="user_profile_id" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">id</label>
+                    <input data-gi-tag-disabled data-field="id" id="user_profile_id" name="user_profile_id" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                </div>
+                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                    <label for="user_profile_name" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">name</label>
+                    <input data-gi-tag-disabled-update-able data-gi-tag-disabled data-field="user_name" id="user_profile_name" name="user_profile_name" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                </div>
+                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                    <label for="tel" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">tel</label>
+                    <input data-gi-tag-disabled-update-able data-gi-tag-disabled gi-format-check="phone_number" data-field="tel" id="tel" name="tel" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                </div>
+                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                    <label for="user_profile_email" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">email</label>
+                    <input data-gi-tag-disabled data-field="email" id="user_profile_email" name="user_profile_email" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                </div>
+                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                    <label for="user_profile_user_id" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">id</label>
+                    <input data-gi-tag-disabled data-field="user_id" id="user_profile_user_id" name="user_profile_user_id" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                </div>
+                <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center gi-hidden">
+                    <label for="uuid" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">uuid</label>
+                    <input data-gi-tag-disabled data-field="uuid" id="uuid" name="uuid" class="gi-input" data-focus-input-text-align="default" data-required="false" autocomplete="off"/>
+                </div>
+            </article>
+        </article>
+        <article class="gi-row-100 gi-col-100 gi-grid gi-grid-justify-items-center gi-grid-align-items-center">
+            <article class="gi-row-90 gi-col-90 gi-grid gi-grid-template-rows-repeat-1-1fr-1fr gi-grid-gap-20px">
+                <article class="gi-article-content gi-row-100 gi-col-100 gi-grid gi-grid-template-rows-repeat-1-1fr gi-grid-gap-12px-12px">
+                    <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                        <label for="user_profile_office_name" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">office name</label>
+                        <input data-gi-tag-disabled data-field="office_name" id="user_profile_office_name" name="user_profile_office_name" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                    </div>
+                    <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                        <label for="user_profile_office_code" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">office code</label>
+                        <input data-gi-tag-disabled data-field="office_code" id="user_profile_office_code" name="user_profile_office_code" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                    </div>
+                    <div class="gi-row-100 gi-span-container gi-span-container-box-border-shadow gi-flex gi-flex-center ">
+                        <span class="gi-span-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">group name</span>
+                        <span data-gi-tag-disabled data-field="group_name" id="user_profile_group_name" name="user_profile_group_name" class="gi-span gi-flex" data-focus-span-text-align="default" data-required="true"> </span>
+                    </div>
+                    <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                        <label for="system_create_date" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">register date</label>
+                        <input data-gi-tag-disabled data-field="system_create_date" id="system_create_date" name="system_create_date" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                    </div>
+                    <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                        <label for="system_update_date" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">last update date</label>
+                        <input data-gi-tag-disabled data-field="system_update_date" id="system_update_date" name="system_update_date" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                    </div>
+                </article>
+                <article class="gi-article-content gi-row-100 gi-col-100 gi-grid gi-grid-template-rows-repeat-1-1fr gi-grid-gap-12px-12px">
+                    <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                        <label for="user_profile_password" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">password</label>
+                        <input data-gi-tag-disabled-update-able data-gi-tag-disabled type="password" data-field="password" id="user_profile_password" name="user_profile_password" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                    </div>
+                    <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                        <label for="user_profile_address" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">address</label>
+                        <input data-gi-tag-disabled-update-able data-gi-tag-disabled data-field="address" id="user_profile_address" name="user_profile_address" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                    </div>
+                    <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                        <label for="user_profile_address_detail" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">address detail</label>
+                        <input data-gi-tag-disabled-update-able data-gi-tag-disabled data-field="address_detail" id="user_profile_address_detail" name="user_profile_address_detail" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                    </div>
+                    <div class="gi-row-100 gi-input-container gi-input-container-box-border-shadow gi-flex gi-flex-center ">
+                        <label for="user_profile_postal_code" class="gi-input-label" data-focus-label="true" data-focus-label-text-align="default" data-required="false">postal code</label>
+                        <input data-gi-tag-disabled-update-able data-gi-tag-disabled data-field="postal_code" id="user_profile_postal_code" name="user_profile_postal_code" class="gi-input" data-focus-span-text-align="default" data-required="true" autocomplete="off"/>
+                    </div>
+                </article>
+            </article>
+        </article>
+    </figure>
+<!--    <div class="gi-row-100">-->
+<!--        <div class="gi-btn-section gi-row-30 gi-float-right gi-padding-left-right-20px">-->
+<!--            <button id="insert-btn" class="gi-btn-blue gi-float-right gi-col-30px" type="button">수정</button>-->
+<!--        </div>-->
+<!--    </div>-->
+</article>
+
+<script type="text/javascript">
+    var PRGMID = "commonUserListDetail";	//page id
+
+    init();
+    async function init(){
+        await data_binding.setData(PRGMID);
+        let data = data_binding.getData(PRGMID);
+        findByCommonUserGroup(data);
+
+        commonTag.inputTagFocus($(".gi-input"))
+        commonTag.inputTagReset($(".gi-input"))
+        commonTag.tagDisabled(true);
+        commonTag.inputDisabledUpdateAble();
+
+        new GiFormatCheck();
+        let cont ={
+            FOLDER_NAME :"userImgFolder"
+        }
+        formUtil.createImgFileUpload("imgFileUpload","/common/file/commonFileDetail",cont,userImageUpdate);
+        function userImageUpdate(){
+            let data = data_binding.getData(PRGMID);
+            let param ={
+                id : data.id,
+                uuid : data.uuid
+            }
+            updateCommonUser(param);
+        }
+        //초기화
+
+        //데이터 조회
+        findByCommonUserList();
+        findImgFile(data);
+
+        setTimeout(function(){
+            //클릭 이벤트
+            clickEvent1();
+        });
+    }
+
+    //클릭 이벤트
+    function clickEvent1(){
+        $(".gi-input-update-tag-icon").off("click.giInputUpdateTagIconClickEventHandler").on("click.giInputUpdateTagIconClickEventHandler",function(e){
+            giInputUpdateTagIconClickEventHandler(e);
+        })
+    }
+    function giInputUpdateTagIconClickEventHandler(e){
+        let flag = $(e.currentTarget).attr("data-input-editing") === "complete";
+        let inputTarget = $(e.currentTarget).parent(".gi-input-container").children(".gi-input")[0];
+        let targetInputType = $(e.currentTarget).parent(".gi-input-container").children(".gi-input")[0].type;
+        let inputTargetDataField = $(inputTarget).data("field");
+        let inputTargetValue = $(inputTarget).val();
+
+        if(flag){
+            let data = data_binding.getData(PRGMID);
+            let param = {
+                id : data.id,
+            }
+            param[inputTargetDataField] = inputTargetValue;
+            if(targetInputType === "password"){
+                formUtil.popupInput("passwordMatch-btn","before_password",Message.Label.Array["CHECK.MATCH.PASSWORD"],Message.Label.Array["BEFORE_PASSWORD"],passwordMatch,param);
+            }else{
+                formUtil.popup("updateCommonUser-btn",Message.Label.Array["CONFIRM.UPDATE"],updateCommonUser,param);
+            }
+        }else{
+        }
+    }
+    function updateCommonUser(param){
+        let url = "/common/common/commonUser/update";
+        axios.post(url , param).then(response =>{
+            let status = response.status;
+            if(status === 200){
+                formUtil.showMessage(Message.Label.Array["COMPLETE.UPDATE"]);
+                findByCommonUserList();
+                findByCommonUser(param);
+            }
+        }).catch(error =>{
+            const errorMessage = error.response?.data;
+            formUtil.alertPopup(errorMessage?errorMessage:String(error));
+        })
+    }
+    function passwordMatch(data){
+        let url = "/common/common/commonUser/matchToPassword";
+        let param = {
+            id : data.id,
+            before_password : data.before_password
+        }
+        axios.post(url, param).then(response =>{
+            let flag = false;
+            let status = response.status;
+            if(status === 200){
+                flag = response.data;
+            }
+            if(flag){
+                updateCommonUser(data);
+            }else{
+                formUtil.showMessage(Message.Label.Array["FAIL.NOT.MATCHED.PASSWORD"])
+            }
+        }).catch(error =>{
+            formUtil.alertPopup(error + "");
+        })
+    }
+    function findByCommonUserGroup(cont){
+        let url = "/common/common/commonUserGroup/find";
+        let param = {
+            user_email : cont.email
+        }
+        axios.post(url , param).then(response=>{
+            let status = response.status;
+            if(status === 200){
+                let data = response.data;
+                let groupNameArray = [];
+                let groupNameHtml = "";
+                if(formUtil.checkEmptyValue(data)){
+                    data.map((item,i) =>{
+                        groupNameArray.push(item.group_name)
+                        groupNameHtml += "<span class='gi-tag-gray'>"+item.group_name+"</span>";
+                    })
+                }
+
+                $("#user_profile_group_name").append(groupNameHtml);
+            }
+        }).catch(error =>{
+            formUtil.alertPopup(error + "");
+        })
+    }
+    function findByCommonUser(cont){
+        let url = "/common/common/commonUser/find";
+        let param = {
+            id : cont.id
+        }
+        axios.post(url, param).then(response =>{
+            let status = response.status;
+            if(status === 200){
+                if(formUtil.checkEmptyValue(response.data)){
+                    let data = response.data[0];
+                    userDetailSideGrid(data);
+                    findImgFile(data);
+                }
+            }else{
+                throw "not found user";
+            }
+        }).catch(error =>{
+            formUtil.alertPopup(error + "");
+        })
+    }
+    function findImgFile(data){
+        let url  = "/common/file/commonFileDetail/find";
+        let param = {
+            uuid : data.uuid
+        }
+        axios.post(url, param).then(response =>{
+            let status = response.status;
+            if(status === 200){
+                if(formUtil.checkEmptyValue(response.data)){
+                    let  data = response.data[0];
+                    let filePath = data.file_path;
+                    let fileId = data.file_id+"."+data.file_extension;
+                    let cont ={
+                        path : filePath,
+                        file_id : fileId
+                    }
+                    findFileManagerGetImg(cont);
+                }
+            }
+        }).catch(error =>{
+            formUtil.alertPopup(error + "");
+        })
+    }
+    function findFileManagerGetImg(data){
+        let url ="/fileManager/searchImg";
+        let param = {
+            file_path : data.path+"/",
+            file_id : data.file_id
+        }
+        axios.post(url,param).then(response =>{
+            let status = response.status;
+            if(status === 200){
+                if(formUtil.checkEmptyValue(response.data)){
+                    let data = response.data;
+                    $(".userIcon").css("background-image", "url('"+data+"')");
+                }
+            }
+        }).catch(error =>{
+            formUtil.alertPopup(error +"");
+        })
+    }
+</script>

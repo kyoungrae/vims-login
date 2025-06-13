@@ -1,0 +1,241 @@
+<style>
+
+    .container {
+        text-align: center;
+        padding: 40px 20px 50px 20px;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .gi-nav {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        gap: 50px;
+    }
+
+    .nav_menu {
+        cursor: pointer;
+        width: 300px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 40px 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav_menu img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+    }
+
+    .menu-title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .menu-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #555;
+    }
+
+    .gi-article-container {
+        display: grid;
+        align-items: center;
+    }
+</style>
+
+<article class="gi-col-95 gi-row-90 gi-overflow gi-article-container" style="display: flex; flex-direction: column;">
+    <div class="gi-grid-input-edge gi-row-100">
+        <div gi-slider id="main-slider" class="gi-grid-input-edge" style="aspect-ratio: 100/28">
+            <div gi-slider-wrapper></div>
+        </div>
+    </div>
+    <div class="container gi-article-content gi-row-100 gi-grid-input-edge gi-margin-top-20px gi-col-100">
+        <div class="title" style="margin-bottom: 40px;">
+            <img src="common/img/GI2.png" width="100" alt=""/>[Page.Message].Message.Label.Array["INDEX_TITLE"]
+        </div>
+        <div class="gi-nav">
+            <div class="nav_menu" onclick="navigateToOneDepthMenu('SPECIFICATION_MANAGEMENT')">
+                <img src="common/img/icon_specification.svg" alt="Icon_specification" width="50" height="50">
+                <div class="menu-title">[Page.Message].Message.Label.Array["VEHICLE_MANUFACTURE_MANAGE"]</div>
+                <div class="menu-description">
+                    [Page.Message].Message.Label.Array["VEHICLE_MANUFACTURE_MANAGE_INFO"]
+                </div>
+            </div>
+            <div class="nav_menu" onclick="navigateToOneDepthMenu('REGISTER_MANAGEMENT')">
+                <img src="common/img/icon_registration.svg" alt="Icon_registration" width="50" height="50">
+                <div class="menu-title">[Page.Message].Message.Label.Array["VEHICLE_REGISTER"]</div>
+                <div class="menu-description">
+                    [Page.Message].Message.Label.Array["VEHICLE_REGISTER_INFO"]
+                </div>
+            </div>
+            <div class="nav_menu" onclick="navigateToOneDepthMenu('INSPECTION_MANAGEMENT')">
+                <img src="common/img/icon_inspection.svg" alt="Icon_inspection" width="50" height="50">
+                <div class="menu-title">[Page.Message].Message.Label.Array["VEHICLE_INSPECTION"]</div>
+                <div class="menu-description">
+                    [Page.Message].Message.Label.Array["VEHICLE_INSPECTION_INFO"]
+                </div>
+            </div>
+            <div class="nav_menu" onclick="navigateToOneDepthMenu('SETTINGS')">
+                <img src="common/img/icon_management.svg" alt="Icon_management" width="50" height="50">
+                <div class="menu-title">[Page.Message].Message.Label.Array["TOTAL_INSPECTION"]</div>
+                <div class="menu-description">
+                    [Page.Message].Message.Label.Array["TOTAL_INSPECTION_INFO"]
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<script>
+    (async function () {
+        let giSlider;
+
+        Promise.all([findBySiteBannerImageList(), findBannerConfigs()])
+            .then(() => {
+                giSlider = new GiSlider('main-slider');
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+
+        async function findBySiteBannerImageList() {
+            let url = "/common/site/siteBannerImage/findWithFile";
+
+            try {
+                let response = await axios.post(url, {use_yn: '1'});
+                let status = response.status;
+
+                if (status !== 200) {
+                    throw new Error("response status is: " + status);
+                }
+
+                let data = response.data;
+                bannerList = response.data;
+
+                for (const d of data) {
+                    addBannerHtml(d);
+                }
+
+                if ($('[gi-slider-item]').length < 1) {
+                    addDefaultBannerHtml();
+                }
+
+                $('[gi-slider-item]').css('min-width', $('#main-slider').width());
+                const observeMainSlider = function ($mainSlider) {
+                    if (!$mainSlider.length) return;
+
+
+                    const updateSliderWidth = function () {
+                        $('[gi-slider-item]').css('min-width', $mainSlider.width());
+                    };
+
+                    const resizeObserver = new ResizeObserver(updateSliderWidth);
+                    resizeObserver.observe($mainSlider[0]);
+
+                    const mutationObserver = new MutationObserver(function (mutations, observer) {
+                        if (!$('#main-slider').length) {
+                            resizeObserver.disconnect();
+                            observer.disconnect();
+                        }
+                    });
+
+                    mutationObserver.observe($mainSlider[0].parentNode, {childList: true});
+
+                    updateSliderWidth();
+                };
+                observeMainSlider($('#main-slider'));
+
+                return true;
+            } catch (error) {
+                formUtil.alertPopup(error.message || error);
+            }
+        }
+
+        function addBannerHtml(data) {
+            const index = data.banner_image_number ? data.banner_image_number : $('.banner').length + 1;
+
+            const bannerHtml = `
+                <img gi-slider-item src="${data.file_url}" alt="banner image" id="banner_image-${index}"/>
+            `;
+
+            $('#main-slider [gi-slider-wrapper]').append(bannerHtml);
+
+            $('[gi-slider-item]').on("error", function () {
+                $(this).remove();
+                giSlider?.reload();
+
+                if ($('[gi-slider-item]').length < 1) {
+                    addDefaultBannerHtml();
+                }
+            });
+            return true;
+        }
+
+        function addDefaultBannerHtml() {
+            const bannerHtml = `
+                    <img gi-slider-item src="/common/img/main1.svg" alt="banner image" id="banner_image"/>
+                `;
+
+            $('#main-slider').append(bannerHtml);
+
+            giSlider?.reload();
+
+            return true;
+        }
+
+        async function findBannerConfigs() {
+            const url = "/common/site/siteConfig/findValuesByKeys";
+
+            try {
+                const response = await axios.post(url, ['BANNER_AUTO_ROTATE_YN', 'BANNER_ROTATE_INTERVAL_SEC']);
+                const status = response.status;
+
+                if (status !== 200) {
+                    throw new Error("response status is: " + status);
+                }
+
+                const data = response.data;
+
+                $('#main-slider').data('auto-rotated', data.banner_auto_rotate_yn);
+                $('#main-slider').data('rotate-interval-sec', data.banner_rotate_interval_sec);
+            } catch (error) {
+                formUtil.alertPopup(error.message || error);
+            }
+        }
+
+    })();
+
+    function navigateToOneDepthMenu(menu) {
+        // 모든 열린 1depth 메뉴를 닫아준다 - SideMenu 초기화
+        $('#side_nav_menu').each(function () {
+            let depth1 = $(this).children("li").children("a");
+            if (depth1.hasClass("active")) {
+                depth1.removeClass("active").addClass("collapsed");
+                depth1.nextAll(".gi-side-nav-menu-level").stop(true, true).slideUp(150);
+            }
+        });
+
+        const $nav = $('.gi-side-nav');
+        const isExpanded = $nav.hasClass('expand');
+
+        const $menu = isExpanded
+            ? $(`a.gi-side-nav-title[data-menu-level="0"][data-menu-code="${menu}"]`) // topMenu
+            : $(`a.menu-open[data-menu-code="${menu}"]`); // sideMenu
+
+        if ($menu.length > 0) {
+            $menu.click();
+        } else {
+            console.warn(`현재 로그인 된 계정 권한에 메뉴 '${menu}'가 없음.`);
+        }
+    }
+
+</script>

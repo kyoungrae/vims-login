@@ -9,9 +9,9 @@
         <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
     <typeHandlers>
-        <typeHandler handler="com.gilogin.config.LowerCaseMapTypeHandler" javaType="java.util.Map"/>
+        <typeHandler handler="com.system.config.LowerCaseMapTypeHandler" javaType="java.util.Map"/>
     </typeHandlers>
     <plugins>
-        <plugin interceptor="com.gilogin.interceptor.QueryTypeInterceptor"/>
+        <plugin interceptor="com.system.interceptor.QueryTypeInterceptor"/>
     </plugins>
 </configuration>

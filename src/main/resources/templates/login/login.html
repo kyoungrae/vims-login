@@ -313,6 +313,7 @@
 
         axios.post(url, cont)
             .then(response => {
+                console.log("ggg")
                 new session().setItem("userInfo", {
                     email: email,
                 });

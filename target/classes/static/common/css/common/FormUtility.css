@@ -109,7 +109,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url("/com/gilogin/common/img/warning.svg") no-repeat center;
+    background: url("/system/common/img/warning.svg") no-repeat center;
     background-size: 50px 50px;
     opacity: 0.8;
 }
@@ -328,14 +328,14 @@
     align-items: center;
 }
 .formUtil-file_image{
-    background-image: url("/com/gilogin/common/img/attatchment.svg");
+    background-image: url("/system/common/img/attatchment.svg");
     background-repeat: no-repeat;
     /*background-position: left 10px center;*/
     background-position: center;
     background-size: 20px 20px;
 }
 .formUtil-file_close_image{
-    background-image: url("/com/gilogin/common/img/close.svg");
+    background-image: url("/system/common/img/close.svg");
     background-repeat: no-repeat;
     background-position: right 5px center;
     background-size: 25px 25px;
@@ -928,7 +928,7 @@ label[for="fileElem"]:hover {
     height: 200px;
     box-shadow: inset 0 0 0 10px #ededed, inset 0 0 0 11px #dddddd;
     border-radius:50%;
-    background-image: url("/com/gilogin/common/img/userIcon.png");
+    background-image: url("/system/common/img/userIcon.png");
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;

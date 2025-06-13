@@ -1,0 +1,65 @@
+<article class="gi-article-content gi-col-95 gi-row-90">
+    <section class="gi-col-100 gi-row-100">
+        <header class="gi-flex gi-flex-center gi-col-10">
+            <h1 class="gi-page-title">No Data</h1>
+        </header>
+        <article class="gi-col-90 gi-row-100 gi-grid gi-grid-template-rows-9fr-1fr gi-grid-gap-10px-10px">
+            <!--      디테일 영역      -->
+            <div id="detailPage" class="gi-row-100 gi-col-100 gi-overflow-scroll">
+            </div>
+            <!--/     디테일 영역      -->
+            <!--      버튼 영역      -->
+            <div class="gi-row-100 gi-col-100 gi-flex gi-flex-justify-content-center gi-flex-align-items-center gi-overflow-scroll">
+                <div class="gi-btn-section gi-row-30 gi-col-30px gi-padding-left-right-20px gi-flex gi-flex-justify-content-center gi-flex-align-items-center">
+                    <button id="back-btn" class="gi-btn-back" type="button">목록</button>
+                </div>
+            </div>
+            <!--/     추가버튼 영역      -->
+        </article>
+    </section>
+</article>
+<script type="text/javascript">
+
+    init();
+
+
+    function init(){
+        //페이지 초기설정
+        new PageInit();
+
+        //데이터 조회
+        findByCommonJs();
+
+    }
+
+    function resetEvent(){
+        //데이터 호출 후 이벤트 재설정
+        new afterLoadDataEvent();
+    }
+
+    //클릭 이벤트
+    function clickEvent(){
+        // 초기화 버튼 클릭 이벤트
+        $(".gi-btn-reset").click(function(){
+
+        });
+        //목록 버튼 클릭 이벤트
+        $("#back-btn").click(function(){
+            redirectBackPage();
+        })
+    }
+    function findByCommonJs(){
+        let url = "/guide/readFile";
+        let param = {
+            filePath : "src/main/resources/static/common/js/common/FormUtility.js"
+        };
+        axios.post(url, param).then(response =>{
+            let data = response.data
+            let html = '<pre><code>'+data+'</code></pre>';
+            $("#detailPage").append(html);
+            resetEvent();
+        }).catch(error =>{
+            formUtil.alertPopup(error+"");
+        })
+    }
+</script>
