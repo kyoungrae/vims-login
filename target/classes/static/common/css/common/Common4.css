@@ -3404,7 +3404,7 @@ input[gi-datepicker] {
 .gi-input-update-tag-icon:hover{
     color:#000000;
 }
-/* ======================================================================================================== user dropdown in nav bar */
+/* ======================================================================================================== authUser dropdown in nav bar */
 .side-nav-profile-dropdown {
     position: relative;
     display: block;

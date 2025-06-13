@@ -1,10 +1,10 @@
 package com.gilogin.login;
 
-import com.system.auth.AuthenticationRequest;
-import com.system.auth.AuthenticationResponse;
-import com.system.auth.AuthenticationService;
-import com.system.user.UserService;
-import com.system.jwt.JwtService;
+import com.system.auth.dto.AuthenticationRequest;
+import com.system.auth.dto.AuthenticationResponse;
+import com.system.auth.service.AuthenticationService;
+import com.system.auth.authuser.AuthUserService;
+import com.system.auth.jwt.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,14 +29,14 @@ public class LoginController {
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final UserService userService;
+    private final AuthUserService authUserService;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-    public LoginController(AuthenticationService authenticationService , JwtService jwtService, UserDetailsService userDetailsService, UserService userService){
+    public LoginController(AuthenticationService authenticationService , JwtService jwtService, UserDetailsService userDetailsService, AuthUserService authUserService){
         this.authenticationService = authenticationService;
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
-        this.userService = userService;
+        this.authUserService = authUserService;
     }
     @GetMapping("")
     public String loginPage(HttpServletRequest request){
