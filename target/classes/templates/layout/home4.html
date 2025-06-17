@@ -117,99 +117,99 @@
     <div id="giDatepickerBody"></div>
 </article>
 <script>
-    // new loadToScript();
-    // let formUtil = new FormUtility();
-    // var commonTag = new CommonTag();
-    // var changedHomeType = true;
-    // layoutInit();
-    // function layoutInit() {
-    //     layoutClickEvent();
-    // }
-    // function layoutClickEvent(){
-    //     $(document).on("click", function (event) {
-    //         if (!$(".side-nav-profile-trigger").is(event.target) && !$(".side-nav-profile-trigger").has(event.target).length && $(".side-nav-profile-trigger").hasClass("active")) {
-    //             $(".side-nav-profile-trigger").trigger("click");
-    //         }
-    //     });
-    //
-    //     $(".side-nav-profile-trigger").on("click", function (e) {
-    //         $(".dropdown-menu").stop(true, true).slideToggle(150).css("display", "flex");
-    //         $(".side-nav-profile-dropdown").toggleClass("active");
-    //         $(".side-nav-profile-trigger").toggleClass("active");
-    //     });
-    //     $(".gi-home-setting").off("click.giHomeSettingClickEventHandler").on("click.giHomeSettingClickEventHandler",function(){
-    //         giHomeSettingClickEventHandler();
-    //     })
-    //     function giHomeSettingClickEventHandler(){
-    //         let flag = $(".gi-home-setting-article").hasClass("gi-hidden");
-    //         if(flag){
-    //             $(".gi-home-setting-article").removeClass("gi-hidden");
-    //         }else{
-    //             $(".gi-home-setting-article").addClass("gi-hidden");
-    //         }
-    //
-    //     }
-    //
-    //     $("#myinfo-btn").off().on("click",function(e){
-    //         e.preventDefault();
-    //         let url = "/common/myinfo";
-    //         let cont = {
-    //             url : url
-    //         }
-    //         sessionStorage.setItem("recentPage", JSON.stringify(cont));
-    //         loadContent(url);
-    //     });
-    //
-    //     $("#logout-btn").off().on("click",function(){
-    //         $("body").removeClass('animate-content-end');
-    //         setTimeout(function(){
-    //             $("body").addClass('animate-content-start');
-    //             window.location.href = "/api/v1/auth/logout";
-    //         });
-    //     });
-    //
-    //     $("#gi-logo, #gi-logo2").off().on("click",function(e){
-    //         e.preventDefault();
-    //         let url = "/index/index";
-    //         let cont = {
-    //             url : url
-    //         }
-    //         sessionStorage.setItem("recentPage", JSON.stringify(cont));
-    //         loadContent(url);
-    //
-    //         $(".gi-search-menu-result-area").removeClass("visible").html("");
-    //     });
-    //
-    //     $(".gi-side-nav-toggle-button-area").on("click", function (){
-    //         let $toggleButton = $(this);
-    //
-    //         if($toggleButton.hasClass("collapsed")){
-    //             $toggleButton.removeClass("collapsed");
-    //             $(".main-nav-menu").removeClass("visible");
-    //             $(".gi-main-nav-logo-area").removeClass("visible");
-    //             $(".gi-side-nav").removeClass("collapsed").addClass("expand");
-    //         } else {
-    //             $toggleButton.addClass("collapsed");
-    //             $(".main-nav-menu").addClass("visible");
-    //             $(".gi-main-nav-logo-area").addClass("visible");
-    //             $(".gi-side-nav").removeClass("expand").addClass("collapsed");
-    //         }
-    //
-    //         let mainArea = $("[data-side-nav-toggle-area]");
-    //
-    //         // sideNav, mainArea handling
-    //         mainArea.each(function (){
-    //             if($(this).hasClass("expand")){
-    //                 $(this).removeClass("expand");
-    //                 $(this).addClass("collapsed");
-    //             } else {
-    //                 $(this).removeClass("collapsed");
-    //                 $(this).addClass("expand");
-    //             }
-    //         });
-    //
-    //         // popup area handling
-    //         $("#gi-search-popup").toggleClass("gi-row-84-important");
-    //     });
-    // }
+    new loadToScript();
+    let formUtil = new FormUtility();
+    var commonTag = new CommonTag();
+    var changedHomeType = true;
+    layoutInit();
+    function layoutInit() {
+        layoutClickEvent();
+    }
+    function layoutClickEvent(){
+        $(document).on("click", function (event) {
+            if (!$(".side-nav-profile-trigger").is(event.target) && !$(".side-nav-profile-trigger").has(event.target).length && $(".side-nav-profile-trigger").hasClass("active")) {
+                $(".side-nav-profile-trigger").trigger("click");
+            }
+        });
+
+        $(".side-nav-profile-trigger").on("click", function (e) {
+            $(".dropdown-menu").stop(true, true).slideToggle(150).css("display", "flex");
+            $(".side-nav-profile-dropdown").toggleClass("active");
+            $(".side-nav-profile-trigger").toggleClass("active");
+        });
+        $(".gi-home-setting").off("click.giHomeSettingClickEventHandler").on("click.giHomeSettingClickEventHandler",function(){
+            giHomeSettingClickEventHandler();
+        })
+        function giHomeSettingClickEventHandler(){
+            let flag = $(".gi-home-setting-article").hasClass("gi-hidden");
+            if(flag){
+                $(".gi-home-setting-article").removeClass("gi-hidden");
+            }else{
+                $(".gi-home-setting-article").addClass("gi-hidden");
+            }
+
+        }
+
+        $("#myinfo-btn").off().on("click",function(e){
+            e.preventDefault();
+            let url = "/common/myinfo";
+            let cont = {
+                url : url
+            }
+            sessionStorage.setItem("recentPage", JSON.stringify(cont));
+            loadContent(url);
+        });
+
+        $("#logout-btn").off().on("click",function(){
+            $("body").removeClass('animate-content-end');
+            setTimeout(function(){
+                $("body").addClass('animate-content-start');
+                window.location.href = "/api/v1/auth/logout";
+            });
+        });
+
+        $("#gi-logo, #gi-logo2").off().on("click",function(e){
+            e.preventDefault();
+            let url = "/index/index";
+            let cont = {
+                url : url
+            }
+            sessionStorage.setItem("recentPage", JSON.stringify(cont));
+            loadContent(url);
+
+            $(".gi-search-menu-result-area").removeClass("visible").html("");
+        });
+
+        $(".gi-side-nav-toggle-button-area").on("click", function (){
+            let $toggleButton = $(this);
+
+            if($toggleButton.hasClass("collapsed")){
+                $toggleButton.removeClass("collapsed");
+                $(".main-nav-menu").removeClass("visible");
+                $(".gi-main-nav-logo-area").removeClass("visible");
+                $(".gi-side-nav").removeClass("collapsed").addClass("expand");
+            } else {
+                $toggleButton.addClass("collapsed");
+                $(".main-nav-menu").addClass("visible");
+                $(".gi-main-nav-logo-area").addClass("visible");
+                $(".gi-side-nav").removeClass("expand").addClass("collapsed");
+            }
+
+            let mainArea = $("[data-side-nav-toggle-area]");
+
+            // sideNav, mainArea handling
+            mainArea.each(function (){
+                if($(this).hasClass("expand")){
+                    $(this).removeClass("expand");
+                    $(this).addClass("collapsed");
+                } else {
+                    $(this).removeClass("collapsed");
+                    $(this).addClass("expand");
+                }
+            });
+
+            // popup area handling
+            $("#gi-search-popup").toggleClass("gi-row-84-important");
+        });
+    }
 </script>
