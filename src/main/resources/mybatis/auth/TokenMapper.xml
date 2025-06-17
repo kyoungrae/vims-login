@@ -11,5 +11,21 @@
             COMMON_USER U ON T.user_id = U.id
         WHERE (T.expired = 0 OR T.revoked = 0) AND T.id = 1
     </select>
-
+    <insert id="INSERT_TOKEN" parameterType="com.system.auth.domain.Token">
+        INSERT INTO TOKEN(
+            id,
+            expired,
+            revoked,
+            user_id,
+            token,
+            token_type
+        )VALUES(
+            #{id},
+            #{expired},
+            #{revoked},
+            #{auth_user.id},
+            #{token},
+            #{token_type}
+        )
+    </insert>
 </mapper>

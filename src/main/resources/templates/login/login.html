@@ -175,9 +175,9 @@
         getEmailCookie();
     }
     function clickEvent(){
-        $("#add_userInfo").click(function(){
-            addUser();
-        });
+        // $("#add_userInfo").click(function(){
+        //     addUser();
+        // });
         $("#checkLogin").click(function(){
             let validation = [];
                 validation.formId = "loginForm";
@@ -190,38 +190,38 @@
         $("#send-number-btn").on("click", function (){
             sendAuthenticationEmail();
         });
-        $("#find-pw-btn").on("click", function (){
-           if(formUtil.checkEmptyValue($("#email").val())){
-               $("#authenticationTarget").val($("#email").val());
-               $("#authenticationTarget").siblings("label").attr("data-focus-label", true);
-           }
-        });
+        // $("#find-pw-btn").on("click", function (){
+        //    if(formUtil.checkEmptyValue($("#email").val())){
+        //        $("#authenticationTarget").val($("#email").val());
+        //        $("#authenticationTarget").siblings("label").attr("data-focus-label", true);
+        //    }
+        // });
 
-        $("#number-check-btn").on("click", function (){
-            let timeRemaining = parseInt($(".authentication-timer").text().replaceAll(":", ""));
-            let disabledTag = ['authenticationNumber', 'number-check-btn'];
-            let checkResult = $("#authentication-check-message");
-
-            if(formUtil.checkEmptyValue(authenticationNumber)){
-                if(timeRemaining === 0){
-                    $(".authentication-check-message").text("인증시간이 만료되었습니다.");
-                }else{
-                    checkResult.removeClass("gi-hidden");
-                    if(authenticationNumber === $("#authenticationNumber").val()){
-                        $(".authentication-check-message").text("인증되었습니다.");
-                        $(".authentication-check-message").addClass("success");
-                        $(".authentication-timer").addClass("hidden");
-                        clearInterval(authenticationTimer);
-                        commonTag.tagDisabled(true, disabledTag);
-                        $("#initialize-btn").removeClass("gi-hidden");
-                    }else{
-                        $(".authentication-check-message").text("잘못된 인증번호입니다.");
-                    }
-                }
-            } else {
-                $(".authentication-check-message").text("인증번호가 전송되지 않았습니다.");
-            }
-        });
+        // $("#number-check-btn").on("click", function (){
+        //     let timeRemaining = parseInt($(".authentication-timer").text().replaceAll(":", ""));
+        //     let disabledTag = ['authenticationNumber', 'number-check-btn'];
+        //     let checkResult = $("#authentication-check-message");
+        //
+        //     if(formUtil.checkEmptyValue(authenticationNumber)){
+        //         if(timeRemaining === 0){
+        //             $(".authentication-check-message").text("인증시간이 만료되었습니다.");
+        //         }else{
+        //             checkResult.removeClass("gi-hidden");
+        //             if(authenticationNumber === $("#authenticationNumber").val()){
+        //                 $(".authentication-check-message").text("인증되었습니다.");
+        //                 $(".authentication-check-message").addClass("success");
+        //                 $(".authentication-timer").addClass("hidden");
+        //                 clearInterval(authenticationTimer);
+        //                 commonTag.tagDisabled(true, disabledTag);
+        //                 $("#initialize-btn").removeClass("gi-hidden");
+        //             }else{
+        //                 $(".authentication-check-message").text("잘못된 인증번호입니다.");
+        //             }
+        //         }
+        //     } else {
+        //         $(".authentication-check-message").text("인증번호가 전송되지 않았습니다.");
+        //     }
+        // });
 
         $("#popup-close-btn").on("click", function (){
             popupInit();
@@ -287,20 +287,20 @@
             }
         });
     }
-    function addUser(){
-        let cont  = {
-            user_id : "giens",
-            email : "giens@giens.co.kr",
-            password : "1234"
-        }
-        let url = "/api/v1/auth/register";
-        axios.post(url , cont).then(response =>{
-            let data = response.data;
-            formUtil.alertPopup("등록완료");
-        }).catch(error =>{
-            formUtil.alertPopup(""+error);
-        })
-    }
+    // function addUser(){
+    //     let cont  = {
+    //         user_id : "go66go66",
+    //         email : "go66go66@giens.co.kr",
+    //         password : "1234"
+    //     }
+    //     let url = "/api/v1/auth/register";
+    //     axios.post(url , cont).then(response =>{
+    //         let data = response.data;
+    //         formUtil.alertPopup("등록완료");
+    //     }).catch(error =>{
+    //         formUtil.alertPopup(""+error);
+    //     })
+    // }
     // 로그인 함수
     function login() {
         let email = document.getElementById("email").value;
@@ -311,9 +311,7 @@
         };
         let url = "/login";
 
-        axios.post(url, cont)
-            .then(response => {
-                console.log("ggg")
+        axios.post(url, cont).then(response => {
                 new session().setItem("userInfo", {
                     email: email,
                 });
@@ -322,7 +320,7 @@
                 setEmailCookie();
                 requestPageRedirect(redirectUrl);
             }).catch(error => {
-            formUtil.alertPopup(Message.Label.Array["FAIL.IDPWD"]);
+                formUtil.alertPopup(Message.Label.Array["FAIL.IDPWD"]);
         })
     }
 

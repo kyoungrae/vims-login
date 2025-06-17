@@ -19,23 +19,23 @@
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Root>
-        <!--        <Logger name="org.mybatis" level="debug" additivity="false">-->
-        <!--            <AppenderRef ref="Console"/>-->
-        <!--            <AppenderRef ref="File"/>-->
-        <!--        </Logger>-->
-        <!-- Logger for JDBC SQL timing -->
-        <!--        <Logger name="com.cambodia.Login" level="info" additivity="false">-->
-        <!--            <AppenderRef ref="Console"/>-->
-        <!--            <AppenderRef ref="File"/>-->
-        <!--        </Logger>-->
-        <!--        <Logger name="org.hibernate.SQL" level="info" additivity="false">-->
-        <!--            <AppenderRef ref="Console"/>-->
-        <!--            <AppenderRef ref="File"/>-->
-        <!--        </Logger>-->
-        <!--        <Logger name="org.hibernate.orm.jdbc.bind" level="trace" additivity="false">-->
-        <!--            <AppenderRef ref="Console"/>-->
-        <!--            <AppenderRef ref="File"/>-->
-        <!--        </Logger>-->
+<!--                <Logger name="org.mybatis" level="debug" additivity="false">-->
+<!--                    <AppenderRef ref="Console"/>-->
+<!--                    <AppenderRef ref="File"/>-->
+<!--                </Logger>-->
+<!--    &lt;!&ndash;         Logger for JDBC SQL timing&ndash;&gt;-->
+<!--                <Logger name="com.cambodia.Login" level="info" additivity="false">-->
+<!--                    <AppenderRef ref="Console"/>-->
+<!--                    <AppenderRef ref="File"/>-->
+<!--                </Logger>-->
+<!--                <Logger name="org.hibernate.SQL" level="info" additivity="false">-->
+<!--                    <AppenderRef ref="Console"/>-->
+<!--                    <AppenderRef ref="File"/>-->
+<!--                </Logger>-->
+<!--                <Logger name="org.hibernate.orm.jdbc.bind" level="trace" additivity="false">-->
+<!--                    <AppenderRef ref="Console"/>-->
+<!--                    <AppenderRef ref="File"/>-->
+<!--                </Logger>-->
         <!-- log4jdbc 옵션 설정 -->
         <Logger name="jdbc.sqlonly" level="DEBUG"> <!-- SQL문과 해당 SQL을 실행시키는데 수행된 시간 정보(milliseconds)를 포함한다. -->
             <RegexFilter regex="(?s).*executeQuery.*" onMatch="DENY" onMismatch="NEUTRAL" useRawMsg="true" />

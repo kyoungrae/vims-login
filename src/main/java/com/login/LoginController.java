@@ -1,4 +1,4 @@
-package com.gilogin.login;
+package com.login;
 
 import com.system.auth.dto.AuthenticationRequest;
 import com.system.auth.dto.AuthenticationResponse;
@@ -72,8 +72,9 @@ public class LoginController {
                 .email((String) param.get("email"))
                 .password((String) param.get("password"))
                 .build();
-
+        System.out.println("gogoigigi::");
         AuthenticationResponse authenticationResponse = authenticationService.authenticate(ar);
+        System.out.println("gogoigigi222222::");
 
         String jwtToken = authenticationResponse.getToken();
         Cookie authrizationCookie = new Cookie("Authorization", jwtToken);

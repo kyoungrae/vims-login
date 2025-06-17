@@ -16,16 +16,11 @@ import java.util.Date;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Table(name ="COMMON_USER")
 public class AuthUser extends Common implements UserDetails{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "common_user_seq")
-    @SequenceGenerator(name = "common_user_seq", sequenceName = "COMMON_USER_SEQ", allocationSize = 1)
     private Integer id;
     private String user_id;
     private String email;
@@ -37,11 +32,12 @@ public class AuthUser extends Common implements UserDetails{
     private String address;
     private String address_detail;
     private String postal_code;
+    private String uuid;
+
     private Date system_create_date;
     private Date system_update_date;
     private String system_create_userid;
     private String system_update_userid;
-    private String uuid;
     /*
     * @Enumerated(EnumType.STRING)
     * spring에게 이것이 enum 이고 enum유형인지 여부에 관계없이 사용하고 싶다고 알리는 것.

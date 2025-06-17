@@ -35,24 +35,25 @@ public class SelectResultSqlAop {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ValidationService validationService = new ValidationService();
 
-    @Around("execution(* com.gilogin..*Service.*(..)) && execution(* com.system.config..*.*(..))" )
+    @Around("execution(* com.login.*Service.*(..)) && execution(* com.system.*..*.*(..))" )
     public Object transFormResultDataAop(ProceedingJoinPoint joinPoint) throws Throwable {
-        //String currentDateTime = LocalDateTime.now().format(formatter);
-        // logger.debug(currentDateTime + " Entering method: " + joinPoint.getSignature().toShortString());
-        // logger.debug(currentDateTime + " Request Parameter: " + Arrays.toString(joinPoint.getArgs()));
-
-        Object result = joinPoint.proceed();
-
-        // 객체를 JSON 문자열로 변환
-        String resultJson = objectMapper.writeValueAsString(result);
-        // JSON 문자열을 JsonNode로 변환
-        JsonNode rootNode = objectMapper.readTree(resultJson);
-        // JsonNode를 사용하여 JSON 데이터 접근 및 가공
-        JsonNode modifiedNode = processJsonNode(rootNode);
-//        System.out.println("Modified JSON: " + modifiedNode);
-
-        // 수정된 JsonNode를 Object로 변환하여 반환
-        return objectMapper.treeToValue(modifiedNode, result.getClass());
+//        //String currentDateTime = LocalDateTime.now().format(formatter);
+//        // logger.debug(currentDateTime + " Entering method: " + joinPoint.getSignature().toShortString());
+//        // logger.debug(currentDateTime + " Request Parameter: " + Arrays.toString(joinPoint.getArgs()));
+//
+//        Object result = joinPoint.proceed();
+//
+//        // 객체를 JSON 문자열로 변환
+//        String resultJson = objectMapper.writeValueAsString(result);
+//        // JSON 문자열을 JsonNode로 변환
+//        JsonNode rootNode = objectMapper.readTree(resultJson);
+//        // JsonNode를 사용하여 JSON 데이터 접근 및 가공
+//        JsonNode modifiedNode = processJsonNode(rootNode);
+////        System.out.println("Modified JSON: " + modifiedNode);
+//
+//        // 수정된 JsonNode를 Object로 변환하여 반환
+//        return objectMapper.treeToValue(modifiedNode, result.getClass());
+        return null;
     }
 
     private JsonNode processJsonNode(JsonNode node) throws Exception {

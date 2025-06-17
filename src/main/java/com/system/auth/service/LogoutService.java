@@ -29,7 +29,6 @@ public class LogoutService implements LogoutHandler {
         jwt = optionalCookie.get().getValue();
         var storedToken = tokenService.findByToken(jwt)
                 .orElse(null);
-        System.out.println("storedTokenstoredToken::"+storedToken);
         if (storedToken != null) {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);

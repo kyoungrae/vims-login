@@ -43,10 +43,10 @@ public class QueryTypeInterceptor implements Interceptor {
         UserInfo userInfo = new UserInfo();
         String userEmail = userInfo.getUserEmail();
         if (sql.startsWith("select")) {
-            Object parameterObject = boundSql.getParameterObject();
-            if (parameterObject != null) {
-                applyTransformations(parameterObject);
-            }
+//            Object parameterObject = boundSql.getParameterObject();
+//            if (parameterObject != null) {
+//                applyTransformations(parameterObject);
+//            }
         } else if (sql.startsWith("insert")) {
             Object parameterObject = boundSql.getParameterObject();
             if (parameterObject != null) {
