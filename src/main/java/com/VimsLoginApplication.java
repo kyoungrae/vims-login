@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableAsync
-public class GiLoginApplication {
+public class VimsLoginApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GiLoginApplication.class, args);
+		SpringApplication.run(VimsLoginApplication.class, args);
 	}
 
 }

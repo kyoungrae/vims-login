@@ -55,7 +55,7 @@ public class LoginController {
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() != null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
-                    return "layout/home4";
+                    return "layout/home";
                 }else{
                     return "redirect:/api/v1/auth/logout";
                 }

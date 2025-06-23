@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gilogin</groupId>
-	<artifactId>Gi-Login</artifactId>
+	<artifactId>vims-login</artifactId>
 	<version>ROOT</version>
 	<name>security</name>
 	<description>project for Spring Boot3.x + Spring Security6 + JWT</description>
