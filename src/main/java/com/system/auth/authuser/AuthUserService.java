@@ -16,7 +16,6 @@ public class AuthUserService{
     private final AuthUserMapper authUserMapper;
     private final Map<String, AuthUser> userCache = new ConcurrentHashMap<>();
     public Optional<AuthUser> findByUserName(String req){
-        System.out.println("########################################################");
         if (userCache.containsKey(req)) return Optional.of(userCache.get(req));
         var user = AuthUser.builder().email(req).build();
         var result = authUserMapper.SELECT_USER_INFO(user);

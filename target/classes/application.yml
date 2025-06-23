@@ -54,7 +54,7 @@ spring:
         livereload:
             enabled: true
         restart:
-            enabled: false
+            enabled: true
     messages:
         basename : exceptionMessage
         encoding : UTF-8

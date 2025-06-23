@@ -808,7 +808,7 @@
     outline: none;
     font-size: 1rem;
     appearance: none;
-    background: url("/system/common/img/dropdown.svg") no-repeat right 10px center;
+    background: url("/static/common/img/dropdown.svg") no-repeat right 10px center;
     background-size: 15px;
     cursor: pointer;
 }
@@ -3244,7 +3244,7 @@ input[gi-datepicker] {
     position: relative;
     border-radius: 4px;
     box-sizing: border-box;
-    background: url("/system/common/img/dropdown.svg") no-repeat right 10px center;
+    background: url("/static/common/img/dropdown.svg") no-repeat right 10px center;
     background-size: 15px;
 }
 
@@ -3291,7 +3291,7 @@ input[gi-datepicker] {
 
 /* formatCheck 함수에서 사용 */
 .check_on {
-    background-image: url("/system/common/img/check_on.svg");
+    background-image: url("/static/common/img/check_on.svg");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 20px 20px;
@@ -3300,7 +3300,7 @@ input[gi-datepicker] {
 }
 
 .check_off {
-    background-image: url("/system/common/img/check_off.svg");
+    background-image: url("/static/common/img/check_off.svg");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 20px 20px;
@@ -3310,14 +3310,14 @@ input[gi-datepicker] {
 
 /* grid 정렬용 */
 .gi-grid-sort-asc {
-    background-image: url("/system/common/img/grid_sort_asc.svg");
+    background-image: url("/static/common/img/grid_sort_asc.svg");
     background-repeat: no-repeat;
     background-position: right 5% center;
     background-size: 15px 15px;
 }
 
 .gi-grid-sort-desc {
-    background-image: url("/system/common/img/grid_sort_desc.svg");
+    background-image: url("/static/common/img/grid_sort_desc.svg");
     background-repeat: no-repeat;
     background-position: right 5% center;
     background-size: 15px 15px;
@@ -3325,7 +3325,7 @@ input[gi-datepicker] {
 
 /* grid sort hover. detail_btn(상세버튼)외에 hover로 이미지추가 */
 .gi-grid-list-header li:not(.gi-grid-sort-asc):not(.gi-grid-sort-desc):not([data-column$="detail_btn"]):hover {
-    background-image: url("/system/common/img/grid_sort_default.svg");
+    background-image: url("/static/common/img/grid_sort_default.svg");
     background-repeat: no-repeat;
     background-position: right 5% center;
     background-size: 15px 15px;
@@ -3343,7 +3343,7 @@ input[gi-datepicker] {
     right: 10%;
     width: 20px;
     height: 20px;
-    background-image: url("/system/common/img/add.svg");
+    background-image: url("/static/common/img/add.svg");
     background-repeat: no-repeat;
     background-size: 20px 20px;
     opacity: 0;
@@ -3366,7 +3366,7 @@ input[gi-datepicker] {
     right: 10%;
     width: 20px;
     height: 20px;
-    background-image: url("/system/common/img/remove.svg");
+    background-image: url("/static/common/img/remove.svg");
     background-repeat: no-repeat;
     background-size: 20px 20px;
     opacity: 0;
@@ -3501,7 +3501,7 @@ input[gi-datepicker] {
     position:absolute;
     width: 20px;
     height: 20px;
-    background-image: url("/system/common/img/icon_management.svg");
+    background-image: url("../../img/icon_management.svg");
     background-repeat : no-repeat;
     cursor:pointer;
     top: 13px;

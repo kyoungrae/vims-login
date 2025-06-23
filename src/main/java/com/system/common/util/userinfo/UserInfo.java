@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserInfo {
     JwtService jwtService;
     public String getUserEmail() throws Exception{
-        System.out.println("getUserEmailgetUserEmailgetUserEmailgetUserEmailgetUserEmailgetUserEmailgetUserEmailgetUserEmailgetUserEmailgetUserEmail");
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null && authentication.isAuthenticated()) {
