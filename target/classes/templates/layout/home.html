@@ -124,42 +124,21 @@
     layoutInit();
     function layoutInit() {
         layoutClickEvent();
+        sideNaveOpenCloseEvent();
     }
     function layoutClickEvent(){
-        $(document).on("click", function (event) {
-            if (!$(".side-nav-profile-trigger").is(event.target) && !$(".side-nav-profile-trigger").has(event.target).length && $(".side-nav-profile-trigger").hasClass("active")) {
-                $(".side-nav-profile-trigger").trigger("click");
-            }
-        });
-
+        /**
+         * NOTE: 프로필 사이드네비 OPEN
+         * */
         $(".side-nav-profile-trigger").on("click", function (e) {
             $(".dropdown-menu").stop(true, true).slideToggle(150).css("display", "flex");
             $(".side-nav-profile-dropdown").toggleClass("active");
             $(".side-nav-profile-trigger").toggleClass("active");
         });
-        $(".gi-home-setting").off("click.giHomeSettingClickEventHandler").on("click.giHomeSettingClickEventHandler",function(){
-            giHomeSettingClickEventHandler();
-        })
-        function giHomeSettingClickEventHandler(){
-            let flag = $(".gi-home-setting-article").hasClass("gi-hidden");
-            if(flag){
-                $(".gi-home-setting-article").removeClass("gi-hidden");
-            }else{
-                $(".gi-home-setting-article").addClass("gi-hidden");
-            }
 
-        }
-
-        $("#myinfo-btn").off().on("click",function(e){
-            e.preventDefault();
-            let url = "/common/myinfo";
-            let cont = {
-                url : url
-            }
-            sessionStorage.setItem("recentPage", JSON.stringify(cont));
-            loadContent(url);
-        });
-
+        /**
+         * NOTE: 로그아웃 버튼 이벤트
+         */
         $("#logout-btn").off().on("click",function(){
             $("body").removeClass('animate-content-end');
             setTimeout(function(){
@@ -167,20 +146,26 @@
                 window.location.href = "/api/v1/auth/logout";
             });
         });
+    }
 
-        $("#gi-logo, #gi-logo2").off().on("click",function(e){
-            e.preventDefault();
-            let url = "/index/index";
-            let cont = {
-                url : url
+    /**
+     * NOTE: 메뉴바 OPEN,CLOSE EVENT
+     */
+    function sideNaveOpenCloseEvent(){
+        let giSideNavToggleButtonArea =$(".gi-side-nav-toggle-button-area");
+        /**
+         * NOTE: BTN HOVER EVENT
+         */
+        giSideNavToggleButtonArea.hover(
+            function () {
+                $(this).find("i").addClass("fa-beat-fade"); // hover 시 fa-fade 클래스 추가
+            },
+            function () {
+                $(this).find("i").removeClass("fa-beat-fade"); // hover 해제 시 fa-fade 클래스 제거
             }
-            sessionStorage.setItem("recentPage", JSON.stringify(cont));
-            loadContent(url);
+        );
 
-            $(".gi-search-menu-result-area").removeClass("visible").html("");
-        });
-
-        $(".gi-side-nav-toggle-button-area").on("click", function (){
+        giSideNavToggleButtonArea.on("click", function (){
             let $toggleButton = $(this);
 
             if($toggleButton.hasClass("collapsed")){
