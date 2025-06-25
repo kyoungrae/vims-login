@@ -1808,6 +1808,47 @@ FormUtility.prototype.loadContent = function(reqUrl,DATA){
         });
 }
 /**
+ * @text : API Gateway를 통한 loadContent
+ * @param prefixUrl
+ * @param reqUrl
+ * @param DATA
+ */
+FormUtility.prototype.apiLoadContent = function(prefixUrl,reqUrl,DATA){
+    let cont = JSON.stringify(DATA);
+    let url = prefixUrl+`/page/load`+`?url=${encodeURIComponent(reqUrl+".html")}`;
+    axios.get(url).then(response => {
+        this.resetFormUtilityValue();
+        let pageSources = response.data;
+
+        $("#gi-road-content").empty().html(pageSources);
+
+        if(!formUtil.checkEmptyValue(sessionStorage.getItem("DATA"))){
+            sessionStorage.removeItem("DATA");
+            sessionStorage.setItem("DATA",cont);
+        }else{
+            sessionStorage.removeItem("DATA");
+            sessionStorage.setItem("DATA",cont);
+        }
+
+        if(typeof changedHomeType !== "undefined" && formUtil.checkEmptyValue(changedHomeType)){
+            $("#gi-road-content article:first").each(function() {
+                this.style.setProperty("width", "100%", "important");
+                if(!$(this).hasClass("gi-col-99") && !$(this).hasClass("gi-col-100")){
+                    this.style.setProperty("height", "98%", "important");
+                }
+            });
+
+            $("#gi-road-content article#gi-search-popup").addClass("gi-row-84-important");
+        }
+
+        formUtil.activatedMenu(reqUrl);
+
+    })
+        .catch(error => {
+            this.alertPopup('Failed to load content:', error);
+        });
+}
+/**
  * @title : loadToHtml .html 코드 삽입 함수
  * @cont :[url:url,data:data]
  * @text : html코드를 사입 하기 위한 함수 함수앞에 awaite 추가  ex) awaite formUtil.loadToHtml(cont)

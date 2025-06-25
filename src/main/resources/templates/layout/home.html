@@ -52,6 +52,11 @@
                 <div class="gi-row-100 gi-side-nav-logo-area">
                     <a href="" id="gi-logo2" class="gi-side-nav-logo"></a>
                 </div>
+                <div class="gi-row-90">
+                    <ul class="gi-ul gi-flex gi-flex-justify-content-space-evenly" id="menu">
+                        <!--메뉴삽입영역-->
+                    </ul>
+                </div>
                 <div class="gi-home-setting"></div>
                 <!-- 여기에 search, 유저 영역 추가 -->
                 <article class="gi-col-auto side-nav-profile-container collapsed">
@@ -99,7 +104,6 @@
                     <i class="fa-solid fa-beat-fade fa-angles-down"></i>
                 </div>
             </nav>
-            <section id="gi-content-title-area" class="gi-main-content-title gi-hidden"></section>
             <section id="gi-road-content" class="gi-main-content gi-col-100 gi-row-100 gi-flex gi-side-nav-toggle expand" data-animation="false" data-side-nav-toggle-area></section>
         </main>
     </body>
@@ -121,10 +125,13 @@
     let formUtil = new FormUtility();
     var commonTag = new CommonTag();
     var changedHomeType = true;
+    var common_session = new session();
+    var menuInfoList = "";
     layoutInit();
     function layoutInit() {
         layoutClickEvent();
         sideNaveOpenCloseEvent();
+        findByMenuList();
     }
     function layoutClickEvent(){
         /**
@@ -197,4 +204,291 @@
             $("#gi-search-popup").toggleClass("gi-row-84-important");
         });
     }
+
+    /**
+     * NOTE : 메뉴데이터 조회
+     */
+    function findByMenuList(){
+        let url = "/login/common/menu/commonMenu/find";
+        let param = {
+            use_yn:1
+        };
+        axios.post(url,param).then(response => {
+            let status = response.status;
+            if(status === 200){
+                let data = response.data;
+                let sideNavMenuList1Depth = [];
+                let sideNavMenuList2Depth = [];
+                let sideNavMenuList3Depth = [];
+
+                let menuTree = [];
+                let menuMap = {};
+
+                data.sort((a, b) => parseInt(a.menu_level) - parseInt(b.menu_level));
+
+                data.map((item) => {
+                    if(!formUtil.checkEmptyValue(item.menu_level)) {
+                        formUtil.alertPopup("item.menu_level is undefined");
+                        return false;
+                    }
+
+                    switch (item.menu_level){
+                        case '0' :
+                            sideNavMenuList1Depth.push({
+                                menu_code : item.menu_code,
+                                top_menu_code : item.top_menu_code,
+                                menu_name : item.menu_name_kr,
+                                menu_level : item.menu_level,
+                                url : item.URL
+                            });
+                            break;
+
+                        case '1' :
+                            sideNavMenuList2Depth.push({
+                                menu_code : item.menu_code,
+                                top_menu_code : item.top_menu_code,
+                                menu_name : item.menu_name_kr,
+                                menu_level : item.menu_level,
+                                url : item.url
+                            });
+                            break;
+
+                        case '2' :
+                            sideNavMenuList3Depth.push({
+                                menu_code : item.menu_code,
+                                top_menu_code : item.top_menu_code,
+                                menu_name : item.menu_name_kr,
+                                menu_level : item.menu_level,
+                                url : item.url,
+                                prgm_url : item.prgm_url
+                            });
+                            break;
+                    }
+
+                    let menuItem = {
+                        menu_code: item.menu_code,
+                        top_menu_code: item.top_menu_code,
+                        menu_name: item.menu_name_kr,
+                        menu_level: item.menu_level,
+                        url: item.url,
+                        children: [] // 하위 메뉴를 담을 배열
+                    };
+
+                    menuMap[item.menu_code] = menuItem; // 검색을 빠르게 하기 위한 맵
+
+                    // 최상위 메뉴 (level 0)
+                    if (item.menu_level === "0") {
+                        menuTree.push(menuItem);
+                    } else {
+                        // 부모 메뉴 찾기
+                        let parent = menuMap[item.top_menu_code];
+                        if (parent) {
+                            parent.children.push(menuItem);
+                        }
+                    }
+                });
+                menuInfoList = menuTree
+                /* side nav */
+                let sideNavMenuHtml = createSideNavMenuList(sideNavMenuList1Depth, sideNavMenuList2Depth, sideNavMenuList3Depth);
+                $("#side_nav_menu").html(sideNavMenuHtml);
+                sideNavTitleClick();
+                existsNavSelected();
+            }else{
+                formUtil.alertPopup("response status is :"+status);
+            }
+        }).catch(error =>{
+            formUtil.alertPopup(error);
+        })
+    }
+
+    function createSideNavMenuList(sideNavMenuList1Depth, sideNavMenuList2Depth, sideNavMenuList3Depth){
+        let sideNavMenuHtml = "";
+
+        // todo 메뉴 아이콘은 추후 게시판 생성 템플릿에서 게시판 생성 시 선택 된 아이콘으로 태그에 자동으로 입력처리 예상(2025-02-12)
+        const menuIcons = {
+            SPECIFICATION_MANAGEMENT: "fa-solid fa-file-invoice",                        // 제원관리
+            TECHNOLOGY_REVIEW: "fa-solid fa-list-check",                                 // 기술검토
+            SAFETY_INSPECTION: "fa-solid fa-shield-halved",                              // 안전검사
+            MAKE_MANAGEMENT: "fa-solid fa-file-lines",                                   // 제작관리
+            TEMPORARY_DRIVING: "fa-solid fa-car-on",                                     // 임시운행
+            REGISTER_MANAGEMENT: "fa-solid fa-file-signature",                           // 등록관리
+            INSPECTION_MANAGEMENT: "fa-solid fa-magnifying-glass",                       // 검사관리
+            MANAGEMENT_SERVICE: "fa-solid fa-clipboard-list",                            // 업무관리
+            COMPREHENSIVE_FUNCTIONAL_DIAGNOSIS_MANAGEMENT: "fa-solid fa-stethoscope",    // 기능종합진단
+            SETTINGS: "fa-solid fa-gear"                                                 // 설정/관리
+        };
+
+        sideNavMenuList1Depth.map(menu1 => {
+            sideNavMenuHtml +=  "<li class='gi-side-nav-menu-item gi-margin-bottom-26px'>"
+                +      "<a href='#' class='gi-side-nav-title collapsed' data-menu-level='" + menu1.menu_level + "' data-menu-code='" + menu1.menu_code + "'>"
+                +      "<i class='fa-inverse gi-side-nav-title-icon " + menuIcons[menu1.menu_code] + "'></i>"
+                +          "<span>" + menu1.menu_name + "</span>"
+                +          "<span class='fa-solid fa-angle-right'></span>"
+                +      "</a>";
+
+            if(formUtil.checkEmptyValue(sideNavMenuList2Depth)){
+                sideNavMenuList2Depth.map(menu2 => {
+                    let list2Depth = "";
+                    if(menu1.menu_code === menu2.top_menu_code){
+                        list2Depth +=   "<ul class='gi-side-nav-menu-level'>"
+                            +       "<li class='gi-side-nav-menu-item child'>"
+                            +           "<a href='#' class='gi-margin-left-5 gi-side-nav-title collapsed' data-menu-level='" + menu2.menu_level + "' data-menu-code='" + menu2.menu_code + "'>"
+                            +               "<span>" + menu2.menu_name + "</span>"
+                            +               "<span class='fa-solid fa-angle-right'></span>"
+                            +           "</a>";
+
+                        if(formUtil.checkEmptyValue(sideNavMenuList3Depth)){
+                            let list3Depth = "<ul class='gi-side-nav-menu-level'>";
+                            sideNavMenuList3Depth.map(menu3 => {
+                                if(menu2.menu_code === menu3.top_menu_code){
+                                    list3Depth +=   "<li class='gi-margin-left-5 gi-side-nav-menu-item child'>"
+                                        +       "<a href='#' class='sideNavPageLoad gi-side-nav-title' data-prgm-url='"+menu3.prgm_url+"' data-page-name='" + menu3.url + "' data-menu-level='" + menu3.menu_level + "' data-menu-code='" + menu3.menu_code + "'>"
+                                        +           "<span>" + menu3.menu_name + "</span>"
+                                        +       "</a>"
+                                        +   "</li>";
+                                }
+                            });
+                            list3Depth  +=  "</ul>";
+                            list2Depth +=   list3Depth
+                                +   "</li>"
+                                +   "</ul>";
+                        }
+                        sideNavMenuHtml += list2Depth;
+                    }
+                });
+            }
+            sideNavMenuHtml +=   "</li>";
+        });
+
+        return sideNavMenuHtml;
+    }
+
+    function sideNavTitleClick(){
+        $('.gi-side-nav-title').on('click', function(e) {
+            e.preventDefault();
+
+            let $this = $(this);
+            let $currentSubMenu = $this.nextAll(".gi-side-nav-menu-level");
+            let menuLevel = $this.data("menu-level");
+            let recentPage = common_session.getItem("recentPage").url || "";
+
+            // 비활성화 된 메뉴 클릭 시
+            if (!$this.hasClass("active")) {
+                // 그 중 최하위 메뉴 버튼을 클릭했을 때
+                if($this.hasClass("sideNavPageLoad")){
+                    // 세션에 저장된 url 없을 수가 없다 이제는!
+                    if($this.data("page-name") === recentPage.toString){
+                        // 세션에 저장된 url과 버튼 url이 동일하면 그냥 화면 다시 로드 처리
+                    }else{
+                        // 현재 url 과 동일하지 않을 경우(다른 메뉴 버튼인 경우)
+                        // 현재 선택한 버튼이 포함된 메뉴 그룹만 제외하고 나머지는 모두 비활성화 처리
+                        let liButtonList = $("#side_nav_menu > li").not($this.parents("li").last());
+
+                        liButtonList.each(function (){
+                            let $button = $(this);
+                            $button.find("a:not(.sideNavPageLoad)").removeClass("active").addClass("collapsed");
+                            $button.find("a.sideNavPageLoad").removeClass("active page");
+                            $button.find("ul").stop(true, true).slideUp(150);
+                        });
+
+                        // 현재 클릭한 버튼을 포함해서 해당 버튼과 level1 디렉토리를 공유하는 모든 버튼들은 비활성화 처리
+                        $this.parents("li").last().find(".sideNavPageLoad").removeClass("active page");
+                        let currentLevel2 = $this.closest("ul").closest("li").closest("ul");
+
+                        // 그 다음 현재 클릭한 버튼의 level2와 다른 level2 들은 모두 비활성화 처리
+                        let anotherLevel2 = $this.parents("li").last().children("ul").not(currentLevel2);
+
+                        anotherLevel2.each(function (){
+                            let menuLevel2 = $(this).children("li").children("a");
+                            if(menuLevel2.hasClass("active")){
+                                menuLevel2.removeClass("active").addClass("collapsed");
+                                menuLevel2.nextAll(".gi-side-nav-menu-level").stop(true, true).slideUp(150);
+                            }
+                        });
+
+                        // 마지막으로 클릭한 버튼 및 해당 페이지 활성화
+                        $this.addClass("active page");
+                        let url = $this.data("page-name");
+                        let prgmUrl = $this.data("prgm-url");
+                        let urlInfo = { url : url }
+                        common_session.setItem("recentPage", urlInfo);
+                        common_session.setItem("activatedMenu", urlInfo);
+                        formUtil.apiLoadContent(prgmUrl,url, $this.text());
+                    }
+                } else {
+                    // 메뉴 노출처리 시에는 첫 번째 메뉴와 두 번째 메뉴는 기본 처리 외 부가적인 처리가 필요 없다.
+                    $currentSubMenu.stop(true, true).slideDown(150);
+                    $this.removeClass("collapsed").addClass("active");
+                }
+            } else {
+                // 활성화 된 로드 버튼 클릭 시
+                if($this.hasClass("sideNavPageLoad")){
+                    let url = $this.data("page-name");
+                    let prgmUrl = $this.data("prgm-url");
+                    let urlInfo = { url : url }
+                    common_session.setItem("recentPage", urlInfo);
+                    common_session.setItem("activatedMenu", urlInfo);
+                    formUtil.apiLoadContent(prgmUrl,url, $this.text());
+                } else {
+                    // 활성화 된 최상위 메뉴 클릭 시
+                    if(menuLevel.toString() === "0"){
+                        let allSubMenu = $this.closest('li').find('ul');
+
+                        // 첫번째 메뉴 버튼이면서 하위 로드 버튼이 활성화 되어있을 때
+                        if($this.parent("li").find("a.active.page").length > 0){
+                            // 하위 메뉴 버튼과 영역들은 숨김 처리하지만 로드 버튼 비활성화 처리는 하지 않는다.
+                            allSubMenu.each(function(i, subMenu) {
+                                let $menu = $(subMenu);
+                                $menu.stop(true, true).slideUp(150);
+                                $menu.find("a:not(.sideNavPageLoad)").removeClass("active").addClass("collapsed");
+                            });
+                            $this.removeClass("active").addClass("collapsed");
+                        } else {
+                            // 첫번째 메뉴 버튼이면서 하위 로드 버튼이 활성화 되어있지 않을 때
+                            // 하위 메뉴 버튼과 영역들을 숨김 처리하면서 비활성화 처리도 한다.
+                            allSubMenu.each(function(i, subMenu) {
+                                let $menu = $(subMenu);
+                                $menu.stop(true, true).slideUp(150);
+                                $menu.find(".gi-side-nav-title").removeClass("active");
+                            });
+                            $this.removeClass("active").addClass("collapsed");
+                        }
+                    } else {
+                        // 활성화 된 두번째 메뉴 버튼 일때는 하위 ul 숨김처리하고 비활성화(remove active) 처리
+                        // 만약 하위에 활성화 된 버튼이 있다면 해당 버튼은 비활성화 하지않는다.
+                        if($this.parent("li").find("a.active.page").length > 0){
+                            $this.removeClass("active").addClass("collapsed");
+                            $currentSubMenu.stop(true, true).slideUp(150);
+                        }else{
+                            $this.removeClass("active").addClass("collapsed");
+                            $currentSubMenu.stop(true, true).slideUp(150);
+                        }
+                    }
+                }
+            }
+        });
+    }
+    function existsNavSelected() {
+        let recentPage = common_session.getItem("recentPage").url;
+
+        if(formUtil.checkEmptyValue(recentPage) && recentPage !== "/index/index" && recentPage !== "/common/myinfo"){
+            let $activatedMenu = $("[data-page-name='" + recentPage.toString() + "']");
+            let menuLevel1 = $activatedMenu.parents("li").last().children("a");
+            let menuLevel2 = $activatedMenu.closest("ul").closest("li").children("a");
+
+            menuLevel1.trigger("click");
+            menuLevel2.trigger("click");
+            $activatedMenu.addClass("active page");
+        }else{
+            let allLiButtonList = $("#side_nav_menu > li");
+
+            allLiButtonList.each(function (){
+                let $button = $(this);
+                $button.find("a:not(.sideNavPageLoad)").removeClass("active").addClass("collapsed");
+                $button.find("a.sideNavPageLoad").removeClass("active page");
+                $button.find("ul").stop(true, true).slideUp(150);
+            });
+        }
+    }
+
 </script>
