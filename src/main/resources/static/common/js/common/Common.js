@@ -39,7 +39,7 @@ class PageInit{
         new GiDatePicker();
         new GiResidentNumber();
         new GiCorporateNumber();
-        // new GiDatePicker();
+        new GiDatePicker();
         new GiAddress();
         new GiSelectBox();
         new GiSelectBoxYear();

@@ -773,7 +773,7 @@ class GiSelectBox {
             $(selectbox).after(copySelectBox);
             copySelectBox.attr("readonly","readonly");
 
-            // let url = '/common/common/commonCode/findCommonCode';
+            let url = '/cms/common/commonCode/findCommonCode';
             let param = {
                 group_id: fieldValue,
                 use_yn: '1'
