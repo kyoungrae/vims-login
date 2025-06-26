@@ -3916,7 +3916,6 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                 '<span class="gi-padding-left-right-10px">' + item.HEADER + '</span>' +
             '</li>';
     })
-
     let totalPageCount = Math.ceil(paging);
     let maxPagesToShow = 10;
 
@@ -4396,11 +4395,22 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
             // rowClick 이벤트를 설정하는 함수
             function setRowClickEvent(fn) {
                 $(".gi-grid-list").addClass("gi-cursor-pointer");
-                $(".gi-grid-list").mouseenter(function() {
+                $(".gi-grid-list")
+                    .mouseenter(function() {
                     $(this).addClass("gi-grid-list-hover");
-                }).mouseleave(function() {
+                })
+                    .mouseleave(function() {
                     $(this).removeClass("gi-grid-list-hover");
-                });
+                })
+                    .click(function(){
+                        if($(this).hasClass("gi-grid-list-select")){
+                            $(this).removeClass("gi-grid-list-select");
+                        }else{
+                            $(".gi-grid-list").removeClass("gi-grid-list-select");
+                            $(this).addClass("gi-grid-list-select");
+                        }
+                    })
+                ;
 
                 // 클릭 시 이벤트 설정
                 $("ul[data-row-num]").off("click.rowClickEventHandler").on("click.rowClickEventHandler", function(e) {

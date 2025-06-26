@@ -2503,7 +2503,9 @@ html{
     z-index: 1;
 }
 .gi-grid-list{
-    margin: 10px 0 ;
+    /*margin: 10px 0 ;*/
+    padding: 10px 0 ;
+    box-sizing: border-box;
 }
 #gi-grid-list-body{
     height: calc(100% - var(--grid-row-selector-height));
@@ -2553,11 +2555,15 @@ html{
 }
 .gi-grid-list-hover{
     background-color: #f3f3f3;
-    transition : all 0.4s cubic-bezier(1.680, -0.550, 0.000, 0.1);
+    transition : all 0.2s cubic-bezier(1,1,1,1);
+}
+.gi-grid-list-select{
+    background-color: rgb(186 192 255 / 33%);
+    transition :all 0.2s cubic-bezier(1,1,1,1);
 }
 .gi-grid-list-multi_select{
     background-color: #f3f3f3;
-    transition : all 0.4s cubic-bezier(1.680, -0.550, 0.000, 0.1);
+    transition : all 0.2s cubic-bezier(1,1,1,1);
 }
 .gi-grid-hierarchy-depth0{
     font-weight:bolder;
