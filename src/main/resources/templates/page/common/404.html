@@ -1,0 +1,91 @@
+    <style>
+        .gi-main-content {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            max-width: 900px;
+            padding: 2rem;
+            border-radius: 10px;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            color: #888888;
+            font-weight: bold;
+            margin-right: 2rem;
+        }
+
+        .content {
+            text-align: left;
+        }
+
+        .error-message {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .error-description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-home a {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #002244;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-home a:hover {
+            background-color: #004890;
+        }
+    </style>
+<div class="container">
+    <!-- 404 텍스트 -->
+    <div class="error-code">404</div>
+
+    <!-- 오른쪽 내용 -->
+    <div class="content">
+        <div class="error-message">Page Not Found</div>
+        <div class="error-description">
+            찾으시는 페이지가 존재하지 않거나 이동되었습니다.<br/>
+            메인 페이지로 돌아가 주시기 바랍니다.
+        </div>
+        <div class="back-home">
+            <a href="/index/index"
+               onclick="handleLinkClick(event, this)">홈으로 이동</a>
+        </div>
+    </div>
+</div>
+<script>
+    function handleLinkClick(e, element) {
+        e.preventDefault();
+
+        const url = element.getAttribute("href");
+        const cont = { url: url };
+        sessionStorage.setItem("recentPage", JSON.stringify(cont));
+
+        if (document.querySelector('.gi-main-body')) {
+            loadContent(url);
+        } else {
+            window.location.href = "/";
+        }
+    }
+</script>
+

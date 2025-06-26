@@ -1,0 +1,49 @@
+<article class="gi-article-content gi-col-90 gi-row-90">
+    <section class="gi-col-100 gi-row-100">
+        <header class="gi-flex gi-flex-center gi-col-10">
+            <h1 class="gi-page-title">No Data</h1>
+        </header>
+        <article class="gi-article-content gi-col-90 gi-row-100">
+            <div style="position:absolute;">
+                <div id="input-department-container-canvas" class="gi-input-container gi-flex gi-flex-center" data-focus-line="false" style="display:none; position: absolute !important;">
+                    <label class="gi-input-label" data-focus-label="false" data-required="true" for="department"></label>
+                    <input class="gi-input gi-margin-1px" data-required="true" type="text" id="department" name="dept" autocomplete="off"/>
+                </div>
+                <div id="input-position-container-canvas" class="gi-input-container gi-flex gi-flex-center" data-focus-line="false" style="display:none; position: absolute !important;">
+                    <label class="gi-input-label" data-focus-label="false" data-required="true" for="position"></label>
+                    <input class="gi-input gi-margin-1px" data-required="true" type="text" id="position" name="position" autocomplete="off"/>
+                </div>
+                <div id="input-description-container-canvas" class="gi-input-container gi-flex gi-flex-center" data-focus-line="false" style="display:none; position: absolute !important;">
+                    <label class="gi-input-label" data-focus-label="false" data-required="true" for="description"></label>
+                    <input class="gi-input gi-margin-1px" data-required="true" type="text" id="description" name="position" autocomplete="off"/>
+                </div>
+                <div id="select-vacation_type-container-canvas" class="gi-input-container gi-flex gi-flex-center" data-focus-line="false" style="display:none; position: absolute !important;">
+                    <select id-="vacation_type">
+                    </select>
+                </div>
+            </div>
+            <canvas class="gi-col-100 gi-row-100" id="vacationForm-canvas"></canvas>
+        </article>
+    </section>
+
+</article>
+<script type="text/javascript">
+    init();
+
+    function init(){
+        //페이지 초기설정
+        new PageInit();
+
+        //초기화
+        resetEvent();
+
+        //데이터 조회
+        findByMenuList();
+
+        setTimeout(function(){
+            //클릭 이벤트
+            clickEvent();
+        },100);
+    }
+</script>
+

@@ -1,0 +1,540 @@
+<style>
+    .remove {
+        color:#888888;
+        cursor: pointer;
+    }
+
+    .remove:hover {
+        color: tomato;
+    }
+
+    #popup-container {
+        display: flex;
+        gap: 10px;
+        position: relative;
+    }
+
+    #popup-container .item {
+        width: 160px;
+        height: 80px;
+        align-items: center;
+        cursor: pointer;
+        border: 2px solid transparent;
+        position: relative;
+        text-align: center;
+    }
+
+    #popup-container .selected {
+        border: 2px solid tomato;
+    }
+
+    #popup-container .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+
+        border: none;
+        background-color: #d5d5d5;
+        color: #000000;
+    }
+
+    #popup-container .arrow:hover {
+        background-color: #888888;
+        color: #FFFFFF;
+    }
+
+    #popup-container .left {
+        left: -40px;
+    }
+
+    #popup-container .right {
+        right: -40px;
+    }
+
+    .gi-tooltip-info-text {
+        width: max-content;
+        white-space: nowrap;
+        left: -250%;
+        padding: 8px 11px;
+    }
+
+    .gi-tooltip-info-text::after {
+        left: 72%;
+    }
+
+    #size-warning {
+        white-space: pre-wrap;
+    }
+</style>
+
+<article class="gi-article-content gi-col-95 gi-row-90">
+    <section class="gi-col-100 gi-row-100">
+        <header class="gi-flex gi-flex-center gi-col-10">
+            <h1 class="gi-page-title">배너 이미지 관리</h1>
+        </header>
+        <article class="gi-col-90 gi-row-100 gi-flex gi-flex-direction-column">
+            <!--      그리드 영역      -->
+            <div class="gi-flex gi-col-35px">
+                <span class="gi-font-size-14px">
+                    배너 개수: <span id="banner-total-span"></span>&nbsp;
+                    사용중: <span id="banner-active-span"></span>&nbsp;
+                    미사용: <span id="banner-inactive-span"></span>
+                </span>
+                <div class="gi-tooltip-wrapper" style="margin-left: auto;">
+                    <div class="gi-tooltip-info-icon "/>
+                    <div class="gi-tooltip-info-text gi-hidden ">
+                        <span id="size-warning" class="gi-font-size-14px">100:28 비율의 이미지를 업로드해 주세요.<br/>비율이 안 맞는 경우 이미지가 잘릴 수 있습니다.</span>
+                    </div>
+                </div>
+                <button id="uncutImgFileUpload" class="gi-btn-register" style="margin-right: 0;">추가</button>
+                <form id="siteBannerImage" class="gi-hidden">
+                    <input data-field="uuid" id="uuid" name="uuid" class="gi-input"/>
+                </form>
+            </div>
+
+            <div class="gi-col-100">
+                <div id="banner-grid-div" class="gi-grid gi-margin-top-20px" style="grid-template-columns: repeat(4, 1fr); column-gap: 50px; row-gap: 30px; max-height: 100%; overflow-y: auto;">
+                </div>
+            </div>
+
+            <div class="gi-flex gi-flex-align-items-center gi-col-35px gi-margin-top-20px">
+                자동넘김설정&nbsp;<div class="gi-col-20px"><input type="checkbox" class="gi-switch gi-margin-left-5px" name="banner_auto_rotate_yn" data-field="banner_auto_rotate_yn" id="banner_auto_rotate_yn"></div>&nbsp;
+                <span id="interval-config-span">시간설정&nbsp;<input type="text" name="banner_rotate_interval_sec" data-field="banner_rotate_interval_sec" id="banner_rotate_interval_sec" class="gi-input gi-row-60px gi-col-27px gi-margin-left-5px" style="border: var(--border-layout); border-radius: var(--border-radius-btn); padding: 0 10px;" onlyNumericWithoutLeadingZero>&nbsp;초&nbsp;</span>
+                <button id="merge-config-btn" class="gi-btn-register gi-margin-left-5px">저장</button>
+
+                <button id="change-order-btn" gi-popup-open-id="gi-change-order-popup" class="gi-btn-register" style="margin-left: auto; margin-right: 0;">순서 설정</button>
+            </div>
+        </article>
+    </section>
+</article>
+
+<article id="gi-change-order-popup" class="gi-popup" data-popup-open="false">
+    <div class="gi-popup-body" style="height: 270px; width: unset; padding: 20px 70px;">
+        <div class="gi-popup-header">
+            <span>순서 설정</span>
+        </div>
+        <div class="gi-popup-contents" style="display: flex; align-items: center; justify-content: center;">
+            <div id="popup-container"></div>
+        </div>
+        <div class="gi-popup-footer">
+            <div class="gi-btn-section gi-row-30 gi-col-30px gi-padding-left-right-20px gi-flex gi-flex-justify-content-center gi-flex-align-items-center">
+                <button id="gi-popup-save-btn" class="gi-btn-blue popup_success_btn" type="button">적용</button>
+                <button id="gi-popup-close-btn" class="gi-popup-close-btn" type="button">닫기</button>
+            </div>
+        </div>
+    </div>
+</article>
+
+<script type="text/javascript">
+    var PRGMID = "siteBannerImage";	//page id
+    init();
+
+    var bannerList = [];
+
+    async function init() {
+        //초기화
+        resetEvent();
+
+        //데이터 조회
+        const data = await findBySiteBannerImageList();
+        await findBannerConfigs();
+
+        setTimeout(function () {
+            //페이지 초기설정
+            new PageInit();
+
+            //클릭 이벤트
+            clickEvent();
+
+            initValueSetting(data);
+        });
+
+        formUtil.handleToolTip();
+    }
+
+    function initValueSetting(data) {
+        formUtil.createUncutImgFileUpload("uncutImgFileUpload", "/common/file/commonFileDetail", {FOLDER_NAME: "siteBannerImage"}, register);
+
+        if ($('#banner_auto_rotate_yn').val() === '0') {
+            $('#interval-config-span').addClass('gi-hidden');
+        }
+
+    }
+
+    async function register() {
+        let data = new dataBinding().getData(PRGMID);
+        let url = "/common/site/siteBannerImage/register";
+        let param = {
+            banner_image_number: $('.banner').length + 1,
+            use_yn: '1',
+            uuid: data.uuid,
+        };
+
+        try {
+            let response = await axios.post(url, param);
+            let status = response.status;
+
+            if (status === 200) {
+                formUtil.showMessage(Message.Label.Array["COMPLETE.INSERT"]);
+
+                $('#formUtil_uncutFileUpload').empty();
+
+                await reload();
+            } else {
+                resetEvent();
+                formUtil.alertPopup("response status is :" + status);
+            }
+        } catch (error) {
+            resetEvent();
+
+            if (error.response?.data?.error && Message.Label.Array["INSPECTION_EQUIPMENT_MODEL.ERROR." + error.response.data.error]) {
+                formUtil.alertPopup(Message.Label.Array["INSPECTION_EQUIPMENT_MODEL.ERROR." + error.response.data.error]);
+            } else {
+                formUtil.alertPopup(error);
+            }
+        }
+    }
+
+    function resetEvent() {
+        //검색영역 값 초기화
+        $("#search-area input").val("");
+        $("#search-area select").val("");
+
+        //데이터 호출 후 이벤트 재설정
+        new afterLoadDataEvent();
+    }
+
+    //클릭 이벤트
+    function clickEvent() {
+        $("[name=use_yn]").on("click.useYnToggle", function () {
+            modifyUseYn(this);
+        });
+        $(".remove").on("click", function () {
+            remove(this);
+        });
+        $("#merge-config-btn").on("click", function () {
+            mergeBannerConfig();
+        });
+        $("#change-order-btn").on("click", function () {
+            showOrderChangePopup();
+        });
+
+        $('#gi-popup-save-btn').on('click', function () {
+            saveOrderChanges();
+        });
+
+        $('#banner_auto_rotate_yn').on('change.toggleIntervalConfig', function () {
+            $(this).val() === '1' ?
+                $('#interval-config-span').removeClass('gi-hidden') : $('#interval-config-span').addClass('gi-hidden');
+        });
+
+        $('#popup-container')
+            .off('click.order')
+            .on('click.order', '.item', handleItemClick)
+            .on('click.order', '.arrow', handleArrowClick);
+    }
+
+    async function findBySiteBannerImageList() {
+        let url = "/common/site/siteBannerImage/findWithFile";
+
+        try {
+            let response = await axios.post(url, {});
+            let status = response.status;
+
+            if (status !== 200) {
+                throw new Error("response status is: " + status);
+            }
+
+            let data = response.data;
+            bannerList = response.data;
+
+            for (const d of data) {
+                await addBannerHtml(d);
+            }
+            return data;
+        } catch (error) {
+            formUtil.alertPopup(error.message || error);
+            return null;
+        }
+    }
+
+    async function findBannerConfigs() {
+        const url = "/common/site/siteConfig/findValuesByKeys";
+
+        try {
+            const response = await axios.post(url, ['BANNER_AUTO_ROTATE_YN', 'BANNER_ROTATE_INTERVAL_SEC']);
+            const status = response.status;
+
+            if (status !== 200) {
+                throw new Error("response status is: " + status);
+            }
+
+            const data = response.data;
+
+            $('#banner_auto_rotate_yn').val(data.banner_auto_rotate_yn);
+            $('#banner_auto_rotate_yn').prop('checked', data.banner_auto_rotate_yn === '1');
+            $('#banner_rotate_interval_sec').val(data.banner_rotate_interval_sec);
+        } catch (error) {
+            formUtil.alertPopup(error.message || error);
+        }
+    }
+
+    async function addBannerHtml(data) {
+        const index = data.banner_image_number ? data.banner_image_number : $('.banner').length + 1;
+
+        const bannerHtml = `
+                <div class="banner" data-index="${index}" style="height: 150px; display: flex; flex-direction: column;">
+                    <div class="gi-flex gi-flex-justify-content-center" style="gap: 5px;">
+                        <input type="checkbox" class="gi-switch" name="use_yn" data-field="use_yn" id="use_yn-${index}" ${data.use_yn === '1' && 'checked'}>
+                        <i class="fa-solid fa-trash remove" id="btn-remove-${index}" style="margin-left: auto; margin-right: 0; "></i>
+                    </div>
+
+                    <img id="banner_image-${index}" src="${data.file_url}" class="gi-row-100 gi-margin-top-5px" style="object-fit: cover; aspect-ratio: 100 / 28; object-position: top;"/>
+
+                    <div class="gi-col-30px gi-row-100 gi-margin-top-5px">
+                        <input data-field="file_id" id="file_id-${index}" name="file_id" class="gi-input gi-hidden" value="${data.file_id}"/>
+                        <input data-field="file_path" id="file_path-${index}" name="file_path" class="gi-input gi-hidden" value="${data.file_path}">
+                        <input data-field="file_name" id="file_name-${index}" name="file_name" class="gi-input gi-hidden" value="${data.file_name}">
+                        <input data-field="file_extension" id="file_extension-${index}" name="file_extension" class="gi-input gi-hidden" value="${data.file_extension}">
+                        <input data-field="uuid" id="uuid-${index}" name="uuid" class="gi-input gi-hidden" value="${data.uuid}"/>
+                        <input data-field="banner_image_number" id="banner_image_number-${index}" name="banner_image_number" class="gi-input gi-hidden" value="${data.banner_image_number}"/>
+                        <span class="gi-col-30px gi-font-size-12px">
+                            <span>${index}</span>.&nbsp;
+                            ${data.file_name}.${data.file_extension}
+                        </span>
+                    </div>
+                </div>
+        `;
+
+        $('#banner-grid-div').append(bannerHtml);
+
+        $('#banner_image-' + index).on("error", function () {
+            $(this).attr("src", "/common/img/no-image-h.png");
+        });
+
+        countBanners();
+    }
+
+    function countBanners() {
+        const $banners = $('.banner [name=use_yn]');
+
+        const totalBanners = $banners.length;
+        const activeBanners = $banners.filter(':checked').length;
+        const inactiveBanners = totalBanners - activeBanners;
+
+        $('#banner-total-span').text(totalBanners);
+        $('#banner-active-span').text(activeBanners);
+        $('#banner-inactive-span').text(inactiveBanners);
+    }
+
+    async function modifyUseYn(element) {
+        let url = "/common/site/siteBannerImage/update";
+        const index = $(element).parents('.banner').data('index');
+        const useYn = $('#use_yn-' + index).val();
+
+        const confirmMessage = useYn === '1' ? Message.Label.Array["SITE_BANNER_IMAGE.CONFIRM.OFF"] : Message.Label.Array["SITE_BANNER_IMAGE.CONFIRM.ON"];
+        if (!await formUtil.confirm(confirmMessage)) {
+            $('#use_yn-' + index).prop('checked', useYn === '1');
+            $('#use_yn-' + index).val(useYn);
+
+            return false;
+        }
+
+        const param = {
+            uuid: $('#uuid-' + index).val(),
+            use_yn: useYn === '1' ? '0' : '1'
+        };
+
+        try {
+            let response = await axios.post(url, param);
+            let status = response.status;
+
+            if (status !== 200) {
+                $('#use_yn-' + index).prop('checked', useYn === '1')
+                $('#use_yn-' + index).text(useYn);
+
+                throw new Error("response status is: " + status);
+            }
+
+            countBanners();
+
+            formUtil.showMessage(Message.Label.Array["SITE_BANNER_IMAGE.COMPLETE.CHANGE_USE"]);
+
+        } catch (error) {
+            formUtil.alertPopup(error.message || error);
+            return null;
+        }
+    }
+
+    async function remove(element) {
+        if (!await formUtil.confirm(Message.Label.Array["CONFIRM.DELETE"])) {
+            return false;
+        }
+
+        const url = "/common/site/siteBannerImage/removeAndShift";
+        const index = $(element).parents('.banner').data('index');
+
+        const param = {
+            uuid: $('#uuid-' + index).val(),
+            banner_image_number: $('#banner_image_number-' + index).val(),
+        };
+
+        try {
+            let response = await axios.post(url, param);
+            let status = response.status;
+
+            if (status === 200) {
+                formUtil.showMessage(Message.Label.Array["COMPLETE.DELETE"]);
+
+                await reload();
+            } else {
+                throw new Error("response status is: " + status);
+            }
+        } catch (error) {
+            formUtil.alertPopup(error.message || error);
+        }
+    }
+
+    async function mergeBannerConfig() {
+        if (!$('#banner_rotate_interval_sec').val()) {
+            formUtil.alertPopup(Message.Label.Array["SITE_BANNER_IMAGE.CHECK.BANNER_ROTATE_INTERVAL_SEC"]);
+            return false;
+        }
+
+        if (!await formUtil.confirm(Message.Label.Array["CONFIRM.UPDATE"])) {
+            return false;
+        }
+
+        const url = "/common/site/siteConfig/mergeList";
+        const param = [
+            {
+                config_key: 'BANNER_AUTO_ROTATE_YN',
+                config_value: $('#banner_auto_rotate_yn').val(),
+                description: '배너 자동넘김 여부',
+            },
+            {
+                config_key: 'BANNER_ROTATE_INTERVAL_SEC',
+                config_value: $('#banner_rotate_interval_sec').val(),
+                description: '배너 넘김 시간 (초)',
+            },
+        ].map(p => ({
+            ...p,
+            config_group_id: 'BANNER',
+            use_yn: '1'
+        }));
+
+        try {
+            let response = await axios.post(url, param);
+            let status = response.status;
+
+            if (status === 200 && response.data === 2) {
+                formUtil.showMessage(Message.Label.Array["COMPLETE.UPDATE"]);
+
+                await reload();
+            } else {
+                throw new Error("response status is: " + status);
+            }
+        } catch (error) {
+            formUtil.alertPopup(error.message || error);
+        }
+    }
+
+    async function reload() {
+        $('#banner-grid-div').empty();
+
+        const data = await findBySiteBannerImageList();
+        await findBannerConfigs();
+
+        initValueSetting(data);
+
+        clickEvent();
+    }
+
+    function showOrderChangePopup() {
+        $('#popup-container').empty();
+        bannerList.forEach(data => {
+            $('#popup-container').append(`
+                <div class="item" data-id="${data.banner_image_number}">
+                    <img id="item_image-${data.banner_image_number}" src="${data.file_url}" class="gi-row-100" style="object-fit: cover; aspect-ratio: 4 / 1; object-position: top;"/>
+                    <span>${data.banner_image_number}</span>
+                    <span class="gi-hidden uuid">${data.uuid}</span>
+                </div>
+            `);
+            $('#item_image-' + data.banner_image_number).on("error", function () {
+                $(this).attr("src", "/common/img/no-image-h.png");
+            });
+        });
+    }
+
+    function handleItemClick() {
+        $('.arrow').remove();
+        $('.item').removeClass('selected');
+
+        const $this = $(this);
+        $this.addClass('selected');
+
+        if ($this.prev().length) {
+            $this.before('<button class="arrow left"><i class="fa-solid fa-chevron-left"></i></button>');
+        }
+        if ($this.next().length) {
+            $this.after('<button class="arrow right"><i class="fa-solid fa-chevron-right"></i></button>');
+        }
+    }
+
+    function handleArrowClick() {
+        const $arrow = $(this);
+        const $item = $('.selected');
+
+        if ($arrow.hasClass('left')) {
+            let $prev = $item.prevAll('.item').first();
+            if ($prev.length) {
+                $item.insertBefore($prev);
+            }
+        } else if ($arrow.hasClass('right')) {
+            let $next = $item.nextAll('.item').first();
+            if ($next.length) {
+                $item.insertAfter($next);
+            }
+        }
+
+        $('.arrow').remove();
+        $item.trigger('click');
+    }
+
+    async function saveOrderChanges() {
+        if (!await formUtil.confirm(Message.Label.Array["SITE_BANNER_IMAGE.CONFIRM.REORDER"])) {
+            return false;
+        }
+
+        const url = "/common/site/siteBannerImage/reorder";
+        const param = $('#popup-container .uuid').toArray().map((element, index) => {
+            return {uuid: $(element).text(), banner_image_number: index + 1};
+        });
+
+        try {
+            let response = await axios.post(url, param);
+            let status = response.status;
+
+            if (status === 200 && response.data === param.length) {
+                $("#gi-change-order-popup").attr("data-popup-open", false);
+
+                formUtil.showMessage(Message.Label.Array["SITE_BANNER_IMAGE.COMPLETE.REORDER"]);
+
+                await reload();
+            } else {
+                throw new Error("response status is: " + status);
+            }
+        } catch (error) {
+            formUtil.alertPopup(error.message || error);
+        }
+
+    }
+</script>
