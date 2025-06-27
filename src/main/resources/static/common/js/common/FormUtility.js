@@ -3060,7 +3060,7 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
 
     let grid =
         '            <figure class="gi-figure-content gi-overflow-scroll gi-col-100 gi-row-100 gi-flex gi-flex-justify-content-center gi-flex gi-flex-direction-column">' +
-        '                <div class="gi-article-content gi-min-col-80 gi-row-100">' +
+        '                <div class="gi-article-content gi-min-col-90 gi-row-100">' +
         // '                    <header class="gi-row-100 gi-col-5 gi-margin-bottom-1"><h4>' + title + '</h4></header>' +
         '                    <div class="gi-row-100 gi-flex gi-margin-bottom-1 ">' +
         '                        <select class="gi-grid-row-selector" id="'+giGridRowSelectorId+'" class="gi-row-65px">' +
@@ -3949,7 +3949,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
 
     let grid =
         '            <figure class="gi-figure-content gi-overflow-scroll gi-col-100 gi-row-100 gi-flex gi-flex-justify-content-center gi-flex gi-flex-direction-column">' +
-        '                <div class="gi-article-content gi-min-col-80 gi-row-100">' +
+        '                <div class="gi-article-content gi-min-col-90 gi-row-100">' +
         // '                    <header class="gi-row-100 gi-col-5 gi-margin-bottom-1"><h4>' + title + '</h4></header>' +
         //'                    <div class="gi-row-100 gi-flex gi-margin-bottom-1 gi-col-25px">' +
         // '                        <select id="gi-grid-row-selector" class="gi-row-65px">' +
@@ -4038,7 +4038,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                                //     tag = '<input type="checkbox" class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" value="' + data[i][item.ID] + '" />';
                                //     break;
                            }
-                        grid_list += '<li class="gi-min-row-50px gi-row-'+item.WIDTH+' gi-col-16px gi-flex gi-overflow-scroll gi-flex-justify-content-'+item.TEXT_ALIGN+' gi-text-align-'+item.TEXT_ALIGN+' '+hidden+'" data-grid-row="'+j+'" data-field="'+item.ID+'">' + tag + '</li>';
+                           grid_list += '<li class="gi-min-row-50px gi-row-'+item.WIDTH+' gi-col-16px gi-flex gi-overflow-scroll gi-flex-justify-content-'+item.TEXT_ALIGN+' gi-text-align-'+item.TEXT_ALIGN+' '+hidden+'" data-grid-row="'+j+'" data-field="'+item.ID+'">' + tag + '</li>';
                    }
                    grid_list += '</ul>';
                 }
@@ -4046,6 +4046,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                 grid_list = '<div class="gi-row-100 gi-col-100 gi-flex gi-flex-align-items-center gi-flex-justify-content-center bounce-in-top">No Data</div>';
                 $("#"+gridId+" .gi-grid-paging-content").html('');
             }
+
             $("#"+gridId+" .gi-grid-list-header").after(grid_list);
 
             // if(isHierarchy){
@@ -4130,6 +4131,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                     let subVal = $row.find(`li[data-field="${application_sub_hierarchyOptionColumn}"] span`)
                         .first().text().trim();
                     rows.push({ $row, level, parentVal, subVal });
+
                 });
                 //console.log(rows[0])
 
@@ -4140,8 +4142,10 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
 
                 // HIDDEN이 아닌 첫번째 li에 계층 클래스 추가
                 rows.forEach(r => {
+                    r.$row.find("li").not('.hidden').not(":last").addClass("gi-grid-li-border-dotted");
                     if (r.level === "0") {
                         r.$row.find("li").not('.hidden').first().addClass("gi-grid-hierarchy-depth0");
+                        r.$row.not("[data-row-num='1']").addClass("border-top-dotted-gray");
                     } else if (r.level === "1") {
                         r.$row.find("li").not('.hidden').first().addClass("gi-grid-hierarchy-depth1");
                     } else if (r.level === "2") {

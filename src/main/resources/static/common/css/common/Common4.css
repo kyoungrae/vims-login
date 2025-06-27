@@ -1987,6 +1987,9 @@ option {
 
 /* ======================================================================================================== 공통 영역 */
 .hidden{display: none;}
+.gi-page-title{
+    font-size:20px;
+}
 #mainImage{
     background-image: url("../../img/main1.webp");
     background-repeat: no-repeat;
@@ -2039,6 +2042,12 @@ html{
 }
 .no-drag {
     user-select: none;
+}
+.border-top-dotted-gray{
+    border-top:1px dotted #dbdbdb;
+}
+.font-weight-500{
+    font-weight:500;
 }
 
 /*****************************************************************/
@@ -2434,7 +2443,7 @@ html{
     border : 1px solid #999999;
 }
 .gi-article-content{
-    box-shadow: 0px 0px 40px rgb(0 0 0 / 6%);
+    box-shadow: 0px 0px 5px rgb(0 0 0 / 11%);
     border-radius: var(--border-radius-article);
     background-color:#ffffff;
     padding:20px;
@@ -2565,12 +2574,17 @@ html{
     background-color: #f3f3f3;
     transition : all 0.2s cubic-bezier(1,1,1,1);
 }
+.gi-grid-list > .gi-grid-li-border-dotted{
+    border-right: 1px dotted #dbdbdb;
+}
 .gi-grid-hierarchy-depth0{
     font-weight:bolder;
+    text-shadow: 0px 0px #000000;
 }
 .gi-grid-hierarchy-depth0::before{
     content: "";
-    background-image: url(../../img/rectangle.png);
+    /*background-image: url(../../img/rectangle.png);*/
+    background-image: url(../../img/circle.png);
     position: relative;
     width: 15px;
     display: flex;
