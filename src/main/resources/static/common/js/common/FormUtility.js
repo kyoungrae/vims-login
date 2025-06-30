@@ -64,7 +64,7 @@ function findByCommonCodeGroup(param){
  */
 async function findCommonCode(param) {
     let result = {};
-    let url = '/common/common/commonCode/findCommonCode';
+    let url = '/cms/common/commonCode/findCommonCode';
     try {
         return new Promise((resolve, reject) => {
             axios.post(url, param).then(response =>{
@@ -3551,7 +3551,17 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                 })
                     .mouseleave(function() {
                     $(this).removeClass("gi-grid-list-hover");
+                })
+                    .click(function(){
+                    if($(this).hasClass("gi-grid-list-select")){
+                        $(this).removeClass("gi-grid-list-select");
+                    }else{
+                        $(gridSelector).find(".gi-grid-list").removeClass("gi-grid-list-select");
+                        $(this).addClass("gi-grid-list-select");
+                    }
                 });
+
+
                 $(gridSelector).find("ul[data-row-num]").off("click.rowClickEventHandler").on("click.rowClickEventHandler", function (e) {
                     if (!$(e.target).is("button")) {
                         rowClickEventHandler(e, fn);
@@ -4090,7 +4100,20 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                     //NOTE: 사용여부에 따른 ui 변경
                     function unUsedMenuUISettings(e){
                         //NOTE: 미사용시 메뉴 비활성화
-                        if(e.$row.find("li[data-field='use_yn']").not(".hidden").find("span").text() === "0"){
+                        let flag = e.$row.find("li[data-field='use_yn']").not(".hidden").find("span[data-grid-value]").length === 0;
+                        let a = "";
+                        let b = "";
+                        let c = "";
+                        if(flag){
+                            a = e.$row.find("li[data-field='use_yn']").not(".hidden").find("span").text();
+                            b = "0";
+                            c = "1";
+                        }else{
+                            a = e.$row.find("li[data-field='use_yn']").not(".hidden").find("span").data("gridValue");
+                            b = 0;
+                            c = 1;
+                        }
+                        if(a === b){
                             $(e.$row).addClass("unused-menu");
                             let parentValue = $(e)[0].parentVal;
                             let dept2CodeName = "";
@@ -4100,7 +4123,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                                 }
                             });
                             //NOTE: 최상위 메뉴 비활성화 시 하위 메뉴 모두 비활성화
-                            if(e.$row.find("li[data-field='menu_level']").not(".hidden").find("span").text() === "0"){
+                            if(a === b){
                                 rows.forEach(item =>{
                                     if(item.subVal === parentValue){
                                         dept2CodeName = $(item.$row).find("li[data-field='menu_code']").find("span").text();
@@ -4112,9 +4135,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                             }
                         }else{
                             //NOTE: 사용중인 최상위 메뉴의 하위메뉴 비활성화
-                            if(e.$row.find("li[data-field='menu_level']").not(".hidden").find("span").text() === "0"
-                                && e.$row.find("li[data-field='use_yn']").not(".hidden").find("span").text() === "1"
-                            ){
+                            if(a === b && a === c){
                                 $(e.$row).removeClass("unused-menu");
                             }
                         }
@@ -4353,27 +4374,25 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
         rowClick: function(fn) {
             // 최초 로딩 시 이벤트를 설정
             setRowClickEvent(fn);
-
             // MutationObserver로 동적 추가된 요소에 대해서도 이벤트 설정
             const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.addedNodes.length > 0) {
-                        let $giGridList = $(".gi-grid-list");
-                        if ($giGridList.length > 0) {
-                            observer.disconnect(); // 추가된 노드가 있을 때만 observer를 종료
-                        }
-                        // 이벤트 처리
-                        setRowClickEvent(fn);  // 추가된 그리드에도 rowClick 이벤트 설정
+                const hasAddedNodes = mutations.some(mutation => mutation.addedNodes.length > 0);
+                if (hasAddedNodes) {
+                    let $giGridList = $(".gi-grid-list");
+                    if ($giGridList.length > 0) {
+                        observer.disconnect(); // 필요시 사용
                     }
-                });
+                    setRowClickEvent(fn);
+                }
             });
 
             observer.observe($("#" + gridId)[0], { childList: true, subtree: true });
 
             // rowClick 이벤트를 설정하는 함수
             function setRowClickEvent(fn) {
-                $(".gi-grid-list").addClass("gi-cursor-pointer");
-                $(".gi-grid-list, .unused-menu")
+                let gridSelector = "#"+gridId;
+                $(gridSelector).find(".gi-grid-list").addClass("gi-cursor-pointer");
+                $(gridSelector).find(".gi-grid-list, .unused-menu")
                     .mouseenter(function() {
                     $(this).addClass("gi-grid-list-hover");
                 })
