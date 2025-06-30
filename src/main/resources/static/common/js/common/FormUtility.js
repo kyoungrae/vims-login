@@ -3983,12 +3983,6 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
     //그리드 생성 후 데이터 바인딩
     return {
         //계층구조 기준 컬럼 설정
-        HierarchyOption: function(hierarchyOptionItem){
-            application_level_hierarchyOptionColumn = hierarchyOptionItem.level_column;
-            application_parent_hierarchyOptionColumn = hierarchyOptionItem.parent_depth_column;
-            application_sub_hierarchyOptionColumn = hierarchyOptionItem.child_depth_column;
-        },
-        //그리드 데이터 설정
         DataSet: async function (data) {
             let flag = formUtil.checkEmptyValue(data);
             let isHierarchy = formUtil.checkEmptyValue(application_level_hierarchyOptionColumn)
@@ -4049,71 +4043,6 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
 
             $("#"+gridId+" .gi-grid-list-header").after(grid_list);
 
-            // if(isHierarchy){
-            //     let depth0= [];
-            //     let depth1= [];
-            //     let depth2= [];
-            //     $('li[data-field="'+application_level_hierarchyOptionColumn+'"] span').map((i,item)=>{
-            //         if($(item).text() === "1" ){
-            //             let parent = $(item).parents("ul").last();
-            //             let target = $(parent).children("li").not('.hidden').first();
-            //             target.addClass('gi-grid-hierarchy-depth1');
-            //         }else if($(item).text() === "2"){
-            //             let parent = $(item).parents("ul").last();
-            //             let target = $(parent).children("li").not('.hidden').first();
-            //             target.addClass('gi-grid-hierarchy-depth2');
-            //         }else if($(item).text() === "0"){
-            //             let parent = $(item).parents("ul").last();
-            //             let target = $(parent).children("li").not('.hidden').first();
-            //             target.addClass('gi-grid-hierarchy-depth0');
-            //
-            //         }
-            //     })
-            //
-            //     $(".gi-grid-list").map((i,item)=>{
-            //         $(item).children("li").map((i,liItem)=>{
-            //             if($(liItem).data("field") === application_level_hierarchyOptionColumn){
-            //                 if($(liItem).children("span").text() === "0"){
-            //                     depth0.push(item);
-            //                 }else if($(liItem).children("span").text() === "1"){
-            //                     depth1.push(item);
-            //                 }else if($(liItem).children("span").text() === "2"){
-            //                     depth2.push(item);
-            //                 }
-            //             }
-            //         })
-            //     })
-            //     depth0.map((item)=>{
-            //         $(item).children("li").map((i,liItem) =>{
-            //             if($(liItem).data("field") === application_parent_hierarchyOptionColumn){
-            //                 depth1.map(item1=>{
-            //                     $(item1).children("li").map((i,liItem1) =>{
-            //                         if($(liItem1).data("field") === application_sub_hierarchyOptionColumn){
-            //                             if($(liItem1).text() === $(liItem).text()){
-            //                                 $(item).after($(item1)[0]);
-            //                             }
-            //                         }
-            //                         if($(liItem1).data("field") === application_parent_hierarchyOptionColumn){
-            //                             depth2.map(item2=>{
-            //                                 $(item2).children("li").map((i,liItem2) =>{
-            //                                     if($(liItem2).data("field") === application_sub_hierarchyOptionColumn){
-            //                                         if($(liItem2).text() === $(liItem1).text()){
-            //                                             setTimeout(function(){
-            //                                                 $(item1).after($(item2)[0]);
-            //                                             },100);
-            //                                         }
-            //                                     }
-            //                                 })
-            //                             });
-            //                         }
-            //                     });
-            //                 })
-            //             }
-            //         })
-            //
-            //     })
-
-            //todo TEST 중
             if (isHierarchy) {
                 // 1. 필요한 데이터 추출 rows에 보관
                 // ex) rows[0] = { $row: jQuery.fn.init {0: ul.gi-grid-list.gi-row-100.gi-ul.gi-flex.gi-flex-justify-content-space-evenly.gi-cursor-pointer, length: 1}
@@ -4130,10 +4059,9 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                         .first().text().trim();
                     let subVal = $row.find(`li[data-field="${application_sub_hierarchyOptionColumn}"] span`)
                         .first().text().trim();
-                    rows.push({ $row, level, parentVal, subVal });
+                    rows.push({ $row, level, parentVal, subVal});
 
                 });
-                //console.log(rows[0])
 
                 // 2. 레벨별 그룹화
                 let depth0 = rows.filter(r => r.level === "0");
@@ -4141,15 +4069,55 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                 let depth2 = rows.filter(r => r.level === "2");
 
                 // HIDDEN이 아닌 첫번째 li에 계층 클래스 추가
-                rows.forEach(r => {
+                rows.forEach((r,i) => {
+                    //NOTE: row의 li 요소중 hidden과 마지막 li 요소를 제외한 li에 border dotted 추가
                     r.$row.find("li").not('.hidden').not(":last").addClass("gi-grid-li-border-dotted");
                     if (r.level === "0") {
                         r.$row.find("li").not('.hidden').first().addClass("gi-grid-hierarchy-depth0");
-                        r.$row.not("[data-row-num='1']").addClass("border-top-dotted-gray");
+                        //NOTE: 첫번째 row를 제외한 row에 border-top-dotted-gray 추가
+                        if(i !==1){
+                            r.$row.not("[data-row-num='0']").addClass("border-top-dotted-gray");
+                        }
+                        unUsedMenuUISettings(r);
                     } else if (r.level === "1") {
                         r.$row.find("li").not('.hidden').first().addClass("gi-grid-hierarchy-depth1");
+                        unUsedMenuUISettings(r);
                     } else if (r.level === "2") {
                         r.$row.find("li").not('.hidden').first().addClass("gi-grid-hierarchy-depth2");
+                        unUsedMenuUISettings(r);
+                    }
+
+                    //NOTE: 사용여부에 따른 ui 변경
+                    function unUsedMenuUISettings(e){
+                        //NOTE: 미사용시 메뉴 비활성화
+                        if(e.$row.find("li[data-field='use_yn']").not(".hidden").find("span").text() === "0"){
+                            $(e.$row).addClass("unused-menu");
+                            let parentValue = $(e)[0].parentVal;
+                            let dept2CodeName = "";
+                            rows.forEach(item =>{
+                                if(item.subVal === parentValue){
+                                    $(item.$row).addClass("unused-menu")
+                                }
+                            });
+                            //NOTE: 최상위 메뉴 비활성화 시 하위 메뉴 모두 비활성화
+                            if(e.$row.find("li[data-field='menu_level']").not(".hidden").find("span").text() === "0"){
+                                rows.forEach(item =>{
+                                    if(item.subVal === parentValue){
+                                        dept2CodeName = $(item.$row).find("li[data-field='menu_code']").find("span").text();
+                                    }
+                                    if(item.subVal === dept2CodeName){
+                                        $(item.$row).addClass("unused-menu")
+                                    }
+                                });
+                            }
+                        }else{
+                            //NOTE: 사용중인 최상위 메뉴의 하위메뉴 비활성화
+                            if(e.$row.find("li[data-field='menu_level']").not(".hidden").find("span").text() === "0"
+                                && e.$row.find("li[data-field='use_yn']").not(".hidden").find("span").text() === "1"
+                            ){
+                                $(e.$row).removeClass("unused-menu");
+                            }
+                        }
                     }
                 });
 
@@ -4178,6 +4146,12 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                     $body.append(r.$row);
                 });
             }
+        },
+        //그리드 데이터 설정
+        HierarchyOption: function(hierarchyOptionItem){
+            application_level_hierarchyOptionColumn = hierarchyOptionItem.level_column;
+            application_parent_hierarchyOptionColumn = hierarchyOptionItem.parent_depth_column;
+            application_sub_hierarchyOptionColumn = hierarchyOptionItem.child_depth_column;
         },
         //그리드 row 개수 변경 및 페이징 버튼 이벤트 설정
         pagingSet: function(fn){
@@ -4399,7 +4373,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
             // rowClick 이벤트를 설정하는 함수
             function setRowClickEvent(fn) {
                 $(".gi-grid-list").addClass("gi-cursor-pointer");
-                $(".gi-grid-list")
+                $(".gi-grid-list, .unused-menu")
                     .mouseenter(function() {
                     $(this).addClass("gi-grid-list-hover");
                 })
@@ -4494,6 +4468,82 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                         resultList.push(tempList);
                     })
                     fn(resultList);
+                }
+            }
+        },
+        sideOpenBtnClick:function(tagId,btnName){
+            let $tagId = $("#"+tagId);
+            let $btnName = $("."+btnName);
+            let sideGridOpenCloseBtn = '<div class="side_grid_close-btn"><span>X</span></div>'
+            let $sideGridCloseBtn = $(".side_grid_close-btn");
+
+            if($btnName.length === 0){
+                // MutationObserver로 동적 추가된 요소에 대해서도 이벤트 설정
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.addedNodes.length > 0) {
+                            let $giGridList = $(".gi-grid-list");
+                            if ($giGridList.length > 0) {
+                                observer.disconnect(); // 추가된 노드가 있을 때만 observer를 종료
+                            }
+                            let $btnName = $("."+btnName);
+                            // 이벤트 처리
+                            $btnName.off("click.sideOpenBtnClickEventHandler").on("click.sideOpenBtnClickEventHandler",function(e){
+                                sideOpenBtnClickEventHandler(e);
+                            });
+                        }
+                    });
+                });
+
+                observer.observe($("#" + gridId)[0], { childList: true, subtree: true });
+            }else{
+                $btnName.off("click.sideOpenBtnClickEventHandler").on("click.sideOpenBtnClickEventHandler",function(e){
+                    sideOpenBtnClickEventHandler(e);
+                });
+            }
+
+
+            function sideOpenBtnClickEventHandler(e){
+                $("[data-side-grid-open]").map((i,item) => {
+                    $(item).attr("data-side-grid-open","false");
+                })
+
+                $($tagId).attr("data-side-grid-open","true");
+                $tagId.html(sideGridOpenCloseBtn);
+                sideGridCloseBtnEvent();
+
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.addedNodes.length > 0) {
+                            let $giGridList = $(".gi-grid-list");
+                            if ($giGridList.length > 0) {
+                                observer.disconnect(); // 추가된 노드가 있을 때만 observer를 종료
+                            }
+                            if ($tagId.find(".side_grid_close-btn").length === 0) {
+                                $tagId.html(sideGridOpenCloseBtn);
+                                sideGridCloseBtnEvent();
+                            }
+                        }
+                    });
+                });
+
+                observer.observe($("#" + tagId)[0], { childList: true, subtree: true });
+
+                function sideGridCloseBtnEvent(){
+                    $(".side_grid_close-btn").off("click.sideGridCloseBtnClickEventHandler").on("click.sideGridCloseBtnClickEventHandler",function(e){
+                        sideGridCloseBtnClickEventHandler();
+                    })
+                    function sideGridCloseBtnClickEventHandler(){
+                        $("[data-side-grid-open]").map((i,item) => {
+                            if(formUtil.checkEmptyValue($(item).data("sideGridOpenInit"))){
+                                let flag = $(item).data("sideGridOpenInit");
+                                flag = flag.toString();
+                                $(item).attr("data-side-grid-open",flag);
+                            }
+                        })
+                        $($tagId).attr("data-side-grid-open","false");
+                        $("#"+tagId).empty();
+                    }
                 }
             }
         },

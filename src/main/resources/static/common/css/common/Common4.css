@@ -2567,7 +2567,7 @@ html{
     transition : all 0.2s cubic-bezier(1,1,1,1);
 }
 .gi-grid-list-select{
-    background-color: rgb(186 192 255 / 33%);
+    background-color: rgb(186 192 255 / 33%) !important;
     transition :all 0.2s cubic-bezier(1,1,1,1);
 }
 .gi-grid-list-multi_select{
@@ -2576,6 +2576,10 @@ html{
 }
 .gi-grid-list > .gi-grid-li-border-dotted{
     border-right: 1px dotted #dbdbdb;
+}
+.unused-menu{
+    background-color: #d59d9d44;
+    color: #7d7d7d;
 }
 .gi-grid-hierarchy-depth0{
     font-weight:bolder;
