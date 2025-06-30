@@ -5,6 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/main/java/com/system" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/resources/templates/page/_sparecode" />
       <excludeFolder url="file://$MODULE_DIR$/src/main/resources/templates/page/common" />
+      <excludeFolder url="file://$MODULE_DIR$/logs" />
     </content>
   </component>
 </module>
