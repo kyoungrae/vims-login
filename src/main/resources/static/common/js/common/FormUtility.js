@@ -3159,7 +3159,7 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
             let range = "";
 
             $("#"+giGridRowSelectorId).change(function(){
-                range = $("#"+giGridRowSelectorId+" option:selected").val();
+                range = parseInt($("#"+giGridRowSelectorId+" option:selected").val());
                 $("#"+giGridRowSelectorId).val(range);
                 fn(1,range);
             })
@@ -3171,7 +3171,7 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                 $(this).addClass("active");
 
                 let pagingNum = $(this).data("field");
-                    range = $("#"+giGridRowSelectorId+" option:selected").val();
+                    range = parseInt($("#"+giGridRowSelectorId+" option:selected").val());
                 fn(pagingNum,range);
             })
         },
@@ -4177,9 +4177,8 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
         //그리드 row 개수 변경 및 페이징 버튼 이벤트 설정
         pagingSet: function(fn){
             let range = "";
-
             $("#"+giGridRowSelectorId).change(function(){
-                range = $("#"+giGridRowSelectorId+" option:selected").val();
+                range = parseInt($("#"+giGridRowSelectorId+" option:selected").val());
                 $("#"+giGridRowSelectorId).val(range);
                 fn(1,range);
             })
@@ -4191,7 +4190,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                 $(this).addClass("active");
 
                 let pagingNum = $(this).data("field");
-                range = $("#"+giGridRowSelectorId+" option:selected").val();
+                range = parseInt($("#"+giGridRowSelectorId+" option:selected").val());
                 fn(pagingNum,range);
             })
         },
