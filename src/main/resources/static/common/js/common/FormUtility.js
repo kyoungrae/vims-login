@@ -4085,7 +4085,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                     if (r.level === "0") {
                         r.$row.find("li").not('.hidden').first().addClass("gi-grid-hierarchy-depth0");
                         //NOTE: 첫번째 row를 제외한 row에 border-top-dotted-gray 추가
-                        if(i !==1){
+                        if(i !==0){
                             r.$row.not("[data-row-num='0']").addClass("border-top-dotted-gray");
                         }
                         unUsedMenuUISettings(r);
@@ -4101,7 +4101,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                     function unUsedMenuUISettings(e){
                         //NOTE: 미사용시 메뉴 비활성화
                         let flag = e.$row.find("li[data-field='use_yn']").not(".hidden").find("span[data-grid-value]").length === 0;
-                        let a = "";
+                        let a = ""; //NOTE: 그리드 내부에 COMMON_CODE_GROUP_ID 함수로 인해 값이 동적으로 변화 하는걸 대비(공통코드 적용시 text, 미적용시 interger)
                         let b = "";
                         let c = "";
                         if(flag){
