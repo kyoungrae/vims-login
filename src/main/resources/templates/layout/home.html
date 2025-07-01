@@ -127,20 +127,21 @@
     var changedHomeType = true;
     var common_session = new session();
     var menuInfoList = "";
+
     layoutInit();
+
     function layoutInit() {
         layoutClickEvent();
         sideNaveOpenCloseEvent();
         findByMenuList();
+        findUserName();
     }
     function layoutClickEvent(){
         /**
          * NOTE: 프로필 사이드네비 OPEN
          * */
         $(".side-nav-profile-trigger").on("click", function (e) {
-            $(".dropdown-menu").stop(true, true).slideToggle(150).css("display", "flex");
-            $(".side-nav-profile-dropdown").toggleClass("active");
-            $(".side-nav-profile-trigger").toggleClass("active");
+            dropDownMenu("open");
         });
 
         /**
@@ -152,6 +153,31 @@
                 $("body").addClass('animate-content-start');
                 window.location.href = "/api/v1/auth/logout";
             });
+        });
+    }
+
+    //NOTE : 내정보 메뉴 이벤트
+    function dropDownMenu(flag){
+        if(flag === "open"){
+            $(".dropdown-menu").stop(true, true).slideToggle(150).css("display", "flex");
+            $(".side-nav-profile-dropdown").toggleClass("active");
+            $(".side-nav-profile-trigger").toggleClass("active");
+        }else if(flag === "close"){
+            $(".dropdown-menu").stop(true, true).slideToggle(150).css("display", "none");
+            $(".side-nav-profile-dropdown").removeClass("active");
+            $(".side-nav-profile-trigger").removeClass("active");
+        }
+    }
+    function findUserName() {
+        const email = JwtUtils.getUserEmailFromJWT();
+        const url = "/cms/common/user/commonUser/find";
+
+        axios.post(url, {email}).then(response => {
+            const data = response.data[0];
+            $('#user-name-span').text(data.user_name).css('font-size', '1rem');
+            $('#office-name-span').text(data.office_name).css('font-size', '0.8rem');
+        }).catch(error => {
+            formUtil.showMessage("can not find user name");
         });
     }
 
@@ -301,6 +327,7 @@
         })
     }
 
+    //NOTE : 사이드 네비 메뉴리스트 생성
     function createSideNavMenuList(sideNavMenuList1Depth, sideNavMenuList2Depth, sideNavMenuList3Depth){
         let sideNavMenuHtml = "";
 
@@ -362,7 +389,7 @@
 
         return sideNavMenuHtml;
     }
-
+    //NOTE : 사이드 네비게이션 타이틀 클릭 이벤트
     function sideNavTitleClick(){
         $('.gi-side-nav-title').on('click', function(e) {
             e.preventDefault();
@@ -490,5 +517,11 @@
             });
         }
     }
-
+    //NOTE: 내정보 수정
+    $("#myinfo-btn").off("click").on("click",function(e){
+        e.preventDefault();
+        let url = "/user/myinfo";
+        dropDownMenu("close");
+        formUtil.apiLoadContent("cms",url,"");
+    });
 </script>

@@ -61,7 +61,7 @@
                 <div class="gi-col-20 gi-row-100">
                     <div class="gi-btn-section gi-flex gi-flex-space-around gi-col-60">
                         <button class="gi-btn gi-row-15 gi-col-100" id="checkLogin" type="button">LOGIN</button>
-                        <button class="gi-btn gi-row-15 gi-col-100" id="add_userInfo" type="button">쿠키등록</button>
+<!--                        <button class="gi-btn gi-row-15 gi-col-100" id="add_userInfo" type="button">쿠키등록</button>-->
                     </div>
                 </div>
             </section>
@@ -175,9 +175,9 @@
         getEmailCookie();
     }
     function clickEvent(){
-        $("#add_userInfo").click(function(){
-            addUser();
-        });
+        // $("#add_userInfo").click(function(){
+        //     addUser();
+        // });
         $("#checkLogin").click(function(){
             let validation = [];
                 validation.formId = "loginForm";
@@ -287,20 +287,20 @@
             }
         });
     }
-    function addUser(){
-        let cont  = {
-            user_id : "go66go66",
-            email : "go66go66@giens.co.kr",
-            password : "1234"
-        }
-        let url = "/api/v1/auth/register";
-        axios.post(url , cont).then(response =>{
-            let data = response.data;
-            formUtil.alertPopup("등록완료");
-        }).catch(error =>{
-            formUtil.alertPopup(""+error);
-        })
-    }
+    // function addUser(){
+    //     let cont  = {
+    //         user_id : "go66go66",
+    //         email : "go66go66@giens.co.kr",
+    //         password : "1234"
+    //     }
+    //     let url = "/api/v1/auth/register";
+    //     axios.post(url , cont).then(response =>{
+    //         let data = response.data;
+    //         formUtil.alertPopup("등록완료");
+    //     }).catch(error =>{
+    //         formUtil.alertPopup(""+error);
+    //     })
+    // }
     // 로그인 함수
     function login() {
         let email = document.getElementById("email").value;

@@ -92,20 +92,6 @@ Message.Label.Array["REASON.REJECTION"] = "반려처리 사유를 입력해 주�
 Message.Label.Array["REASON"] = "반려사유";
 Message.Label.Array["WAITING"] = "대기중";
 
-Message.Label.Array["FEE_PAYMENT_YN"] = "납부하지 않은 수수료가 존재합니다<br>수수료 납부 후 진행해 주세요";
-
-Message.Label.Array["REASON.DRIVING_SECTION"] = "운행구간을 입력해 주세요";
-Message.Label.Array["DRIVING_SECTION"] = "운행구간";
-Message.Label.Array["CONFIRM.RETURN"] = "임시운행 반납 하시겠습니까?";
-
-Message.Label.Array["COMPLETE.UPDATE_APPROVAL"] = "변경등록 승인완료";
-Message.Label.Array["FAIL.UPDATE_APPROVAL"] = "변경등록 과정중 오류가 발생 하였습니다";
-Message.Label.Array["CONFIRM.UPDATE_APPROVAL"] = "변경등록 완료처리 하시겠습니까?";
-
-Message.Label.Array["COMPLETE.REISSUE_APPROVAL"] = "재발급 승인완료";
-Message.Label.Array["FAIL.REISSUE_APPROVAL"] = "재발급 과정중 오류가 발생 하였습니다";
-Message.Label.Array["CONFIRM.REISSUE_APPROVAL"] = "재발급 완료처리 하시겠습니까?";
-
 Message.Label.Array["FAIL.DELETE.REASON.EXIST_CHILD_DATA"] = "하위 데이터가 존재하기 때문에 삭제 실패 하였습니다";
 Message.Label.Array["MAXIMUM.UPLOAD.SIZE.100MB"] = "파일 업로드 용량은 100 MB를 초과할 수 없습니다";
 
@@ -113,6 +99,7 @@ Message.Label.Array["ALERT.NO.FILE"] = "선택 된 파일이 없습니다";
 Message.Label.Array["ALERT.NO.CHANGED.FILE"] = "변경 된 내용이 없습니다";
 Message.Label.Array["CONFIRM.CLOSE_UNSAVED_CHANGES"] = "저장되지 않은 변경 사항이 있습니다. 창을 닫으시겠습니까?";
 
+Message.Label.Array["SAVE"] = "저장";
 Message.Label.Array["REGISTER_BTN"] = "등록";
 Message.Label.Array["MODIFY_BTN"] = "수정";
 Message.Label.Array["DETAIL_BTN"] = "상세";
