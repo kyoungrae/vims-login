@@ -3156,6 +3156,14 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                 $("#"+gridId+" .gi-grid-paging-content").html('');
             }
             $("#"+gridId+" .gi-grid-list-header").after(grid_list);
+
+            let rows  = $("#"+gridId+" .gi-grid-list");
+            rows.map((i,row) =>{
+                let rowInLi = $(row).find("li");
+
+                $(rows).not("[data-row-num='0']").addClass("border-top-dotted-gray");
+                $(rowInLi).not(":last").addClass("gi-grid-li-border-dotted");
+            })
         },
         //그리드 row 개수 변경 및 페이징 버튼 이벤트 설정
         pagingSet: function(fn){
