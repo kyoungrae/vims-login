@@ -3508,7 +3508,7 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
         sortDataSet:function(fn, notSortList){
             notSortList = notSortList || [];
             // 이벤트 위임: 부모 요소에 클릭 이벤트 등록
-            $('ul.gi-grid-list-header').off('click').on('click', 'li', function(e) {
+            $("#"+gridId+' ul.gi-grid-list-header').off('click').on('click', 'li', function(e) {
                 let column = $(this).data('column');
 
                 // 버튼 컬럼이나 제외 컬럼은 처리하지 않음
@@ -4383,7 +4383,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
             notSortList = notSortList || [];
 
             // 중복실행이 너무 많아서 수정 -> 부모 요소에 클릭 이벤트 등록
-            $('ul.gi-grid-list-header').off('click').on('click', 'li', function() {
+            $("#"+gridId+' ul.gi-grid-list-header').off('click').on('click', 'li', function() {
                 let column = $(this).data('column');
 
                 // 버튼 컬럼이나 제외 컬럼은 처리하지 않음
