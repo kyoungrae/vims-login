@@ -3163,7 +3163,52 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
 
                 $(rows).not("[data-row-num='0']").addClass("border-top-dotted-gray");
                 $(rowInLi).not(":last").addClass("gi-grid-li-border-dotted");
+                unUsedMenuUISettings(row)
             })
+
+            function unUsedMenuUISettings(e){
+                console.log(e)
+                //NOTE: 미사용시 메뉴 비활성화
+                let flag = e.find("li[data-field='use_yn']").not(".hidden").find("span[data-grid-value]").length === 0;
+                let a = ""; //NOTE: 그리드 내부에 COMMON_CODE_GROUP_ID 함수로 인해 값이 동적으로 변화 하는걸 대비(공통코드 적용시 text, 미적용시 interger)
+                let b = "";
+                let c = "";
+                if(flag){
+                    a = e.$row.find("li[data-field='use_yn']").not(".hidden").find("span").text();
+                    b = "0";
+                    c = "1";
+                }else{
+                    a = e.$row.find("li[data-field='use_yn']").not(".hidden").find("span").data("gridValue");
+                    b = 0;
+                    c = 1;
+                }
+                if(a === b){
+                    $(e.$row).addClass("unused-menu");
+                    let parentValue = $(e)[0].parentVal;
+                    let dept2CodeName = "";
+                    rows.forEach(item =>{
+                        if(item.subVal === parentValue){
+                            $(item.$row).addClass("unused-menu")
+                        }
+                    });
+                    //NOTE: 최상위 메뉴 비활성화 시 하위 메뉴 모두 비활성화
+                    if(a === b){
+                        rows.forEach(item =>{
+                            if(item.subVal === parentValue){
+                                dept2CodeName = $(item.$row).find("li[data-field='menu_code']").find("span").text();
+                            }
+                            if(item.subVal === dept2CodeName){
+                                $(item.$row).addClass("unused-menu")
+                            }
+                        });
+                    }
+                }else{
+                    //NOTE: 사용중인 최상위 메뉴의 하위메뉴 비활성화
+                    if(a === b && a === c){
+                        $(e.$row).removeClass("unused-menu");
+                    }
+                }
+            }
         },
         //그리드 row 개수 변경 및 페이징 버튼 이벤트 설정
         pagingSet: function(fn){
