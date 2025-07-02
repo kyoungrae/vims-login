@@ -3097,6 +3097,7 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
         DataSet: async function (data) {
             let flag = formUtil.checkEmptyValue(data);
             let grid_list = "";
+            let commonCodeGroupIdArray = [];
             if(flag){
                 for (let i = 0; i < data.length; i++) {
                     grid_list += '<ul class="gi-grid-list gi-row-100 gi-ul gi-flex gi-flex-justify-content-space-evenly '+pagingAnimationClass+'" data-row-num="'+i+'">';
@@ -3108,7 +3109,9 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                         let commonCodeValue = "";
                         let hidden = true;
                         if(formUtil.checkEmptyValue(item.COMMON_CODE_GROUP_ID)){
-                            commonCodeName = await setCommonCodeNameInGrid(data, item, i);
+
+                            //NOTE: 불필요한 다중 공통코드 조회 차단
+                            commonCodeName = await checkSameCode(commonCodeGroupIdArray,item.COMMON_CODE_GROUP_ID,data[i]);
                             commonCodeValue =  data[i][item.ID];
                         }else{
                             commonCodeName = data[i][item.ID];
@@ -3757,18 +3760,44 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
         }
     }
 }
-async function setCommonCodeNameInGrid(data,item,i) {
-    let codeName = "";
-    let param = {
-        group_id: item.COMMON_CODE_GROUP_ID
-    };
-    let codeItem = await findCommonCode(param);
-    for (let k = 0; k < codeItem.length; k++) {
-        if (codeItem[k].code_id === data[i][item.ID]) {
-            codeName = codeItem[k].code_name;
+
+//NOTE: 불필요한 COMMON_CODE 조회 차단 로직
+async function checkSameCode(commonCodeGroupIdArray,commonGroupCodeId,cont){
+    let param = {group_id : commonGroupCodeId};
+    let commonCodeArray = [];
+    //NOTE: 공통코드 Array에 그리드 COMMON_CODE_GROUP_ID 값과 일치하는 값이 있는지 여부
+    let isExist = commonCodeGroupIdArray.some(item => {
+        return Object.keys(item)[0] === commonGroupCodeId;
+    });
+
+    //NOTE : 그리드 DataSet 호출 시 그리드 내의 COMMON_CODE_GROUP_ID로 COMMON_CODE 조회 후 commonCodeGroupIdArray 배열에 추가
+    if (!isExist) {
+        let commonCodeList = await findCommonCode(param);
+        commonCodeList.map(item =>{
+            commonCodeArray.push({[item.code_id]:item.code_name});
+        })
+        commonCodeGroupIdArray.push({ [commonGroupCodeId]: commonCodeArray });
+    }
+    //NOTE: commonCodeGroupIdArray 배열의 COMMON_CODE 키:값 으로 데이터 바인딩
+    for(let key in cont){
+        let returnVALUE = "";
+        let lowerKey = commonGroupCodeId.toLowerCase();
+        //NOTE : 그리드 row의 키가 COMMON_CODE_GROUP_ID와 일치 하는지 여부 파악
+        if(key.toLowerCase() === lowerKey){
+            //NOTE: commonCodeGroupIdArray 배열안의 키:값과 일치 하면 CODE_NAME 리턴
+            commonCodeGroupIdArray.find(item=>{
+                if(formUtil.checkEmptyValue(item[commonGroupCodeId])){
+                    item[commonGroupCodeId].find(valueItem=>{
+                        if(Object.keys(valueItem)[0] === cont[key]){
+                            returnVALUE = valueItem[cont[key]];
+                        }
+                    })
+                }
+            })
+            return returnVALUE;
         }
     }
-    return codeName;
+    // console.log("푸쉬 푸쉬::", JSON.parse(JSON.stringify(commonCodeGroupIdArray)));
 }
 /**
  * @title : pageReDirectAnimation
@@ -3999,6 +4028,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                                     && formUtil.checkEmptyValue(application_parent_hierarchyOptionColumn)
                                     && formUtil.checkEmptyValue(application_sub_hierarchyOptionColumn);
             let grid_list = "";
+            let commonCodeGroupIdArray = [];
 
             if(flag){
                 for (let i = 0; i < data.length; i++) {
@@ -4010,7 +4040,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                            let commonCodeValue = "";
                            let hidden = true;
                            if(formUtil.checkEmptyValue(item.COMMON_CODE_GROUP_ID)){
-                               commonCodeName = await setCommonCodeNameInGrid(data, item, i)
+                               commonCodeName = await checkSameCode(commonCodeGroupIdArray,item.COMMON_CODE_GROUP_ID,data[i]);
                                commonCodeValue =  data[i][item.ID];
                            }else{
                                commonCodeName = data[i][item.ID];
