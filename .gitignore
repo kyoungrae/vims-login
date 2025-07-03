@@ -34,5 +34,4 @@ build/
 .vscode/
 
 # Project exclude paths
-logs
 /logs/
