@@ -3617,7 +3617,7 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                     }
                     resultList[columnName] = columnValue;
                 });
-                fn(resultList);
+                fn(resultList,e);
             }
         },
         //NOTE : doubleClick 이벤트 설정
@@ -4485,7 +4485,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                     resultList[columnName] = columnValue;
                     resultList["EVENT"] = e;
                 });
-                fn(resultList);
+                fn(resultList,e);
             }
         },
         rowMultiSelectClick:function(fn){
