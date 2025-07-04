@@ -4122,7 +4122,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                 //              ,parentVal : "SPECIFICATION_MANAGEMENT"
                 //              ,subVal : "-"
                 let rows = [];
-                $(".gi-grid-list").each(function () {
+                $("#"+gridId+" .gi-grid-list").each(function () {
                     let $row = $(this);
                     // 각 행 내부에서 필요한 값을 추출 (trim()으로 공백 제거)
                     let level = $row.find(`li[data-field="${application_level_hierarchyOptionColumn}"] span`)
@@ -4214,7 +4214,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                 });
 
                 // 4. 삽입
-                let $body = $("#gi-grid-list-body");
+                let $body = $("#"+gridId+" #gi-grid-list-body");
 
                 $body.find("ul.gi-grid-list").detach(); //remove대신 사용
 
