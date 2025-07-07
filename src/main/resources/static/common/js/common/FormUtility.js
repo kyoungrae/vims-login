@@ -3060,7 +3060,7 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
 
     let grid =
         '            <figure class="gi-figure-content gi-overflow-scroll gi-col-100 gi-row-100 gi-flex gi-flex-justify-content-center gi-flex gi-flex-direction-column">' +
-        '                <div class="gi-article-content gi-min-col-90 gi-row-100">' +
+        '                <div class="gi-article-content gi-min-col-90 gi-col-100 gi-row-100">' +
         // '                    <header class="gi-row-100 gi-col-5 gi-margin-bottom-1"><h4>' + title + '</h4></header>' +
         '                    <div class="gi-row-100 gi-flex gi-margin-bottom-1 ">' +
         '                        <select class="gi-grid-row-selector" id="'+giGridRowSelectorId+'" class="gi-row-65px">' +
@@ -3957,7 +3957,8 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
             HEADER : item.HEADER,
             COMMON_CODE_GROUP_ID : item.COMMON_CODE_GROUP_ID,
             TARGET : item.TARGET,
-            HIDDEN : item.HIDDEN
+            HIDDEN : item.HIDDEN,
+            VISIBLE_OPTION_BTN : item.VISIBLE_OPTION_BTN
         });
         // //정렬 대상이라면 정렬순서 추가
         // if (gridSortManager.sortColumn !== null && gridSortManager.sortColumn !== undefined && gridSortManager.sortColumn.trim() !== '') {
@@ -4020,7 +4021,7 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
 
     let grid =
         '            <figure class="gi-figure-content gi-overflow-scroll gi-col-100 gi-row-100 gi-flex gi-flex-justify-content-center gi-flex gi-flex-direction-column">' +
-        '                <div class="gi-article-content gi-min-col-90 gi-row-100">' +
+        '                <div class="gi-article-content gi-min-col-90 gi-col-100 gi-row-100">' +
         // '                    <header class="gi-row-100 gi-col-5 gi-margin-bottom-1"><h4>' + title + '</h4></header>' +
         //'                    <div class="gi-row-100 gi-flex gi-margin-bottom-1 gi-col-25px">' +
         // '                        <select id="gi-grid-row-selector" class="gi-row-65px">' +
@@ -4062,28 +4063,58 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
             let grid_list = "";
             let commonCodeGroupIdArray = [];
 
+            //NOTE: rows BTN 노출 이벤트 로직 설정
+            let visibleOptionArray = [];
+            let originalDataForVisibleOption = [];
+            function constSetVisibleOption(){
+                headerItem.map(item => {
+                    if(formUtil.checkEmptyValue(item.VISIBLE_OPTION_BTN)){
+                        item.VISIBLE_OPTION_BTN["BTN_ID"] = item.ID;
+                        visibleOptionArray.push(item.VISIBLE_OPTION_BTN);
+                    }
+                })
+            }
+
             if(flag){
+                //NOTE: rows BTN 노출 이벤트 함수 호출
+                constSetVisibleOption();
+
                 for (let i = 0; i < data.length; i++) {
                     grid_list += '<ul class="gi-grid-list gi-row-100 gi-ul gi-flex gi-flex-justify-content-space-evenly '+pagingAnimationClass+'" data-row-num="'+i+'">';
+                    originalDataForVisibleOption = [];
                     for (let j = 0; j < headerItem.length; j++) {
-                           let item = headerItem[j];
-                           let tag = "";
-                           let commonCodeName = "";
-                           let commonCodeValue = "";
-                           let hidden = true;
-                           if(formUtil.checkEmptyValue(item.COMMON_CODE_GROUP_ID)){
-                               commonCodeName = await checkSameCode(commonCodeGroupIdArray,item.COMMON_CODE_GROUP_ID,data[i]);
-                               commonCodeValue =  data[i][item.ID];
-                           }else{
-                               commonCodeName = data[i][item.ID];
-                           }
-                           if(formUtil.checkEmptyValue(item.HIDDEN)){
-                               if(item.HIDDEN){
-                                   hidden = "hidden";
-                               }else{
-                                   hidden = "";
-                               }
-                           }
+                        let item = headerItem[j];
+                        let tag = "";
+                        let commonCodeName = "";
+                        let commonCodeValue = "";
+                        let hidden = true;
+                        if(formUtil.checkEmptyValue(item.COMMON_CODE_GROUP_ID)){
+                            commonCodeName = await checkSameCode(commonCodeGroupIdArray,item.COMMON_CODE_GROUP_ID,data[i]);
+                            commonCodeValue =  data[i][item.ID];
+                        }else{
+                            commonCodeName = data[i][item.ID];
+                        }
+                        if(formUtil.checkEmptyValue(item.HIDDEN)){
+                            if(item.HIDDEN){
+                                hidden = "hidden";
+                            }else{
+                                hidden = "";
+                            }
+                        }
+
+                        //NOTE: rows BTN 노출 이벤트 함수 호출
+                        visibleOptionArray.map(visibleOptionKeys =>{
+                            if(Object.keys(visibleOptionKeys)[0] === item.ID){
+                                let isExist = originalDataForVisibleOption.some(optionItem => {
+                                    return Object.keys(optionItem)[0] === item.ID;
+                                });
+                                if(!isExist){
+                                    if(visibleOptionKeys[item.ID] === commonCodeName){
+                                        originalDataForVisibleOption[visibleOptionKeys.BTN_ID]= "true";
+                                    }
+                                }
+                            }
+                        })
 
                         if(!formUtil.checkEmptyValue(commonCodeName)) commonCodeName = "";
                         switch (item.TYPE) {
@@ -4093,13 +4124,15 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                                        tag = '<span class="gi-row-50 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-grid-value="'+commonCodeValue+'">' + commonCodeName + '</span>'
                                        :
                                        tag = '<span class="gi-row-50 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '">' + commonCodeName + '</span>';
-                                   break;
+                                       break;
                                // case "radio":
                                //     tag = '<input type="radio" class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-field="'+data[i][item.ID]+'"/>';
                                //     break;
                                case "button":
-                                   tag = '<button type="button" id="'+ item.ID +"_"+i+'" class="gi-grid-btn gi-row-50 gi-font-size-' + item.FONT_SIZE + ' '+item.ID+'" data-row-num="'+i+'" data-btn-target="'+ item.TARGET + '">' + item.HEADER + '</button>';
-                                   break;
+                                   if(!originalDataForVisibleOption[item.ID]){
+                                        tag = '<button type="button" id="'+ item.ID +"_"+i+'" class="gi-grid-btn gi-row-50 gi-font-size-' + item.FONT_SIZE + ' '+item.ID+'" data-row-num="'+i+'" data-btn-target="'+ item.TARGET + '">' + item.HEADER + '</button>';
+                                        break;
+                                   }
                                // case "checkbox":
                                //     tag = '<input type="checkbox" class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" value="' + data[i][item.ID] + '" />';
                                //     break;
@@ -4134,7 +4167,6 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                     rows.push({ $row, level, parentVal, subVal});
 
                 });
-
                 // 2. 레벨별 그룹화
                 let depth0 = rows.filter(r => r.level === "0");
                 let depth1 = rows.filter(r => r.level === "1");
@@ -4147,10 +4179,12 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                     if (r.level === "0") {
                         r.$row.find("li").not('.hidden').first().addClass("gi-grid-hierarchy-depth0");
                         //NOTE: 첫번째 row를 제외한 row에 border-top-dotted-gray 추가
-                        if(i !==0){
-                            r.$row.not("[data-row-num='0']").addClass("border-top-dotted-gray");
+                        // r.$row.not("[data-row-num='"+(i+1)+"']").addClass("border-top-dotted-gray");
+                        if (r !== depth0[0]) {
+                            r.$row.addClass("border-top-dotted-gray");
                         }
                         unUsedMenuUISettings(r);
+
                     } else if (r.level === "1") {
                         r.$row.find("li").not('.hidden').first().addClass("gi-grid-hierarchy-depth1");
                         unUsedMenuUISettings(r);
