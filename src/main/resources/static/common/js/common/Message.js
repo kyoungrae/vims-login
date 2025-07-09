@@ -36,6 +36,7 @@ Message.Label.Array["CONFIRM.UPDATE"] = "수정하시겠습니까?";
 Message.Label.Array["CONFIRM.RESET"] = "초기화하시겠습니까?";
 Message.Label.Array["CONFIRM.CANCEL"] = "취소하시겠습니까?";
 Message.Label.Array["CONFIRM.RESEND"] = "재발송하시겠습니까?";
+Message.Label.Array["CONFIRM.SAVE"] = "저장하시겠습니까?";
 
 Message.Label.Array["FAIL.INSERT"] = "등록실패";
 Message.Label.Array["FAIL.SELECT"] = "조회실패";

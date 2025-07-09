@@ -14,6 +14,7 @@
     <insert id="INSERT_USER_INFO" parameterType="com.system.auth.authuser.AuthUser">
         INSERT INTO COMMON_USER (
             id,
+            user_id,
             password,
             email,
             system_create_date,
@@ -30,6 +31,7 @@
         </trim>
         ) VALUES (
             #{id},
+            #{user_id},
             #{password},
             #{email},
             NOW(),

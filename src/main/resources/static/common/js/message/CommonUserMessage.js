@@ -40,3 +40,30 @@ Message.Label.Array["COMMON_USER.ADDRESS"] = "주소";
 Message.Label.Array["COMMON_USER.ADDRESS_DETAIL"] = "주소상세";
 Message.Label.Array["COMMON_USER.POSTAL_CODE"] = "우편번호";
 Message.Label.Array["COMMON_USER.UUID"] = "파일ID";
+
+// 내정보 수정 페이지
+Message.Label.Array["COMMON_USER.MYINFO.TITLE"] = "내 정보 수정";
+Message.Label.Array["COMMON_USER.MYINFO.MY_INFO"] = "내 정보";
+Message.Label.Array["COMMON_USER.MYINFO.MY_NAME"] = "이름";
+Message.Label.Array["COMMON_USER.MYINFO.MY_PHONE_NUMBER"] = "핸드폰번호";
+Message.Label.Array["COMMON_USER.MYINFO.MY_EMAIL"] = "이메일";
+Message.Label.Array["COMMON_USER.MYINFO.MY_ID"] = "아이디";
+Message.Label.Array["COMMON_USER.MYINFO.MY_ADDRESS"] = "주소";
+Message.Label.Array["COMMON_USER.MYINFO.MY_ADDRESS_DETAIL"] = "상세주소";
+Message.Label.Array["COMMON_USER.MYINFO.MY_POSTAL_CODE"] = "우편번호";
+Message.Label.Array["COMMON_USER.MYINFO.MY_ROLE"] = "권한";
+Message.Label.Array["COMMON_USER.MYINFO.MY_OFFICE_NAME"] = "소속";
+Message.Label.Array["COMMON_USER.MYINFO.MY_OFFICE_CODE"] = "소속코드";
+Message.Label.Array["COMMON_USER.MYINFO.MY_UPDATE_DATE"] = "수정일";
+Message.Label.Array["COMMON_USER.MYINFO.MY_CREATE_DATE"] = "등록일";
+Message.Label.Array["COMMON_USER.MYINFO.MY_LAST_UPDATE_DATE"] = "마지막 수정일";
+Message.Label.Array["COMMON_USER.MYINFO.MY_PASSWORD_CHANGE"] = "비밀번호 변경";
+Message.Label.Array["COMMON_USER.MYINFO.MY_BEFORE_PASSWORD"] = "기존 비밀번호";
+Message.Label.Array["COMMON_USER.MYINFO.MY_AFTER_PASSWORD"] = "새 비밀번호";
+Message.Label.Array["COMMON_USER.MYINFO.MY_AFTER_PASSWORD_CONFIRM"] = "새 비밀번호 확인";
+Message.Label.Array["COMMON_USER.MYINFO.CHECK_PASSWORD_DOUBLE_CHECK"] = "새 비밀번호 확인이 일치 하지 않습니다";
+Message.Label.Array["SAVE"] = "저장";
+Message.Label.Array["CONFIRM"] = "확인";
+Message.Label.Array["CANCEL"] = "취소";
+
+
