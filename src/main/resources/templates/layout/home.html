@@ -263,7 +263,8 @@
                                 top_menu_code : item.top_menu_code,
                                 menu_name : item.menu_name_kr,
                                 menu_level : item.menu_level,
-                                url : item.URL
+                                url : item.URL,
+                                menu_icon : item.menu_icon
                             });
                             break;
 
@@ -273,7 +274,8 @@
                                 top_menu_code : item.top_menu_code,
                                 menu_name : item.menu_name_kr,
                                 menu_level : item.menu_level,
-                                url : item.url
+                                url : item.url,
+                                menu_icon : item.menu_icon
                             });
                             break;
 
@@ -284,7 +286,8 @@
                                 menu_name : item.menu_name_kr,
                                 menu_level : item.menu_level,
                                 url : item.url,
-                                prgm_url : item.prgm_url
+                                prgm_url : item.prgm_url,
+                                menu_icon : item.menu_icon
                             });
                             break;
                     }
@@ -295,6 +298,7 @@
                         menu_name: item.menu_name_kr,
                         menu_level: item.menu_level,
                         url: item.url,
+                        menu_icon : item.menu_icon,
                         children: [] // 하위 메뉴를 담을 배열
                     };
 
@@ -329,24 +333,10 @@
     function createSideNavMenuList(sideNavMenuList1Depth, sideNavMenuList2Depth, sideNavMenuList3Depth){
         let sideNavMenuHtml = "";
 
-        // todo 메뉴 아이콘은 추후 게시판 생성 템플릿에서 게시판 생성 시 선택 된 아이콘으로 태그에 자동으로 입력처리 예상(2025-02-12)
-        const menuIcons = {
-            SPECIFICATION_MANAGEMENT: "fa-solid fa-file-invoice",                        // 제원관리
-            TECHNOLOGY_REVIEW: "fa-solid fa-list-check",                                 // 기술검토
-            SAFETY_INSPECTION: "fa-solid fa-shield-halved",                              // 안전검사
-            MAKE_MANAGEMENT: "fa-solid fa-file-lines",                                   // 제작관리
-            TEMPORARY_DRIVING: "fa-solid fa-car-on",                                     // 임시운행
-            REGISTER_MANAGEMENT: "fa-solid fa-file-signature",                           // 등록관리
-            INSPECTION_MANAGEMENT: "fa-solid fa-magnifying-glass",                       // 검사관리
-            MANAGEMENT_SERVICE: "fa-solid fa-clipboard-list",                            // 업무관리
-            COMPREHENSIVE_FUNCTIONAL_DIAGNOSIS_MANAGEMENT: "fa-solid fa-stethoscope",    // 기능종합진단
-            SETTINGS: "fa-solid fa-gear"                                                 // 설정/관리
-        };
-
         sideNavMenuList1Depth.map(menu1 => {
             sideNavMenuHtml +=  "<li class='gi-side-nav-menu-item gi-margin-bottom-26px'>"
                 +      "<a href='#' class='gi-side-nav-title collapsed' data-menu-level='" + menu1.menu_level + "' data-menu-code='" + menu1.menu_code + "'>"
-                +      "<i class='fa-inverse gi-side-nav-title-icon " + menuIcons[menu1.menu_code] + "'></i>"
+                +      "<i class='fa-inverse gi-side-nav-title-icon fa-solid " + menu1.menu_icon + "'></i>"
                 +          "<span>" + menu1.menu_name + "</span>"
                 +          "<span class='fa-solid fa-angle-right'></span>"
                 +      "</a>";

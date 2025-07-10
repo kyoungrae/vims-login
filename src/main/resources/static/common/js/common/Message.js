@@ -36,7 +36,6 @@ Message.Label.Array["CONFIRM.UPDATE"] = "수정하시겠습니까?";
 Message.Label.Array["CONFIRM.RESET"] = "초기화하시겠습니까?";
 Message.Label.Array["CONFIRM.CANCEL"] = "취소하시겠습니까?";
 Message.Label.Array["CONFIRM.RESEND"] = "재발송하시겠습니까?";
-Message.Label.Array["CONFIRM.SAVE"] = "저장하시겠습니까?";
 
 Message.Label.Array["FAIL.INSERT"] = "등록실패";
 Message.Label.Array["FAIL.SELECT"] = "조회실패";
@@ -101,8 +100,11 @@ Message.Label.Array["ALERT.NO.CHANGED.FILE"] = "변경 된 내용이 없습니�
 Message.Label.Array["CONFIRM.CLOSE_UNSAVED_CHANGES"] = "저장되지 않은 변경 사항이 있습니다. 창을 닫으시겠습니까?";
 
 Message.Label.Array["SAVE"] = "저장";
+Message.Label.Array["CLOSE_BTN"] = "닫기";
 Message.Label.Array["REGISTER_BTN"] = "등록";
+Message.Label.Array["SELECT_BTN"] = "선택";
 Message.Label.Array["MODIFY_BTN"] = "수정";
+Message.Label.Array["DELETE_BTN"] = "삭제";
 Message.Label.Array["DETAIL_BTN"] = "상세";
 Message.Label.Array["SEARCH_BTN"] = "조회";
 Message.Label.Array["RESET_BTN"] = "초기화";
