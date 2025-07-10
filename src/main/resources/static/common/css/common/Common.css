@@ -33,6 +33,7 @@
     --logo-image: url("../../img/GI.png");
 
     --border-radius-btn : 10px;
+    --border-radius-grid-btn : 5px;
     --border-radius-header : 10px;
     --border-radius-article : 18px;
     --border-layout : 1px solid #a9a9a9;
@@ -579,7 +580,6 @@
     display: flex;
     position: relative;
 }
-/*
 [data-side-grid-open="false"]{
     width: 0 !important;
     height: 0 !important;
@@ -594,7 +594,6 @@
     margin: 0 ;
     animation: side_grid_open_animation 0.3s cubic-bezier(0.2,0.5,0.4,0.1);
 }
- */
 @keyframes side_grid_open_animation{
     0%{
         width: 100%;
@@ -625,28 +624,28 @@
     }
 }
 
-[data-side-grid-open="false"], [data-side-grid-open="true"] {
-    will-change: transform, opacity, width, height, padding;
-    transition: width 0.3s cubic-bezier(0.2,0.5,0.4,0.1),
-    height 0.3s cubic-bezier(0.2,0.5,0.4,0.1),
-    padding 0.3s cubic-bezier(0.2,0.5,0.4,0.1),
-    opacity 0.3s cubic-bezier(0.2,0.5,0.4,0.1);
-    backface-visibility: hidden;
-}
+/*[data-side-grid-open="false"], [data-side-grid-open="true"] {*/
+/*    will-change: transform, opacity, width, height, padding;*/
+/*    transition: width 0.3s cubic-bezier(0.2,0.5,0.4,0.1),*/
+/*    height 0.3s cubic-bezier(0.2,0.5,0.4,0.1),*/
+/*    padding 0.3s cubic-bezier(0.2,0.5,0.4,0.1),*/
+/*    opacity 0.3s cubic-bezier(0.2,0.5,0.4,0.1);*/
+/*    backface-visibility: hidden;*/
+/*}*/
 
-[data-side-grid-open="false"] {
-    width: 0;
-    height: 0;
-    padding: 0;
-    opacity: 0;
-}
+/*[data-side-grid-open="false"] {*/
+/*    width: 0;*/
+/*    height: 0;*/
+/*    padding: 0;*/
+/*    opacity: 0;*/
+/*}*/
 
-[data-side-grid-open="true"] {
-    width: 100%;
-    height: 100%;
-    padding: 5px;
-    opacity: 1;
-}
+/*[data-side-grid-open="true"] {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    padding: 5px;*/
+/*    opacity: 1;*/
+/*}*/
 /* ======================================================================================================== Flex 영역*/
 .gi-inline-flex{
     display: inline-flex;
@@ -810,7 +809,7 @@
     outline: none;
     font-size: 1rem;
     appearance: none;
-    background: url("/static/common/img/dropdown.svg") no-repeat right 10px center;
+    /*background: url("../../img/dropdown.svg") no-repeat right 10px center;*/
     background-size: 15px;
     cursor: pointer;
 }
@@ -1286,10 +1285,22 @@ option {
 .gi-grid-btn{
     height: 100%;
     min-width: 80%;
+    border: 1px solid #cfcfcf;
+    background-color: #fffefe;
+    font-size: 10px;
+    color: #000000;
+    border-radius: var(--border-radius-grid-btn);
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    margin: 0 5px 0 5px;
+}
+.gi-grid-modify-btn{
+    height: 100%;
+    min-width: 80%;
     border:none;
-    background-color: #d5d5d5;
+    background-color: #fde69f;
     color:#000000;
-    border-radius: var(--border-radius-btn);
+    border-radius: var(--border-radius-grid-btn);
     cursor: pointer;
     transition: 0.2s ease-in-out;
     margin: 0 5px 0 5px;
@@ -1668,7 +1679,7 @@ option {
 .gi-row-185px{width:185px;}
 .gi-row-200px{width:200px;}     .gi-col-200px{height:200px;} .gi-col-260px{height:260px;} .gi-col-280px{height:280px;}
 .gi-row-300px{width:300px;}     .gi-col-300px{height:300px;}
-.gi-row-400px{width:400px;}     .gi-col-350px{height:350px;}
+.gi-row-400px{width:400px;}     .gi-col-350px{height:350px;} .gi-col-360px{height:360px;}
 .gi-row-500px{width:500px;}     .gi-col-400px{height:400px;}
 .gi-row-600px{width:600px;}     .gi-col-500px{height:500px;}
 .gi-row-700px{width:700px;}     .gi-col-600px{height:600px;}
@@ -1978,6 +1989,9 @@ option {
 
 /* ======================================================================================================== 공통 영역 */
 .hidden{display: none;}
+.gi-page-title{
+    font-size:20px;
+}
 #mainImage{
     background-image: url("../../img/main1.webp");
     background-repeat: no-repeat;
@@ -2003,9 +2017,6 @@ option {
     /*overflow-y: scroll;*/
     overflow-x: unset;
     overflow-y : auto;
-}
-.gi-overflow-y-scroll{
-    overflow-y: scroll;
 }
 .gi-hidden {
     display: none !important;
@@ -2034,8 +2045,380 @@ html{
 .no-drag {
     user-select: none;
 }
+.border-top-dotted-gray{
+    border-top:1px dotted #dbdbdb;
+}
+.font-weight-500{
+    font-weight:500;
+}
 
 /*****************************************************************/
+/** test 용도 추가 **/
+.gi-main2{
+    background-color: rgba(171, 171, 171, 0.13);
+    width: 100%;
+    height: var(--height-100vh);
+    box-sizing: border-box;
+}
+
+.gi-main-nav-logo-area {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+    transition: opacity 1s ease, width 1s ease, margin-right 1s ease;
+}
+
+.gi-main-nav-logo-area.visible {
+    opacity: 1;
+    width: 5%;
+    margin-right: 5%;
+    transition: opacity 1s ease, width 1s ease, margin-right 1s ease;
+}
+
+.main-nav-menu {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.main-nav-menu.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.5s ease;
+}
+
+.gi-main-content2{
+    background-color: var(--main-background-color);
+    padding-right: 12px;
+}
+
+.gi-menubar-header3{
+    width: 100%;
+    height: 70%;
+    background-color: var(--main-background-header-color);
+    padding:15px;
+    box-sizing: border-box;
+    padding-left: 15%;
+}
+
+.gi-side-nav{
+    z-index: 1000;
+    bottom: 0;
+    top: 0;
+    position: absolute;
+    width: 14%;
+    height: 100%;
+    overflow: visible;
+    background-color: var(--main-background-header-color);
+    /*padding-right: 4px;*/
+    transform: translateX(0);
+    transition: transform 0.5s ease-in-out;
+    pointer-events: auto;
+}
+
+.gi-side-nav.collapsed {
+    transform: translateX(-100%);
+    transition: transform 0.5s ease-in-out;
+    /*pointer-events: none;*/
+}
+
+.gi-side-nav-logo-area {
+    height: 3.5%;
+    position: relative;
+    top: -3%;
+}
+
+.gi-side-nav-logo {
+    display: block;
+    /*margin: 0 auto;*/
+    margin: 5% 0 0 5%;
+    height: 100%;
+    width: 36%;
+    background-image: var(--logo-image);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.side-nav-profile-trigger > span > i.fa-angle-right {
+    transition: transform 0.3s ease;
+}
+.side-nav-profile-trigger.active > span > i.fa-angle-right {
+    transition: transform 0.3s ease;
+    transform: rotate(90deg);
+}
+
+
+#side_nav_menu_container{
+    position: relative;
+    margin-top: 5%;
+    /*padding-right: 5px;*/
+}
+
+#side_nav_menu {
+    position: relative;
+    /*margin-top: 10%;*/
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.gi-side-nav-menu-level {
+    list-style-type: none;
+    display: none;
+    padding-left: 20px;
+}
+
+.gi-side-nav-menu-item {
+    position: relative;
+    margin-right: 1%;
+    margin-bottom: 7%;
+}
+
+.gi-side-nav-menu-item.child {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+/* 세로 연결선 */
+.gi-side-nav-menu-item.child::before {
+    content: "";
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 2px;
+    height: calc(100% + 5px);
+    background-color: white;
+}
+
+/* 가로 연결선 */
+.gi-side-nav-menu-item.child::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 11px;
+    height: 2px;
+    background-color: white;
+}
+
+.gi-side-nav-menu-level:last-child > .gi-side-nav-menu-item.child:last-child::before{
+    height: 20px;
+}
+
+
+/* 첫 번째 레벨 선 제거 */
+.gi-side-nav-menu-item.child[data-menu-level="0"]::before,
+.gi-side-nav-menu-item.child[data-menu-level="0"]::after {
+    content: none;
+}
+
+.gi-side-nav-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #FFFFFF ;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    white-space: normal;
+    word-wrap: break-word;
+
+    padding: 10px 15px;
+    /*margin-bottom: 8px;*/
+    border-radius: 10px;
+}
+
+.gi-side-nav-title:hover {
+    background-color: #1A1A50;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.gi-side-nav-title > span.fa-angle-right {
+    font-size: 14px;
+    color: #FFFFFF;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.gi-side-nav-title.active.page {
+    /* version 1*/
+    /*background-color: #8C8CCC; !* 금색 배경 *!*/
+    /*border-left: 3px solid #FFFFFF; !* 좌측 보더를 추가 *!*/
+
+    /*background-color: #FFFFFF; !* 금색 배경 *!*/
+    /*color: #000000;*/
+    /*font-weight: bold;*/
+
+    /* version 2*/
+    border: 2px solid #FFFFFF;
+    color: #FFFFFF;
+    /*font-weight: bold;*/
+}
+
+.gi-side-nav-title.active:not(.collapsed) > span.fa-angle-right {
+    color: #FFFFFF;
+    transform: rotate(90deg);
+}
+
+.sideNavPageLoad {
+    margin-left: 10px;
+}
+
+.gi-side-nav-toggle.expand {
+    transition: padding 0.5s ease-in-out, transform 0.5s ease-in-out;
+    padding: 1% 1% 0 15%;
+}
+
+.gi-side-nav-toggle.collapsed {
+    transition: padding 0.5s ease-in-out, transform 0.5s ease-in-out;
+    padding: 1% 5% 0 5%;
+}
+
+.gi-main-nav-toggle-icon {
+    filter: invert(85%) sepia(0%) saturate(0%) hue-rotate(0deg);
+    width: 27px;
+    height: 27px;
+    cursor: pointer;
+}
+
+.gi-side-nav-toggle-button-area {
+    top: 1%;
+    left: 99.8%;
+    background-color: #080825;
+    width: 30px;
+    height: 36px;
+    border-radius: 0px 16px 16px 0px;
+    z-index: 1000;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gi-side-nav-toggle-button-area > span {
+    transition: transform 0.5s ease-in-out;
+    transform: rotate(0deg);
+}
+
+.gi-side-nav-toggle-button-area.collapsed > span {
+    transition: transform 0.5s ease-in-out;
+    transform: rotate(-180deg);
+}
+
+.gi-side-nav-toggle-icon {
+}
+
+.gi-side-nav-toggle-image {
+    filter: invert(85%) sepia(0%) saturate(0%) hue-rotate(0deg);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.gi-search-icon-image {
+    width: 18px;
+    position: absolute;
+    margin: 0 0 0 4%;
+}
+
+.search-menu-container {
+    border-bottom: 1px solid white;
+}
+
+.search-menu-area {
+    justify-content: flex-start;
+    margin: 4% auto;
+}
+
+#search_menu_name, #search_menu_name2 {
+    background-color: #ffffff !important;
+    border-radius: 5px 5px 5px 5px;
+    height: 85%;
+}
+
+.gi-search-menu-result-area {
+    background-color: white;
+    transition: height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    height: 0;
+    opacity: 0;
+    overflow: scroll;
+}
+
+.gi-search-menu-result-area.visible {
+    background-color: #FFFFFF;
+    display: grid;
+    min-width: 500px;
+    min-height: 54px;
+    max-height: 700px;
+    width: auto;
+    height: auto;
+    margin: -20% 0 0 100%;
+    position: fixed;
+    z-index: 1000;
+    opacity: 1;
+    border-width: 0 1px 1px 1px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.gi-search-menu-result-area::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 0.125rem;
+}
+
+.gi-search-menu-result-area::-webkit-scrollbar-thumb {
+    background-color: #e5e5e5;
+    border-radius: 0.125rem;
+}
+
+.gi-search-menu-title {
+    padding: 1%;
+}
+
+.gi-search-menu-title, a.gi-search-menu-title:visited, a.gi-search-menu-title:active {
+    text-decoration: none;
+    white-space: nowrap;
+    color: inherit;
+}
+
+.gi-no-search-result-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gi-no-search-result-menu-title {
+    color: #8B8B8B;
+}
+
+.gi-search-result-row:hover{
+    background-color: #D5D5D5;
+    transition: background-color 0.3s ease;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.gi-menu-highlight {
+    color: blue;
+    font-weight: bold;
+}
+
+.gi-side-nav-title-icon {
+    margin-right: 5%;
+}
+
+.scroll-check-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*margin: 0 auto;*/
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    filter: invert(100%);
+}
+
+.scroll-check-icon.visible {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
 
 /*****************************************************************/
 #gi-logo{
@@ -2059,10 +2442,10 @@ html{
 }
 .gi-border{
     border-radius: 5px;
-    border : 1px solid #bdbaba;
+    border : 1px solid #999999;
 }
 .gi-article-content{
-    box-shadow: 0px 0px 40px rgb(0 0 0 / 6%);
+    box-shadow: 0px 0px 5px rgb(0 0 0 / 11%);
     border-radius: var(--border-radius-article);
     background-color:#ffffff;
     padding:20px;
@@ -2131,7 +2514,9 @@ html{
     z-index: 1;
 }
 .gi-grid-list{
-    margin: 10px 0 ;
+    /*margin: 10px 0 ;*/
+    padding: 10px 0 ;
+    box-sizing: border-box;
 }
 #gi-grid-list-body{
     height: calc(100% - var(--grid-row-selector-height));
@@ -2180,19 +2565,32 @@ html{
     font-weight: bold;
 }
 .gi-grid-list-hover{
-    background-color: #f3f3f3;
-    transition : all 0.4s cubic-bezier(1.680, -0.550, 0.000, 0.1);
+    background-color: rgb(254 241 208 / 33%);
+    transition : all 0.2s cubic-bezier(1,1,1,1);
+}
+.gi-grid-list-select{
+    background-color: rgb(186 192 255 / 33%) !important;
+    transition :all 0.2s cubic-bezier(1,1,1,1);
 }
 .gi-grid-list-multi_select{
     background-color: #f3f3f3;
-    transition : all 0.4s cubic-bezier(1.680, -0.550, 0.000, 0.1);
+    transition : all 0.2s cubic-bezier(1,1,1,1);
+}
+.gi-grid-list > .gi-grid-li-border-dotted{
+    border-right: 1px dotted #dbdbdb;
+}
+.unused-menu{
+    background-color: #c5c5c544;
+    color: #7d7d7d;
 }
 .gi-grid-hierarchy-depth0{
     font-weight:bolder;
+    text-shadow: 0px 0px #000000;
 }
 .gi-grid-hierarchy-depth0::before{
     content: "";
-    background-image: url(../../img/rectangle.png);
+    /*background-image: url(../../img/rectangle.png);*/
+    background-image: url(../../img/circle.png);
     position: relative;
     width: 15px;
     display: flex;
@@ -2311,6 +2709,21 @@ html{
 }
 .gi-grid-template-border{
     border:1px solid #d0d0d0;
+}
+.gi-grid-template-border > :nth-child(2n-1){
+    border-top:1px solid #d0d0d0;
+    border-left:1px solid #d0d0d0;
+    border-right:1px solid #d0d0d0;
+}
+.gi-grid-template-border > :nth-child(2n-1):last-child{
+    border-bottom:1px solid #d0d0d0;
+}
+.gi-grid-template-border > :nth-child(2n){
+    border-top:1px solid #d0d0d0;
+    border-right:1px solid #d0d0d0;
+}
+.gi-grid-template-border > :nth-child(2n):last-child{
+    border-bottom:1px solid #d0d0d0;
 }
 /* ======================================================================================================== Menubar 메뉴 영역*/
 #menu > li{
@@ -2452,12 +2865,6 @@ html{
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
-}
-.gi-login-forgot-password, a.gi-login-forgot-password:visited, a.gi-login-forgot-password:active {
-    text-decoration: none;
-    white-space: nowrap;
-    color: inherit;
-    cursor: pointer;
 }
 #checkLogin{
     background: none;
@@ -2726,89 +3133,18 @@ input[gi-datepicker] {
     border-radius: var(--border-grid-input-edge);
 }
 /* ======================================================================================================== 팝업영역*/
-.gi-popup.login-page {
-    position: fixed;
-    /*padding: 20px;*/
-    width: 100%;
-    /*height: 80%;*/
-    height: 40%;
-    z-index: 999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    backdrop-filter: blur(1px);
-
-    top: 30%;
-}
-.gi-popup.login-page[data-popup-open="true"] {
-    display: flex;
-    visibility: visible;
-}
-
-.gi-popup.login-page[data-popup-open="false"] {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s 0.45s, opacity 0.45s ease;
-}
-
-.gi-popup.login-page[data-popup-open="true"] > .gi-popup-body2 {
-    animation: slide-in-blurred-top 0.6s cubic-bezier(.23,1.000,.32,1.000) both;
-}
-
-.gi-popup.login-page[data-popup-open="false"] > .gi-popup-body2 {
-    animation: slide-out-blurred-top 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-    animation-fill-mode: forwards;
-}
-.gi-popup-body.login-page{
-    width: 30%;
-    height: 100%;
-    background-color: #FFFFFF;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    box-shadow: 0 0 32px #6f6f6fa8;
-}
-
-.authentication-check-message {
-    position: absolute;
-    color: red;
-    left: 35%;
-    top: 72%;
-}
-
-.authentication-check-message.success {
-    color: blue;
-    background: unset;
-}
-
-#loginPageAuthenticationForm.invisible {
-    width: 0;
-    transition: width 0.3s ease-in-out;
-}
-
-#loginPagePasswordInitializeForm {
-    width: 0;
-}
-
-#loginPagePasswordInitializeForm.visible {
-    width: 100%;
-    transition: width 0.3s ease-in-out;
-}
-
 .gi-popup {
     position: fixed;
     padding: 20px;
     width: 90%;
-    height: 80%;
+    height: 90%;
     z-index: 999;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     backdrop-filter: blur(1px);
+    transition: width 0.5s ease-in-out;
 }
 
 .gi-popup[data-popup-open="true"] {
@@ -2934,7 +3270,7 @@ input[gi-datepicker] {
     position: relative;
     border-radius: 4px;
     box-sizing: border-box;
-    background: url("/static/common/img/dropdown.svg") no-repeat right 10px center;
+    /*background: url("../../img/dropdown.svg") no-repeat right 10px center;*/
     background-size: 15px;
 }
 
@@ -2946,9 +3282,11 @@ input[gi-datepicker] {
     width: 100%;
     max-height: 200px;
     background: #fff;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    /*box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);*/
+    box-shadow: 0px 5px 10px rgb(134 139 206 / 33%);
     list-style-type: none;
-    outline: solid 0.5px var(--background-color-btn-gray);
+    /*outline: solid 0.5px var(--background-color-btn-gray);*/
+    outline: solid 0.5px #cfcfff59;
     overflow-y: auto;
     padding: 2% 5% 2% 5%;
     border-radius: 10px;
@@ -2981,7 +3319,7 @@ input[gi-datepicker] {
 
 /* formatCheck 함수에서 사용 */
 .check_on {
-    background-image: url("/static/common/img/check_on.svg");
+    background-image: url("../../img/check_on.svg");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 20px 20px;
@@ -2990,7 +3328,7 @@ input[gi-datepicker] {
 }
 
 .check_off {
-    background-image: url("/static/common/img/check_off.svg");
+    background-image: url("../../img/check_off.svg");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 20px 20px;
@@ -3000,14 +3338,14 @@ input[gi-datepicker] {
 
 /* grid 정렬용 */
 .gi-grid-sort-asc {
-    background-image: url("/static/common/img/grid_sort_asc.svg");
+    background-image: url("../../img/grid_sort_asc.svg");
     background-repeat: no-repeat;
     background-position: right 5% center;
     background-size: 15px 15px;
 }
 
 .gi-grid-sort-desc {
-    background-image: url("/static/common/img/grid_sort_desc.svg");
+    background-image: url("../../img/grid_sort_desc.svg");
     background-repeat: no-repeat;
     background-position: right 5% center;
     background-size: 15px 15px;
@@ -3015,7 +3353,7 @@ input[gi-datepicker] {
 
 /* grid sort hover. detail_btn(상세버튼)외에 hover로 이미지추가 */
 .gi-grid-list-header li:not(.gi-grid-sort-asc):not(.gi-grid-sort-desc):not([data-column$="detail_btn"]):hover {
-    background-image: url("/static/common/img/grid_sort_default.svg");
+    background-image: url("../../img/grid_sort_default.svg");
     background-repeat: no-repeat;
     background-position: right 5% center;
     background-size: 15px 15px;
@@ -3033,7 +3371,7 @@ input[gi-datepicker] {
     right: 10%;
     width: 20px;
     height: 20px;
-    background-image: url("/static/common/img/add.svg");
+    background-image: url("../../img/add.svg");
     background-repeat: no-repeat;
     background-size: 20px 20px;
     opacity: 0;
@@ -3056,7 +3394,7 @@ input[gi-datepicker] {
     right: 10%;
     width: 20px;
     height: 20px;
-    background-image: url("/static/common/img/remove.svg");
+    background-image: url("../../img/remove.svg");
     background-repeat: no-repeat;
     background-size: 20px 20px;
     opacity: 0;
@@ -3095,26 +3433,37 @@ input[gi-datepicker] {
     color:#000000;
 }
 /* ======================================================================================================== authUser dropdown in nav bar */
-.profile-dropdown {
+.side-nav-profile-dropdown {
     position: relative;
-    display: inline-block;
+    display: block;
 }
-.profile-trigger {
+.side-nav-profile-trigger {
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 5px 14px;
     border-radius: 8px;
     transition: background-color 0.3s;
+    justify-content: space-between;
 }
 .profile-trigger:hover {
     background-color: #9797975c;
 }
 .profile-picture {
-    width: 27px;
-    height: 27px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     margin-right: 10px;
+}
+.profile-info-frame {
+    display: flex;
+    width: 100%;
+}
+.profile-info {
+    display: grid;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 2%;
 }
 .profile-name {
     font-size: 14px;
@@ -3122,17 +3471,30 @@ input[gi-datepicker] {
 }
 .dropdown-menu {
     position: absolute;
-    top: 100%;
-    right: 0;
+    /*top: 100%;*/
+    /*right: 0;*/
+    left: 15px;
     background-color: white;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     display: none;
     flex-direction: column;
-    min-width: 120px;
+    /*min-width: 120px;*/
     width: 100%;
     z-index: 10;
+    margin: -28% 0 0 100%;
+    height: 152%;
+    justify-content: center;
+}
+.dropdown-menu:before{
+    content: "";
+    position: absolute;
+    left: -20px;
+    border-top: 7px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #ffffff;
+    border-bottom: 7px solid transparent;
 }
 .dropdown-menu a {
     padding: 10px 15px;
@@ -3159,10 +3521,46 @@ input[gi-datepicker] {
 .dropdown-menu a:last-child:hover {
     border-radius: 0px 0px 8px 8px;
 }
-.profile-dropdown.active .dropdown-menu {
+.side-nav-profile-dropdown.active .dropdown-menu {
     display: flex;
 }
-
+.gi-home-setting:after{
+    content:"";
+    position:absolute;
+    width: 20px;
+    height: 20px;
+    background-image: url("../../img/icon_management.svg");
+    background-repeat : no-repeat;
+    cursor:pointer;
+    top: 13px;
+    right: 15px;
+    transition: 0.1s cubic-bezier(1, 1, 1, 1);
+}
+.gi-home-setting:active:after{
+    transform: rotate(90deg) ;
+}
+.gi-home-setting-article{
+    position: absolute;
+    top: 5%;
+    left: 97%;
+    background-color: #ffffff;
+    width: 150px;
+    min-height: 33px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding:5px;
+}
+.gi-home-setting-article:after{
+    content: "";
+    position: absolute;
+    left: -15px;
+    top: -7px;
+    transform: rotate(35deg);
+    border-top: 7px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #ffffff;
+    border-bottom: 7px solid transparent;
+}
 /* ======================================================================================================== on/off switch */
 input.gi-switch {
     display: inline-block;
@@ -3243,8 +3641,38 @@ input.gi-switch:checked::before {
     cursor:pointer;
     background-color: #888888;
 }
-/* ======================================================================================================== slider */
+/* ======================================================================================================== myinfo */
+.user_icon_layout_body {
+    position: relative;
+}
 
+.add_user_img-btn {
+    padding: var(--padding-btn);
+    height: 100%;
+    min-width: 30px;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    margin: 0 5px 0 5px;
+    background-image: url("../../../common/img/add.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.add_user_img-btn:hover {
+    background-image: url("../../../common/img/add-hover.svg");
+}
+
+.add_user_img-btn-section {
+    position: absolute;
+    height: 30px;
+    top: 90%;
+    left: 90%;
+}
+/* ======================================================================================================== slider */
 [gi-slider-wrapper] {
     display: flex;
     transition: transform 0.5s ease-in-out;
@@ -3264,7 +3692,6 @@ input.gi-switch:checked::before {
     object-fit: cover;
     object-position: top;
 }
-
 
 [gi-slider-prev], [gi-slider-next] {
     position: absolute;

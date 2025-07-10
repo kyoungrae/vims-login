@@ -4136,9 +4136,9 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                                case "text":
                                    commonCodeValue
                                        ?
-                                       tag = '<span class="gi-row-50 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-grid-value="'+commonCodeValue+'">' + commonCodeName + '</span>'
+                                       tag = '<span class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-grid-value="'+commonCodeValue+'">' + commonCodeName + '</span>'
                                        :
-                                       tag = '<span class="gi-row-50 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '">' + commonCodeName + '</span>';
+                                       tag = '<span class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '">' + commonCodeName + '</span>';
                                        break;
                                // case "radio":
                                //     tag = '<input type="radio" class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-field="'+data[i][item.ID]+'"/>';
