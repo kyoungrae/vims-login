@@ -235,10 +235,8 @@
      * NOTE : 메뉴데이터 조회
      */
     function findByMenuList(){
-        let url = "/cms/common/commonMenu/find";
-        let param = {
-            use_yn:1
-        };
+        let url = "/cms/common/commonMenu/findAccessRightGroupForMenu";
+        let param = {};
         axios.post(url,param).then(response => {
             let status = response.status;
             if(status === 200){

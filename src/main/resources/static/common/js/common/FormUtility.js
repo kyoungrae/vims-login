@@ -4078,7 +4078,6 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
             if(flag){
                 //NOTE: rows BTN 노출 이벤트 함수 호출
                 constSetVisibleOption();
-
                 for (let i = 0; i < data.length; i++) {
                     grid_list += '<ul class="gi-grid-list gi-row-100 gi-ul gi-flex gi-flex-justify-content-space-evenly '+pagingAnimationClass+'" data-row-num="'+i+'">';
                     originalDataForVisibleOption = [];
@@ -4104,18 +4103,36 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
 
                         //NOTE: rows BTN 노출 이벤트 함수 호출
                         visibleOptionArray.map(visibleOptionKeys =>{
-                            if(Object.keys(visibleOptionKeys)[0] === item.ID){
-                                let isExist = originalDataForVisibleOption.some(optionItem => {
-                                    return Object.keys(optionItem)[0] === item.ID;
-                                });
-                                if(!isExist){
-                                    if(visibleOptionKeys[item.ID] === commonCodeName){
-                                        originalDataForVisibleOption[visibleOptionKeys.BTN_ID]= "true";
+                            //NOTE: VISIBLE_OPTION_BTN:[{"menu_level":"0"},{"menu_level":"1"}] 조건이 배열일때 적용 합수
+                            if(formUtil.checkEmptyValue(visibleOptionKeys.length)){
+                                visibleOptionKeys.map(ArrItem =>{
+                                    if(Object.keys(ArrItem)[0] === item.ID){
+                                        let isExist = originalDataForVisibleOption.some(optionItem => {
+                                            return Object.keys(optionItem)[0] === item.ID;
+                                        });
+                                        if(!isExist){
+                                            if(ArrItem[item.ID] === commonCodeName){
+                                                originalDataForVisibleOption[visibleOptionKeys.BTN_ID]= "true";
+                                            }
+                                        }
+                                    }
+                                })
+                            }else{
+                                //NOTE: VISIBLE_OPTION_BTN:{"menu_level":"0"} 조건이 하나 일때
+                                if(Object.keys(visibleOptionKeys)[0] === item.ID){
+                                    let isExist = originalDataForVisibleOption.some(optionItem => {
+                                        return Object.keys(optionItem)[0] === item.ID;
+                                    });
+                                    if(!isExist){
+                                        console.log(visibleOptionKeys,":",item.ID);
+                                        console.log("test2:",visibleOptionKeys[item.ID] ,":",commonCodeName)
+                                        if(visibleOptionKeys[item.ID] === commonCodeName){
+                                            originalDataForVisibleOption[visibleOptionKeys.BTN_ID]= "true";
+                                        }
                                     }
                                 }
                             }
                         })
-
                         if(!formUtil.checkEmptyValue(commonCodeName)) commonCodeName = "";
                         switch (item.TYPE) {
                                case "text":
