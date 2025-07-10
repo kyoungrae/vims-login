@@ -4124,8 +4124,6 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                                         return Object.keys(optionItem)[0] === item.ID;
                                     });
                                     if(!isExist){
-                                        console.log(visibleOptionKeys,":",item.ID);
-                                        console.log("test2:",visibleOptionKeys[item.ID] ,":",commonCodeName)
                                         if(visibleOptionKeys[item.ID] === commonCodeName){
                                             originalDataForVisibleOption[visibleOptionKeys.BTN_ID]= "true";
                                         }
