@@ -142,6 +142,7 @@
          * */
         $(".side-nav-profile-trigger").on("click", function (e) {
             dropDownMenu("open");
+            isDropMenuOpenSetClose();
         });
 
         /**
@@ -182,7 +183,7 @@
     }
 
     /**
-     * NOTE: 메뉴바 OPEN,CLOSE EVENT
+     * NOTE: 메뉴바 OPEN,CLOSE EVENT(노출 or 숨김)
      */
     function sideNaveOpenCloseEvent(){
         let giSideNavToggleButtonArea =$(".gi-side-nav-toggle-button-area");
@@ -264,7 +265,8 @@
                                 menu_name : item.menu_name_kr,
                                 menu_level : item.menu_level,
                                 url : item.URL,
-                                menu_icon : item.menu_icon
+                                menu_icon : item.menu_icon,
+                                menu_number : item.menu_number
                             });
                             break;
 
@@ -275,7 +277,8 @@
                                 menu_name : item.menu_name_kr,
                                 menu_level : item.menu_level,
                                 url : item.url,
-                                menu_icon : item.menu_icon
+                                menu_icon : item.menu_icon,
+                                menu_number : item.menu_number
                             });
                             break;
 
@@ -287,10 +290,15 @@
                                 menu_level : item.menu_level,
                                 url : item.url,
                                 prgm_url : item.prgm_url,
-                                menu_icon : item.menu_icon
+                                menu_icon : item.menu_icon,
+                                menu_number : item.menu_number
                             });
                             break;
                     }
+                    //NOTE: menu_number 에 따른 순서 정렬 설정
+                    sideNavMenuList1Depth.sort((a, b) => Number(a.menu_number) - Number(b.menu_number));
+                    sideNavMenuList2Depth.sort((a, b) => Number(a.menu_number) - Number(b.menu_number));
+                    sideNavMenuList3Depth.sort((a, b) => Number(a.menu_number) - Number(b.menu_number));
 
                     let menuItem = {
                         menu_code: item.menu_code,
@@ -379,7 +387,7 @@
     }
     //NOTE : 사이드 네비게이션 타이틀 클릭 이벤트
     function sideNavTitleClick(){
-        $('.gi-side-nav-title').on('click', function(e) {
+        $('.gi-side-nav-title').off("click").on('click', function(e) {
             e.preventDefault();
 
             let $this = $(this);
@@ -511,5 +519,40 @@
         let url = "/user/myinfo";
         dropDownMenu("close");
         formUtil.apiLoadContent("cms",url,"");
+        allCloseMenuTitle();
     });
+    //NOTE: 모든 매뉴 닫기
+    function allCloseMenuTitle(){
+        let sideNavTitleVolume = $(".gi-side-nav-menu-item").find(".gi-side-nav-title");
+        let sideNavMenuLevelVolume = $(".gi-side-nav-menu-item").find(".gi-side-nav-menu-level");
+        sideNavTitleVolume.map((index,item) =>{
+            if($(item).hasClass("active")){
+                $(item).removeClass("active");
+                $(item).addClass("collapsed");
+            }
+
+            if($(item).hasClass("page")){
+                $(item).removeClass("page");
+            }
+        })
+        sideNavMenuLevelVolume.map((index,item)=>{
+            $(item).css("display","none");
+        })
+    }
+
+    //NOTE: DropDownMenu를 제외한 부분을 클릭하면 DropDownMenu 비활성화 처리
+    function isDropMenuOpenSetClose(){
+        let flag = $(".side-nav-profile-dropdown").hasClass("active");
+        if(flag){
+            $(document).off("click.unOtherAreaClickEventHandler").on("click.unOtherAreaClickEventHandler", function (e) {
+                unOtherAreaClickEventHandler(e);
+            });
+
+        }
+        function unOtherAreaClickEventHandler(e){
+            if (!$(e.target).closest(".dropdown-menu , .side-nav-profile-dropdown").length) {
+                dropDownMenu("close");
+            }
+        }
+    }
 </script>

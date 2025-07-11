@@ -1829,24 +1829,9 @@ FormUtility.prototype.apiLoadContent = function(prefixUrl,reqUrl,DATA){
             sessionStorage.removeItem("DATA");
             sessionStorage.setItem("DATA",cont);
         }
-
-        if(typeof changedHomeType !== "undefined" && formUtil.checkEmptyValue(changedHomeType)){
-            $("#gi-road-content article:first").each(function() {
-                this.style.setProperty("width", "100%", "important");
-                if(!$(this).hasClass("gi-col-99") && !$(this).hasClass("gi-col-100")){
-                    this.style.setProperty("height", "98%", "important");
-                }
-            });
-
-            $("#gi-road-content article#gi-search-popup").addClass("gi-row-84-important");
-        }
-
-        formUtil.activatedMenu(reqUrl);
-
-    })
-        .catch(error => {
-            this.alertPopup('Failed to load content:', error);
-        });
+    }).catch(error => {
+        this.alertPopup('Failed to load content:', error);
+    });
 }
 /**
  * @title : loadToHtml .html 코드 삽입 함수
