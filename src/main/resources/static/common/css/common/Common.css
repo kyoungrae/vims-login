@@ -2725,6 +2725,14 @@ html{
 .gi-grid-template-border > :nth-child(2n):last-child{
     border-bottom:1px solid #d0d0d0;
 }
+.gridColumResizer {
+    width: 100%;
+    height: 100%;
+    right:0px;
+    position: relative;
+    cursor: default;
+    transition: 0.1s ease-in-out;
+}
 /* ======================================================================================================== Menubar 메뉴 영역*/
 #menu > li{
     border-bottom:1px solid transparent;

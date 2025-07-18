@@ -21,6 +21,7 @@
 
     <script type="text/javascript" src="/common/js/jquery/jquery3.6.0.js"></script>
     <script type="text/javascript" src="/common/js/common/FormUtility.js"></script>
+    <script type="text/javascript" src="/common/js/common/FIleUtility.js"></script>
     <script type="text/javascript" src="/common/js/common/DocumentsForm.js"></script>
     <script type="text/javascript" src="/common/js/common/Common.js"></script>
     <script type="text/javascript" src="/common/js/common/Api.js"></script>
@@ -127,7 +128,7 @@
     var changedHomeType = true;
     var common_session = new session();
     var menuInfoList = "";
-
+    let fileUtil = new file();
     layoutInit();
 
     function layoutInit() {

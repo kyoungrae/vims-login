@@ -3004,8 +3004,8 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                     '</li>';
                 break;
             default :
-                grid_list_header += '<li data-column="' + item.ID + '" class="gi-min-row-50px gi-row-' + item.WIDTH + ' gi-grid gi-grid-place-content-space-around gi-overflow-scroll gi-col-30px ' + hidden +'' + sort + '">' +
-                                        '<span class="gi-padding-left-right-10px">' + item.HEADER + '</span>' +
+                grid_list_header += '<li data-column="' + item.ID + '" class="resizableBox gi-min-row-50px gi-row-' + item.WIDTH + ' gi-grid gi-grid-place-content-space-around gi-overflow-scroll gi-col-30px ' + hidden +'' + sort + '">' +
+                                        '<span class="gridColumResizer gi-padding-left-right-10px">' + item.HEADER + '</span>' +
                                     '</li>';
                 break;
         }
@@ -3115,9 +3115,9 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                             case "text":
                                 commonCodeValue
                                     ?
-                                    tag = '<span class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-grid-value="'+commonCodeValue+'">' + commonCodeName + '</span>'
+                                    tag = '<span class="resizer gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-grid-value="'+commonCodeValue+'">' + commonCodeName + '</span>'
                                     :
-                                    tag = '<span class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '">' + commonCodeName + '</span>';
+                                    tag = '<span class="resizer gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '">' + commonCodeName + '</span>';
                                 break;
                             // case "radio":
                             //     tag = '<input type="radio" class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-field="'+data[i][item.ID]+'"/>';
@@ -3132,7 +3132,7 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                                 tag = '<input type="checkbox" id="'+gridId+'_checkbox_'+i+'" class="gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" value="' + data[i][item.ID] + '" />';
                                 break;
                         }
-                        grid_list += '<li class="gi-min-row-50px gi-row-'+item.WIDTH+' gi-col-16px gi-flex gi-overflow-scroll gi-flex-justify-content-'+item.TEXT_ALIGN+' gi-text-align-'+item.TEXT_ALIGN+' '+hidden+'" data-grid-row="'+j+'" data-field="'+item.ID+'">' + tag + '</li>';
+                        grid_list += '<li class="resizableBox gi-min-row-50px gi-row-'+item.WIDTH+' gi-col-16px gi-flex gi-overflow-scroll gi-flex-justify-content-'+item.TEXT_ALIGN+' gi-text-align-'+item.TEXT_ALIGN+' '+hidden+'" data-grid-row="'+j+'" data-field="'+item.ID+'">' + tag + '</li>';
                     }
                     grid_list += '</ul>';
                 }
@@ -3774,6 +3774,9 @@ FormUtility.prototype.giGrid = function(layout,paging,page,gridId) {
                     fn(resultList);
                 }
             }
+        },
+        gridColumResize : function (gridId){
+            formUtil.gridResize(gridId);
         }
     }
 }
@@ -3900,6 +3903,14 @@ FormUtility.prototype.setClassVariables = function(type){
     }
 }
 
+/**
+ *
+ * @param layout
+ * @param paging
+ * @param page
+ * @param gridId
+ * @returns {{DataSet: ((function(*): Promise<void>)|*), HierarchyOption: *, pagingSet: *, detailBtnClick: *, updateBtnClick: *, deleteBtnClick: *, sortDataSet: *, rowClick: *, rowMultiSelectClick: *, sideOpenBtnClick: *, Hierarchy2DepthMultiSelectClick: *}}
+ */
 FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
     //localStorage에서 정렬값을 가져와 setting
     gridSortManager.loadSortState();
@@ -3969,8 +3980,8 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
         }
         // grid_list_header += '<li class="gi-row-' + item.WIDTH + ' gi-flex gi-flex-center gi-overflow-scroll gi-col-30px '+hidden+'">' +
         grid_list_header +=
-            '<li data-column="' + item.ID + '" class="gi-min-row-50px gi-row-' + item.WIDTH + ' gi-grid gi-grid-place-content-space-around gi-overflow-scroll gi-col-30px ' + hidden +'' + sort + '">' +
-                '<span class="gi-padding-left-right-10px">' + item.HEADER + '</span>' +
+            '<li data-column="' + item.ID + '" class="resizableBox gi-min-row-50px gi-row-' + item.WIDTH + ' gi-grid gi-grid-place-content-space-around gi-overflow-scroll gi-col-30px ' + hidden +'' + sort + '">' +
+                '<span class="gridColumResizer gi-padding-left-right-10px">' + item.HEADER + '</span>' +
             '</li>';
     })
     let totalPageCount = Math.ceil(paging);
@@ -4121,23 +4132,23 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
                                case "text":
                                    commonCodeValue
                                        ?
-                                       tag = '<span class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-grid-value="'+commonCodeValue+'">' + commonCodeName + '</span>'
+                                       tag = '<span class="resizer gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-grid-value="'+commonCodeValue+'">' + commonCodeName + '</span>'
                                        :
-                                       tag = '<span class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '">' + commonCodeName + '</span>';
+                                       tag = '<span class="resizer gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '">' + commonCodeName + '</span>';
                                        break;
                                // case "radio":
                                //     tag = '<input type="radio" class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" data-field="'+data[i][item.ID]+'"/>';
                                //     break;
                                case "button":
                                    if(!originalDataForVisibleOption[item.ID]){
-                                        tag = '<button type="button" id="'+ item.ID +"_"+i+'" class="gi-grid-btn gi-row-50 gi-font-size-' + item.FONT_SIZE + ' '+item.ID+'" data-row-num="'+i+'" data-btn-target="'+ item.TARGET + '">' + item.HEADER + '</button>';
+                                        tag = '<button type="button" id="'+ item.ID +"_"+i+'" class="resizer gi-grid-btn gi-row-50 gi-font-size-' + item.FONT_SIZE + ' '+item.ID+'" data-row-num="'+i+'" data-btn-target="'+ item.TARGET + '">' + item.HEADER + '</button>';
                                         break;
                                    }
                                // case "checkbox":
                                //     tag = '<input type="checkbox" class="gi-row-100 gi-padding-left-right-10px gi-font-size-' + item.FONT_SIZE + '" value="' + data[i][item.ID] + '" />';
                                //     break;
                            }
-                           grid_list += '<li class="gi-min-row-50px gi-row-'+item.WIDTH+' gi-col-16px gi-flex gi-overflow-scroll gi-flex-justify-content-'+item.TEXT_ALIGN+' gi-text-align-'+item.TEXT_ALIGN+' '+hidden+'" data-grid-row="'+j+'" data-field="'+item.ID+'">' + tag + '</li>';
+                           grid_list += '<li class="resizableBox gi-min-row-50px gi-row-'+item.WIDTH+' gi-col-16px gi-flex gi-overflow-scroll gi-flex-justify-content-'+item.TEXT_ALIGN+' gi-text-align-'+item.TEXT_ALIGN+' '+hidden+'" data-grid-row="'+j+'" data-field="'+item.ID+'">' + tag + '</li>';
                    }
                    grid_list += '</ul>';
                 }
@@ -4699,10 +4710,52 @@ FormUtility.prototype.giGridHierarchy = function(layout,paging,page,gridId) {
 
                 fn(resultList);
             });
+        },
+        gridColumResize : function (gridId){
+            formUtil.gridResize(gridId);
         }
     }
 }
+FormUtility.prototype.gridResize = function(gridId){
+    $(".gridColumResizer").css("cursor","ew-resize");
+    $("#"+gridId+" .gridColumResizer").on("mousedown", function (e) {
+        const $resizer = $(this);
+        const $headerLi = $resizer.closest("li");
+        const columnKey = $headerLi.data("column");
+        const startX = e.clientX;
 
+        // 헤더: data-column
+        const $headerCols = $("#"+gridId+" li[data-column='" + columnKey + "']");
+        // 바디: data-field
+        const $bodyCols = $("#"+gridId+" li[data-field='" + columnKey + "']");
+
+        const $allCols = $headerCols.add($bodyCols);
+
+        // 각각의 시작 너비 저장
+        const startWidths = $allCols.map(function () {
+            return $(this).outerWidth();
+        }).get();
+
+        // 마우스 이동 이벤트
+        $(window).on("mousemove.resize", function (e) {
+            const delta = e.clientX - startX;
+
+            $allCols.each(function (i) {
+                const newWidth = startWidths[i] + delta;
+                if (newWidth > 30) {
+                    $(this).width(newWidth);
+                }
+            });
+        });
+
+        // 마우스 해제 시 이벤트 제거
+        $(window).on("mouseup.resize", function () {
+            $(window).off(".resize");
+        });
+
+        e.preventDefault(); // 드래그 시 텍스트 선택 방지
+    });
+}
 /**
  * @title : handleToolTip
  * @writer: 문상혁
