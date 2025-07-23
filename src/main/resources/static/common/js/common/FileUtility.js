@@ -25,10 +25,10 @@ class createFileUploadHTML{
         this.ID_TO_RECEIVE_VALUE = ID_TO_RECEIVE_VALUE;
         this.FOLDER_NAME = FOLDER_NAME;
 
-        this.isCheckParameters();       //NOTE : (1) 파라미터 검증
-        this.globalVariable();          //NOTE : (2) 전역 변수 설정
-        this.setUploadHTML();           //NOTE : (3) 파라미터 검증
-        this.fileUploadBtnClickEvent();//NOTE : (4) 파일 업로드 이벤트
+        this.isCheckParameters();                //NOTE : (1) 파라미터 검증
+        this.globalVariable();                   //NOTE : (2) 전역 변수 설정
+        this.setUploadHTML();                    //NOTE : (3) 업로드 POPUP UI 설정
+        this.fileUploadPopupOpenBtnClickEvent(); //NOTE : (4) 파일 업로드 팝업 OPEN 이벤트
     }
     //NOTE : 파라미터 검증
     isCheckParameters(){
@@ -50,6 +50,8 @@ class createFileUploadHTML{
         this.COMMON_FILE_UPLOAD_ID = "#formUtil_fileUpload"; //NOTE: home.html 내에 있는 파일 업로드용 layout ID
         this.CANCEL_BTN = ".formUtil-fileUpload_cancelBtn";
         this.UPLOAD_BTN = ".formUtil-fileUpload_uploadBtn";
+        this.DRAG_N_DROP_INPUT = "#fileElem";
+        this.FILE_UPLOAD_LIST_HEADER = ".formUtil-fileUpload_list-contents";
     }
     //NOTE : 파일 업로드 취소 버튼 이벤트 할당 및 변수 초기화
     resetVariable(){
@@ -60,7 +62,7 @@ class createFileUploadHTML{
             this.FINAL_UPLOAD_FILE_LIST = {};
             this.FILE_TEXT_LIST = [];
     }
-    //NOTE: 업로드 UI 설정
+    //NOTE: 업로드 POPUP UI 설정
     setUploadHTML(){
         this.CONTENTS +=
             '<div class="formUtil-fileUpload_body" data-fileupload-boxopen="on">'
@@ -69,7 +71,7 @@ class createFileUploadHTML{
             +'            <form class="formUtil-fileUpload_form gi-col-100">'
             +'                <div class="formUtil-fileUpload_dropArea">'
             +'                    <input type="file" id="fileElem" style="display: none" multiple enctype="multipart/form-data">'
-            +'                    <label for="fileElem" >'
+            +'                    <label for="fileElem">'
             +'                        <i class="bi bi-upload" style="color: #999 !important;margin-right: 1.3rem !important;font-size: 3rem;"></i>'
             +'                        <div class="formUtil-fileUpload_span-body">'
             +'                            <span class="formUtil-fileUpload_span" style="display:block">FILE UPLOAD CLICK</span>'
@@ -111,6 +113,22 @@ class createFileUploadHTML{
             +'    </div>'
             +'</div>';
     }
+    //NOTE : 파일크기 계산
+    formatBytes(bytes, decimals = 2) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+    //NOTE : 파일 업로드 POPUP OPEN 시 이벤트 바인딩 목록
+    openPopupEventBinding(){
+        this.clearFileUploadBody();               //NOTE : 파일 업로드 UI 노출 및 숨김
+        this.fileUploadPopupCloseBtnClickEvent(); //NOTE : 파일 업로드 CLOSE 이벤트 (취소)
+        this.fileUploadBtnClickEvent();           //NOTE : 파일 업로드
+        this.dragAndDropAreaChangeEvent();
+    }
     //NOTE : 파일 업로드 UI 노출 및 숨김
     clearFileUploadBody(){
         let isEmpty = $(".fileUpload_body").length === 0;
@@ -118,21 +136,88 @@ class createFileUploadHTML{
 
         isEmpty ? $fileUpload.append(this.CONTENTS) : $fileUpload.empty();
     }
-    //NOTE : 파일 업로드 이벤트
-    fileUploadBtnClickEvent(){
-        $(this.BTN_ID).off("click").on("click",fileUploadAreaClickEventHandler);
+    //NOTE : 파일 업로드 OPEN 이벤트
+    fileUploadPopupOpenBtnClickEvent(){
+        $(this.BTN_ID).off("click").on("click",fileUploadPopupOpenBtnClickEventHandler);
         let that = this;
-        function fileUploadAreaClickEventHandler(){
-            that.clearFileUploadBody();
+
+        //NOTE : 파일 업로드 POPUP OPEN 시 이벤트 바인딩
+        function fileUploadPopupOpenBtnClickEventHandler(){
+            that.openPopupEventBinding();
         }
-        this.fileCancelBtnClickEvent();
     }
-    fileCancelBtnClickEvent() {
-        $(this.CANCEL_BTN).off("click").on("click", formUtilFileUploadCancelBtnClickEventHandler);
+    //NOTE : 파일 업로드 CLOSE 이벤트 (취소)
+    fileUploadPopupCloseBtnClickEvent() {
         let that = this;
+        $(this.CANCEL_BTN)
+            .off("click.formUtilFileUploadCancelBtnClickEventHandler")
+            .on("click.formUtilFileUploadCancelBtnClickEventHandler", formUtilFileUploadCancelBtnClickEventHandler);
         function formUtilFileUploadCancelBtnClickEventHandler() {
             $(that.COMMON_FILE_UPLOAD_ID).empty();
             that.resetVariable();
+        }
+    }
+    //NOTE : 파일 업로드
+    fileUploadBtnClickEvent(){
+        let that = this;
+        $(this.UPLOAD_BTN)
+            .off("click.fileUploadBtnClickEventHandler")
+            .on("click.fileUploadBtnClickEventHandler",fileUploadBtnClickEventHandler);
+        function fileUploadBtnClickEventHandler(){
+            console.log("hello")
+        }
+    }
+    dragAndDropAreaChangeEvent(){
+        let that = this;
+        $(this.DRAG_N_DROP_INPUT)
+            .off("change.dragAndDropAreaChangeEventHandler")
+            .on("change.dragAndDropAreaChangeEventHandler" ,function(e){
+                dragAndDropAreaChangeEventHandler(e);
+            })
+        function dragAndDropAreaChangeEventHandler(e){
+            let fileSettingsHtml = "";
+            let fileSettingsList = Array.from(e.target.files);
+            // this.FILE_UPLOAD_LIST_HEADER
+
+            //NOTE : 기존 파일 목록에 새 파일 추가
+            that.ADDED_FILE_LIST = that.ADDED_FILE_LIST.concat(fileSettingsList);
+            //NOTE : 중복된 파일 제거 (이름, 사이즈 기준)
+            that.ADDED_FILE_LIST = that.ADDED_FILE_LIST.filter((file, index, self) =>
+                index === self.findIndex((f) => f.name === file.name && f.size === file.size)
+            );
+
+            that.TOTAL_FILE_LIST = that.TOTAL_FILE_LIST.concat(that.ADDED_FILE_LIST);
+            that.TOTAL_FILE_LIST = that.TOTAL_FILE_LIST.filter((file, index, self) =>
+                index === self.findIndex((f) => f.name === file.name && f.size === file.size)
+            );
+
+            if(that.TOTAL_FILE_LIST.length>0){
+                for(let i = 0 ; i< that.TOTAL_FILE_LIST.length; i++){
+                    let file = that.TOTAL_FILE_LIST[i];
+                    let fileName = file.name.substring(0, file.name.lastIndexOf('.'));
+                    let fileSize = that.formatBytes(file.size);
+                    let fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1);
+                    let fileDescription = file.file_description || "";
+                    fileSettingsHtml  +=
+                         '<ul class="gi-row-100">'
+                        +'   <li class="gi-row-10">'+(i+1)+'</li>'
+                        +'   <li class="gi-row-40 formUtil-file_name ">'+fileName+'</li>'
+                        +'   <li class="gi-row-30 formUtil-file_size">'+fileSize+'</li>'
+                        +'   <li class="gi-row-20 formUtil-file_extension">'+fileExtension+'</li>'
+                        +'   <li class="gi-row-20 "><textarea data-file-description'+i+' class="formUtil-file_description">'+fileDescription+'</textarea></li>'
+                        +'</ul>';
+                }
+            }
+            that.ADDED_FILE_LIST.forEach(file => {
+                let fileName = file.name.substring(0, file.name.lastIndexOf('.'));
+                let fileSize = that.formatBytes(file.size);
+                let fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1);
+                let fileDescription = file.file_description || "";
+                that.FILE_TEXT_LIST.push({"file_name":fileName , "file_size":fileSize, "file_extension":fileExtension, "file_description":fileDescription})
+            });
+
+            that.FINAL_UPLOAD_FILE_LIST = that.ADDED_FILE_LIST;
+            $(that.FILE_UPLOAD_LIST_HEADER).html(fileSettingsHtml);
         }
     }
 }
