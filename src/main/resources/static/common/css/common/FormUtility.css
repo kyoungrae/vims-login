@@ -324,6 +324,7 @@
 .formUtil-fileUpload_list-contents > ul{
     /*height: 33%;*/
     /*padding: 0 0.5rem 0 0.5rem;*/
+    padding: 5px 0;
     display: flex;
     align-items: center;
 }
@@ -401,9 +402,9 @@
     overflow: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    border-bottom: 1px dashed #e3e3e3  !important;
+    /*border-bottom: 1px dashed #e3e3e3  !important;*/
     font-size: 12px;
-    border-bottom: 1px solid #e3e3e3 !important;
+    /*border-bottom: 1px solid #e3e3e3 !important;*/
     text-align: left !important;
 }
 .formUtil-fileUpload_list-contents > ul > li:nth-child(2) {
@@ -485,7 +486,7 @@ label[for="fileElem"]:hover {
 }
 .formUtil-fileUpload{
     background-color: #FFF !important;
-    border-radius: 5px;
+    border-radius: 15px;
     padding: 1rem;
     box-sizing: border-box;
     box-shadow: 1px 1px 10px #0000007d !important;
