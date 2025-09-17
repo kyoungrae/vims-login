@@ -1512,9 +1512,13 @@ option {
     cursor: unset;
 }
 .gi-input-btn:not([disabled]):hover{
-    background-color: var(--background-color-input-btn-hover);
     color:#FFFFFF;
 }
+
+.gi-input-btn:not([disabled]):hover{
+    background-color: var(--background-color-input-btn-hover);
+}
+
 .gi-input-btn[data-btn-active="true"]{
     background-color: var(--background-color-input-btn-hover) !important;
     color:#FFFFFF !important;
@@ -1680,6 +1684,7 @@ option {
 .gi-row-200px{width:200px;}     .gi-col-200px{height:200px;} .gi-col-260px{height:260px;} .gi-col-280px{height:280px;}
 .gi-row-300px{width:300px;}     .gi-col-300px{height:300px;}
 .gi-row-400px{width:400px;}     .gi-col-350px{height:350px;} .gi-col-360px{height:360px;}
+.gi-row-450px{width:450px;}
 .gi-row-500px{width:500px;}     .gi-col-400px{height:400px;}
 .gi-row-600px{width:600px;}     .gi-col-500px{height:500px;}
 .gi-row-700px{width:700px;}     .gi-col-600px{height:600px;}

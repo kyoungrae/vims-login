@@ -52,6 +52,11 @@ class createFileUploadHTML{
         this.UPLOAD_BTN = ".formUtil-fileUpload_uploadBtn";
         this.DRAG_N_DROP_INPUT = "#fileElem";
         this.FILE_UPLOAD_LIST_HEADER = ".formUtil-fileUpload_list-contents";
+        this.NO_WIDTH = "gi-row-10";
+        this.FILE_NAME_WIDTH = "gi-row-50";
+        this.FILE_SIZE_WIDTH = "gi-row-15";
+        this.FILE_EXTENTION_WIDTH = "gi-row-15";
+        this.FILE_DELETE_BTN_WIDTH = "gi-row-10";
     }
     //NOTE : 파일 업로드 취소 버튼 이벤트 할당 및 변수 초기화
     resetVariable(){
@@ -66,37 +71,38 @@ class createFileUploadHTML{
     setUploadHTML(){
         this.CONTENTS +=
             '<div class="formUtil-fileUpload_body" data-fileupload-boxopen="on">'
-            +'    <div class="formUtil-fileUpload gi-flex gi-flex-column slide-in-blurred-top">'
-            +'        <article class="formUtil-fileUpload_content">'
+            +'    <div class="gi-row-450px formUtil-fileUpload gi-flex gi-flex-column slide-in-blurred-top">'
+            +'        <div class="formUtil-fileUploading-section"></div>'
+            +'        <article class="gi-col-100px formUtil-fileUpload_content">'
             +'            <form class="formUtil-fileUpload_form gi-col-100">'
             +'                <div class="formUtil-fileUpload_dropArea">'
             +'                    <input type="file" id="fileElem" style="display: none" multiple enctype="multipart/form-data">'
             +'                    <label for="fileElem">'
             +'                        <i class="bi bi-upload" style="color: #999 !important;margin-right: 1.3rem !important;font-size: 3rem;"></i>'
-            +'                        <div class="formUtil-fileUpload_span-body">'
+            +'                        <div class="formUtil-fileUpload_span-body ">'
             +'                            <span class="formUtil-fileUpload_span" style="display:block">FILE UPLOAD CLICK</span>'
             +'                            <span class="formUtil-fileUpload_span">[Drag And Drop]</span>'
             +'                        </div>'
             +'                    </label>'
             +'                </div>'
             +'            </form>'
-            +'            <div class="formUtil-fileUpload_memoArea">'
-            +'            </div>'
+            // +'            <div class="formUtil-fileUpload_memoArea">'
+            // +'            </div>'
             +'        </article>'
-            +'        <div class="formUtil-file_description-box gi-input-container">'
-            +'          <label for="formUtil-file_description" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="default" data-required="false">전체 메모</label>'
-            +'          <input type="text" class="formUtil-file_description gi-input" data-focus-span-text-align="center" data-required="true" autocomplete="off"/>'
-            +'        </div>'
+            // +'        <div class="formUtil-file_description-box gi-input-container">'
+            // +'          <label for="formUtil-file_description" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="default" data-required="false">전체 메모</label>'
+            // +'          <input type="text" class="formUtil-file_description gi-input" data-focus-span-text-align="center" data-required="true" autocomplete="off"/>'
+            // +'        </div>'
             +'        <div class="formUtil-fileUpload_list">'
-            +'            <div class="formUtil-fileUpload_list-header">'
-            +'                <ul class="gi-row-100 sub-card-2">'
-            +'                    <li class="gi-row-10">NO</li>'
-            +'                    <li class="gi-row-40">파일명</li>'
-            +'                    <li class="gi-row-30">파일크기</li>'
-            +'                    <li class="gi-row-20">확장자</li>'
-            +'                    <li class="gi-row-20">설명</li>'
-            +'                </ul>'
-            +'            </div>'
+            // +'            <div class="formUtil-fileUpload_list-header">'
+            // +'                <ul class="gi-row-100 sub-card-2">'
+            // +'                    <li class="'+this.NO_WIDTH+'">NO</li>'
+            // +'                    <li class="'+this.FILE_NAME_WIDTH+'">파일명</li>'
+            // +'                    <li class="'+this.FILE_SIZE_WIDTH+'">파일크기</li>'
+            // +'                    <li class="'+this.FILE_EXTENTION_WIDTH+'">확장자</li>'
+            // +'                    <li class="'+this.FILE_DELETE_BTN_WIDTH+'">삭제</li>'
+            // +'                </ul>'
+            // +'            </div>'
             +'            <div class="formUtil-fileUpload_list-contents">'
             +'            </div>'
             +'        </div>'
@@ -160,16 +166,16 @@ class createFileUploadHTML{
     //NOTE : 파일 업로드
     fileUploadBtnClickEvent(){
         let that = this;
-        $(this.UPLOAD_BTN)
+        $(that.UPLOAD_BTN)
             .off("click.fileUploadBtnClickEventHandler")
             .on("click.fileUploadBtnClickEventHandler",fileUploadBtnClickEventHandler);
         function fileUploadBtnClickEventHandler(){
-            console.log("hello")
+            console.log("upload Btn Click Event settings");
         }
     }
     dragAndDropAreaChangeEvent(){
         let that = this;
-        $(this.DRAG_N_DROP_INPUT)
+        $(that.DRAG_N_DROP_INPUT)
             .off("change.dragAndDropAreaChangeEventHandler")
             .on("change.dragAndDropAreaChangeEventHandler" ,function(e){
                 dragAndDropAreaChangeEventHandler(e);
@@ -197,14 +203,13 @@ class createFileUploadHTML{
                     let fileName = file.name.substring(0, file.name.lastIndexOf('.'));
                     let fileSize = that.formatBytes(file.size);
                     let fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1);
-                    let fileDescription = file.file_description || "";
                     fileSettingsHtml  +=
                          '<ul class="gi-row-100">'
-                        +'   <li class="gi-row-10">'+(i+1)+'</li>'
-                        +'   <li class="gi-row-40 formUtil-file_name ">'+fileName+'</li>'
-                        +'   <li class="gi-row-30 formUtil-file_size">'+fileSize+'</li>'
-                        +'   <li class="gi-row-20 formUtil-file_extension">'+fileExtension+'</li>'
-                        +'   <li class="gi-row-20 "><textarea data-file-description'+i+' class="formUtil-file_description">'+fileDescription+'</textarea></li>'
+                        +'   <li class="'+that.NO_WIDTH+'">'+(i+1)+'</li>'
+                        +'   <li class="'+that.FILE_NAME_WIDTH+' formUtil-file_name ">'+fileName+'</li>'
+                        +'   <li class="'+that.FILE_SIZE_WIDTH+' formUtil-file_size">'+fileSize+'</li>'
+                        +'   <li class="'+that.FILE_EXTENTION_WIDTH+' formUtil-file_extension">'+fileExtension+'</li>'
+                        +'   <li class="'+that.FILE_DELETE_BTN_WIDTH+' "><button type="button" class="formUtil-file_delete"></button></li>'
                         +'</ul>';
                 }
             }
@@ -212,12 +217,28 @@ class createFileUploadHTML{
                 let fileName = file.name.substring(0, file.name.lastIndexOf('.'));
                 let fileSize = that.formatBytes(file.size);
                 let fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1);
-                let fileDescription = file.file_description || "";
-                that.FILE_TEXT_LIST.push({"file_name":fileName , "file_size":fileSize, "file_extension":fileExtension, "file_description":fileDescription})
+                that.FILE_TEXT_LIST.push({"file_name":fileName , "file_size":fileSize, "file_extension":fileExtension, "file_description":""});
             });
 
             that.FINAL_UPLOAD_FILE_LIST = that.ADDED_FILE_LIST;
             $(that.FILE_UPLOAD_LIST_HEADER).html(fileSettingsHtml);
+
+            //NOTE : 팝업내에 업로드할 파일 삭제 이벤트
+            fileDeleteBtnClickEvent();
+        }
+        function fileDeleteBtnClickEvent(){
+            $(".formUtil-file_delete").off("click.fileDeleteBtnClickEventHandler")
+                .on("click.fileDeleteBtnClickEventHandler",fileDeleteBtnClickEventHandler);
+        }
+        function fileDeleteBtnClickEventHandler(e){
+            const target = $(e.currentTarget).parent().parent();
+            formUtil.popup("deleteFileBtn","파일을 삭제 하시겠습니까?",remove);
+            // console.log(that.TOTAL_FILE_LIST);
+            function remove(){
+                $(target).remove();
+            }
+
         }
     }
+
 }
