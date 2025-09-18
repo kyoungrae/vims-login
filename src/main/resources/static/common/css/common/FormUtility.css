@@ -328,6 +328,15 @@
     display: flex;
     align-items: center;
 }
+.formUtil-file_no{
+    display: inline-block;
+    background-color: #ccc;
+    color: #ffffff;
+    width: 15px;
+    text-align: center;
+    border: 1px solid #aeaeae;
+    border-radius: 4px;
+}
 .formUtil-file_image{
     background-image: url("../../../common/img/attatchment.svg");
     background-repeat: no-repeat;
@@ -446,6 +455,15 @@
 }
 .formUtil-fileUpload_span{
     display: block;
+    font-size:12px;
+}
+.formUtil-fileUpload_img{
+    background-image: url("../../../common/img/upload_file.png");
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 label[for="fileElem"] {
     width: 100%;
@@ -465,7 +483,7 @@ label[for="fileElem"] {
     background-color: rgb(181 255 196 / 24%) !important;
 }
 label[for="fileElem"]:hover {
-    animation: shake 0.5s;
+    animation: shake 0.5s infinite;
 }
 .formUtil-fileUpload_uploadBtn:hover , .formUtil-fileUpload_cancelBtn:hover{
     color:#ffffff !important;
@@ -478,7 +496,7 @@ label[for="fileElem"]:hover {
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.09) !important;
-    z-index: 888;
+    z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -518,7 +536,7 @@ label[for="fileElem"]:hover {
 }
 .formUtil-fileUpload_dropArea{
     position: relative;
-    width: 100%;
+    width: 60%;
     height: 100%;
     border: 2px dashed #cfcfcf !important;
     border-radius: 5px;

@@ -4,7 +4,7 @@ class file{
     }
 
     /**
-     * created by ikyoungtae
+     * created by ikyoungtae 2025.9
      * @param BTN_ID file upload active btn id
      * @param PATH  upload file path
      * @param ID_TO_RECEIVE_VALUE  id to receive uuid value
@@ -24,6 +24,7 @@ class createFileUploadHTML{
         this.PATH = PATH;
         this.ID_TO_RECEIVE_VALUE = ID_TO_RECEIVE_VALUE;
         this.FOLDER_NAME = FOLDER_NAME;
+        this.COMMON_UPLOAD_PATH = "/fms/fileManager/upload";
 
         this.isCheckParameters();                //NOTE : (1) 파라미터 검증
         this.globalVariable();                   //NOTE : (2) 전역 변수 설정
@@ -73,13 +74,13 @@ class createFileUploadHTML{
             +'    <div class="gi-row-450px formUtil-fileUpload gi-flex gi-flex-column slide-in-blurred-top">'
             +'        <div class="formUtil-fileUploading-section"></div>'
             +'        <article class="gi-col-100px formUtil-fileUpload_content">'
-            +'            <form class="formUtil-fileUpload_form gi-col-100">'
+            +'            <form class="formUtil-fileUpload_form gi-col-100 gi-flex gi-flex-center">'
             +'                <div class="formUtil-fileUpload_dropArea">'
             +'                    <input type="file" id="fileElem" style="display: none" multiple enctype="multipart/form-data">'
-            +'                    <label for="fileElem">'
-            +'                        <i class="bi bi-upload" style="color: #999 !important;margin-right: 1.3rem !important;font-size: 3rem;"></i>'
-            +'                        <div class="formUtil-fileUpload_span-body ">'
-            +'                            <span class="formUtil-fileUpload_span" style="display:block">FILE UPLOAD CLICK</span>'
+            +'                    <label for="fileElem" class="gi-cursor-open-folder">'
+            +'                        <div class="formUtil-fileUpload_span-body">'
+            +'                            <div class="formUtil-fileUpload_img formUtil-fileUpload_span"></div>'
+            +'                            <span class="formUtil-fileUpload_span">FILE UPLOAD CLICK</span>'
             +'                            <span class="formUtil-fileUpload_span">[Drag And Drop]</span>'
             +'                        </div>'
             +'                    </label>'
@@ -147,14 +148,14 @@ class createFileUploadHTML{
             that.resetVariable();
         }
     }
-    //NOTE : 파일 업로드
+    //NOTE : 파일 최종 업로드
     fileUploadBtnClickEvent(){
         let that = this;
         $(that.UPLOAD_BTN)
             .off("click.fileUploadBtnClickEventHandler")
             .on("click.fileUploadBtnClickEventHandler",fileUploadBtnClickEventHandler);
         function fileUploadBtnClickEventHandler(){
-            console.log("upload Btn Click Event settings");
+            that.commonFileUpload();
         }
     }
     dragAndDropAreaChangeEvent(){
@@ -175,7 +176,7 @@ class createFileUploadHTML{
                     let fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1);
                     fileSettingsHtml  +=
                         '<ul class="gi-row-100">'
-                        +'   <li class="'+that.NO_WIDTH+'">'+(i+1)+'</li>'
+                        +'   <li class="'+that.NO_WIDTH+'"><span class="formUtil-file_no">'+(i+1)+'</span></li>'
                         +'   <li class="'+that.FILE_NAME_WIDTH+' formUtil-file_name ">'+fileName+'</li>'
                         +'   <li class="'+that.FILE_SIZE_WIDTH+' formUtil-file_size">'+fileSize+'</li>'
                         +'   <li class="'+that.FILE_EXTENSION_WIDTH+' formUtil-file_extension">'+fileExtension+'</li>'
@@ -183,6 +184,15 @@ class createFileUploadHTML{
                         +'</ul>';
                 }
             }
+            //NOTE : 공통 파일업로드 시 사용할 리스트 생성
+            that.ADDED_FILE_LIST.forEach(file => {
+                let fileName = file.name.substring(0, file.name.lastIndexOf('.'));
+                let fileSize = that.formatBytes(file.size);
+                let fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1);
+                let fileDescription = file.file_description || "";
+                that.FILE_TEXT_LIST.push({"file_name":fileName , "file_size":fileSize, "file_extension":fileExtension, "file_description":fileDescription})
+            });
+
             //NOTE : 최종 업로드 파일 리스트
             that.FINAL_UPLOAD_FILE_LIST = that.ADDED_FILE_LIST;
 
@@ -235,8 +245,44 @@ class createFileUploadHTML{
                 //NOTE : 화면에 파일리스트 노출
                 showFileList();
             }
+        }
+    }
+    //NOTE : 공통파일 업로드
+     commonFileUpload(){
+        let that = this;
+        let url = that.COMMON_UPLOAD_PATH;
+        let param = new FormData();
+        let finalFileEmptyFlag = false;
+
+        //NOTE : 업로드할 파일 존재 하는지 체크
+        if(!formUtil.checkObjectEmptyValue(that.FINAL_UPLOAD_FILE_LIST)){
+            formUtil.showMessage("업로드할 파일이 없습니다.");
+            finalFileEmptyFlag = true;
+        }else{
+            finalFileEmptyFlag = false;
+        }
+        //NOTE : 공통파일 업로드 수행
+        if(!finalFileEmptyFlag){
+            //NOTE : FINAL_UPLOAD_FILE_LIST를 순회하면서 param 객체의 files에 추가
+            for(let key in that.FINAL_UPLOAD_FILE_LIST){
+                if(Object.prototype.hasOwnProperty.call(that.FINAL_UPLOAD_FILE_LIST,key)){
+                    //NOTE : 파라미터에 파일 설정
+                    param.append('files',that.FINAL_UPLOAD_FILE_LIST[key]);
+                }
+            }
+            //NOTE : 파라미터에 폴더이름 설정
+            param.append("folder_name",that.FOLDER_NAME);
+
+            axios.post(url, param, {
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                }
+            }).then(response=>{
+                console.log(response);
+            })
 
         }
+
     }
 
 }

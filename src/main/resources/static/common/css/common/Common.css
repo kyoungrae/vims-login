@@ -2473,6 +2473,9 @@ html{
 .gi-cursor-pointer{
     cursor: pointer;
 }
+.gi-cursor-open-folder{
+    cursor:url("../../../common/img/open_folder_32.png") 1 4, pointer;
+}
 .gi-cursor-default{
     cursor: default;
 }
