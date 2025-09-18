@@ -55,7 +55,7 @@ class createFileUploadHTML{
         this.NO_WIDTH = "gi-row-10";
         this.FILE_NAME_WIDTH = "gi-row-50";
         this.FILE_SIZE_WIDTH = "gi-row-15";
-        this.FILE_EXTENTION_WIDTH = "gi-row-15";
+        this.FILE_EXTENSION_WIDTH = "gi-row-15";
         this.FILE_DELETE_BTN_WIDTH = "gi-row-10";
     }
     //NOTE : 파일 업로드 취소 버튼 이벤트 할당 및 변수 초기화
@@ -65,7 +65,6 @@ class createFileUploadHTML{
             this.ADDED_FILE_LIST = [];
             this.TOTAL_FILE_LIST = [];
             this.FINAL_UPLOAD_FILE_LIST = {};
-            this.FILE_TEXT_LIST = [];
     }
     //NOTE: 업로드 POPUP UI 설정
     setUploadHTML(){
@@ -86,23 +85,8 @@ class createFileUploadHTML{
             +'                    </label>'
             +'                </div>'
             +'            </form>'
-            // +'            <div class="formUtil-fileUpload_memoArea">'
-            // +'            </div>'
             +'        </article>'
-            // +'        <div class="formUtil-file_description-box gi-input-container">'
-            // +'          <label for="formUtil-file_description" class="gi-input-label" data-focus-label="false" data-focus-label-text-align="default" data-required="false">전체 메모</label>'
-            // +'          <input type="text" class="formUtil-file_description gi-input" data-focus-span-text-align="center" data-required="true" autocomplete="off"/>'
-            // +'        </div>'
             +'        <div class="formUtil-fileUpload_list">'
-            // +'            <div class="formUtil-fileUpload_list-header">'
-            // +'                <ul class="gi-row-100 sub-card-2">'
-            // +'                    <li class="'+this.NO_WIDTH+'">NO</li>'
-            // +'                    <li class="'+this.FILE_NAME_WIDTH+'">파일명</li>'
-            // +'                    <li class="'+this.FILE_SIZE_WIDTH+'">파일크기</li>'
-            // +'                    <li class="'+this.FILE_EXTENTION_WIDTH+'">확장자</li>'
-            // +'                    <li class="'+this.FILE_DELETE_BTN_WIDTH+'">삭제</li>'
-            // +'                </ul>'
-            // +'            </div>'
             +'            <div class="formUtil-fileUpload_list-contents">'
             +'            </div>'
             +'        </div>'
@@ -180,23 +164,9 @@ class createFileUploadHTML{
             .on("change.dragAndDropAreaChangeEventHandler" ,function(e){
                 dragAndDropAreaChangeEventHandler(e);
             })
-        function dragAndDropAreaChangeEventHandler(e){
-            let fileSettingsHtml = "";
-            let fileSettingsList = Array.from(e.target.files);
-            // this.FILE_UPLOAD_LIST_HEADER
-
-            //NOTE : 기존 파일 목록에 새 파일 추가
-            that.ADDED_FILE_LIST = that.ADDED_FILE_LIST.concat(fileSettingsList);
-            //NOTE : 중복된 파일 제거 (이름, 사이즈 기준)
-            that.ADDED_FILE_LIST = that.ADDED_FILE_LIST.filter((file, index, self) =>
-                index === self.findIndex((f) => f.name === file.name && f.size === file.size)
-            );
-
-            that.TOTAL_FILE_LIST = that.TOTAL_FILE_LIST.concat(that.ADDED_FILE_LIST);
-            that.TOTAL_FILE_LIST = that.TOTAL_FILE_LIST.filter((file, index, self) =>
-                index === self.findIndex((f) => f.name === file.name && f.size === file.size)
-            );
-
+        //NOTE : 화면에 파일리스트 노출
+        function showFileList(){
+            let fileSettingsHtml ="";
             if(that.TOTAL_FILE_LIST.length>0){
                 for(let i = 0 ; i< that.TOTAL_FILE_LIST.length; i++){
                     let file = that.TOTAL_FILE_LIST[i];
@@ -204,38 +174,66 @@ class createFileUploadHTML{
                     let fileSize = that.formatBytes(file.size);
                     let fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1);
                     fileSettingsHtml  +=
-                         '<ul class="gi-row-100">'
+                        '<ul class="gi-row-100">'
                         +'   <li class="'+that.NO_WIDTH+'">'+(i+1)+'</li>'
                         +'   <li class="'+that.FILE_NAME_WIDTH+' formUtil-file_name ">'+fileName+'</li>'
                         +'   <li class="'+that.FILE_SIZE_WIDTH+' formUtil-file_size">'+fileSize+'</li>'
-                        +'   <li class="'+that.FILE_EXTENTION_WIDTH+' formUtil-file_extension">'+fileExtension+'</li>'
+                        +'   <li class="'+that.FILE_EXTENSION_WIDTH+' formUtil-file_extension">'+fileExtension+'</li>'
                         +'   <li class="'+that.FILE_DELETE_BTN_WIDTH+' "><button type="button" class="formUtil-file_delete"></button></li>'
                         +'</ul>';
                 }
             }
-            that.ADDED_FILE_LIST.forEach(file => {
-                let fileName = file.name.substring(0, file.name.lastIndexOf('.'));
-                let fileSize = that.formatBytes(file.size);
-                let fileExtension = file.name.substring(file.name.lastIndexOf('.') + 1);
-                that.FILE_TEXT_LIST.push({"file_name":fileName , "file_size":fileSize, "file_extension":fileExtension, "file_description":""});
-            });
-
+            //NOTE : 최종 업로드 파일 리스트
             that.FINAL_UPLOAD_FILE_LIST = that.ADDED_FILE_LIST;
+
+            //NOTE : 파일리스트 화면에 노출
             $(that.FILE_UPLOAD_LIST_HEADER).html(fileSettingsHtml);
 
             //NOTE : 팝업내에 업로드할 파일 삭제 이벤트
             fileDeleteBtnClickEvent();
         }
+        //NOTE : 파일 업로드 영역 변경 이벤트
+        function dragAndDropAreaChangeEventHandler(e){
+            let fileSettingsList = Array.from(e.target.files);
+
+            //NOTE : 기존 파일 목록에 새 파일 추가
+            that.ADDED_FILE_LIST = that.ADDED_FILE_LIST.concat(fileSettingsList);
+            //NOTE : 중복된 파일 제거 (이름, 사이즈 기준)
+            that.ADDED_FILE_LIST = that.ADDED_FILE_LIST.filter((file, index, self) =>
+                index === self.findIndex((f) => f.name === file.name && f.size === file.size)
+            );
+            //NOTE : 총 파일리스트 기존 파일 목록에 새 파일 추가
+            that.TOTAL_FILE_LIST = that.TOTAL_FILE_LIST.concat(that.ADDED_FILE_LIST);
+            //NOTE : 총 파일리스트 중복된 파일 제거 (이름, 사이즈 기준)
+            that.TOTAL_FILE_LIST = that.TOTAL_FILE_LIST.filter((file, index, self) =>
+                index === self.findIndex((f) => f.name === file.name && f.size === file.size)
+            );
+
+            //NOTE : 화면에 파일리스트 노출
+            showFileList();
+        }
+        //NOTE : 팝업내에 업로드할 파일 삭제 이벤트
         function fileDeleteBtnClickEvent(){
             $(".formUtil-file_delete").off("click.fileDeleteBtnClickEventHandler")
                 .on("click.fileDeleteBtnClickEventHandler",fileDeleteBtnClickEventHandler);
         }
         function fileDeleteBtnClickEventHandler(e){
             const target = $(e.currentTarget).parent().parent();
-            formUtil.popup("deleteFileBtn","파일을 삭제 하시겠습니까?",remove);
+            let fileName = $(e.currentTarget).parent().siblings(".formUtil-file_name").text();
+            let fileExtension = $(e.currentTarget).parent().siblings(".formUtil-file_extension").text();
+            formUtil.popup("deleteFileBtn",fileName+" 파일을 삭제 하시겠습니까?",remove);
             // console.log(that.TOTAL_FILE_LIST);
             function remove(){
+                //NOTE : 해당 파일 삭제
                 $(target).remove();
+                //NOTE : 최종 파일 리스트에 삭제된 파일 제외하고 업데이트 (파일 삭제)
+                that.TOTAL_FILE_LIST = that.TOTAL_FILE_LIST.filter(file=> file.name !== fileName+"."+fileExtension);
+
+                //NOTE: 업로드 후 파일 삭제 시 최종적으로 남은 파일을 병합하기 위함
+                that.ADDED_FILE_LIST = that.TOTAL_FILE_LIST;
+
+                //NOTE : 화면에 파일리스트 노출
+                showFileList();
             }
 
         }
