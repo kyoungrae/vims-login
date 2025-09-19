@@ -5,13 +5,13 @@ class file{
 
     /**
      * created by ikyoungtae 2025.9
-     * @param BTN_ID file upload active btn id
      * @param PATH  upload file path
      * @param ID_TO_RECEIVE_VALUE  id to receive uuid value
      * @param FOLDER_NAME  file upload folder name
+     * @text button 태그에 data-file-upload-btn 속성 추가 해야 버튼 활성화 가능
      */
-    createFileUpload(BTN_ID,PATH,ID_TO_RECEIVE_VALUE,FOLDER_NAME){
-        new createFileUploadHTML(BTN_ID,PATH,ID_TO_RECEIVE_VALUE,FOLDER_NAME);
+    createFileUpload(PATH,ID_TO_RECEIVE_VALUE,FOLDER_NAME){
+        new createFileUploadHTML(PATH,ID_TO_RECEIVE_VALUE,FOLDER_NAME);
     };
     deleteFileUpload(){
 
@@ -19,9 +19,9 @@ class file{
 }
 
 class createFileUploadHTML{
-    constructor(BTN_ID,PATH,ID_TO_RECEIVE_VALUE,FOLDER_NAME) {
-        this.BTN_ID = "#"+BTN_ID;
-        this.PATH = PATH;
+    constructor(PATH,ID_TO_RECEIVE_VALUE,FOLDER_NAME) {
+        this.BTN_ID = $('button[data-file-upload-btn]')
+        this.PATH = PATH; //NOTE : COMMON_FILE 테이블이 아닌 특정 파일 테이블이 있으면 해당 경로 작성
         this.ID_TO_RECEIVE_VALUE = ID_TO_RECEIVE_VALUE;
         this.FOLDER_NAME = FOLDER_NAME;
         this.COMMON_UPLOAD_PATH = "/fms/fileManager/upload";
@@ -31,15 +31,16 @@ class createFileUploadHTML{
         this.setUploadHTML();                    //NOTE : (3) 업로드 POPUP UI 설정
         this.fileUploadPopupOpenBtnClickEvent(); //NOTE : (4) 파일 업로드 팝업 OPEN 이벤트
     }
-    //NOTE : 파라미터 검증
+    //CLASS : 파라미터 검증
     isCheckParameters(){
         if(!formUtil.checkEmptyValue(this.BTN_ID)) formUtil.showMessage("please insert BTN_ID value");
         if(!formUtil.checkEmptyValue(this.PATH)) formUtil.showMessage("please insert PATH value");
         if(!formUtil.checkEmptyValue(this.ID_TO_RECEIVE_VALUE)) formUtil.showMessage("please insert ID_TO_RECEIVE_VALUE value");
         if(!formUtil.checkEmptyValue(this.FOLDER_NAME)) formUtil.showMessage("please insert FOLDER_NAME value");
     }
-    //NOTE : 전역 변수 설정
+    //CLASS : 전역 변수 설정
     globalVariable(){
+        this.ACTIVE_BTN_ID = "";            //NOTE : 파일업로드 버튼 활성화 아이디 (같은 화면에서 두개 이상의 버튼을 생성 할때 사용)
         this.EXISTS_FILE_LIST =[];          //NOTE : 기존 파일 목록
         this.CHANGED_EXISTS_FILE_LIST =[];  //NOTE : 기존 파일 목록 변경 체크
         this.EXISTS_IS_CHANGED  = false;
@@ -59,7 +60,7 @@ class createFileUploadHTML{
         this.FILE_EXTENSION_WIDTH = "gi-row-15";
         this.FILE_DELETE_BTN_WIDTH = "gi-row-10";
     }
-    //NOTE : 파일 업로드 취소 버튼 이벤트 할당 및 변수 초기화
+    //CLASS : 파일 업로드 취소 버튼 이벤트 할당 및 변수 초기화
     resetVariable(){
             this.EXISTS_FILE_LIST =[];
             this.CHANGED_EXISTS_FILE_LIST =[];
@@ -67,7 +68,7 @@ class createFileUploadHTML{
             this.TOTAL_FILE_LIST = [];
             this.FINAL_UPLOAD_FILE_LIST = {};
     }
-    //NOTE: 업로드 POPUP UI 설정
+    //CLASS: 업로드 POPUP UI 설정
     setUploadHTML(){
         this.CONTENTS +=
             '<div class="formUtil-fileUpload_body" data-fileupload-boxopen="on">'
@@ -104,7 +105,7 @@ class createFileUploadHTML{
             +'    </div>'
             +'</div>';
     }
-    //NOTE : 파일크기 계산
+    //CLASS : 파일크기 계산
     formatBytes(bytes, decimals = 2) {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -113,31 +114,32 @@ class createFileUploadHTML{
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
-    //NOTE : 파일 업로드 POPUP OPEN 시 이벤트 바인딩 목록
+    //CLASS : 파일 업로드 POPUP OPEN 시 이벤트 바인딩 목록
     openPopupEventBinding(){
         this.clearFileUploadBody();               //NOTE : 파일 업로드 UI 노출 및 숨김
         this.fileUploadPopupCloseBtnClickEvent(); //NOTE : 파일 업로드 CLOSE 이벤트 (취소)
         this.fileUploadBtnClickEvent();           //NOTE : 파일 업로드
         this.dragAndDropAreaChangeEvent();
     }
-    //NOTE : 파일 업로드 UI 노출 및 숨김
+    //CLASS : 파일 업로드 UI 노출 및 숨김
     clearFileUploadBody(){
         let isEmpty = $(".fileUpload_body").length === 0;
         let $fileUpload = $(this.COMMON_FILE_UPLOAD_ID);
-
         isEmpty ? $fileUpload.append(this.CONTENTS) : $fileUpload.empty();
     }
-    //NOTE : 파일 업로드 OPEN 이벤트
+    //CLASS : 파일 업로드 OPEN 이벤트
     fileUploadPopupOpenBtnClickEvent(){
-        $(this.BTN_ID).off("click").on("click",fileUploadPopupOpenBtnClickEventHandler);
         let that = this;
+        $(this.BTN_ID).off("click").on("click",fileUploadPopupOpenBtnClickEventHandler);
 
         //NOTE : 파일 업로드 POPUP OPEN 시 이벤트 바인딩
-        function fileUploadPopupOpenBtnClickEventHandler(){
+        function fileUploadPopupOpenBtnClickEventHandler(e){
+            //NOTE : 파일업로드 버튼 활성화 아이디 (같은 화면에서 두개 이상의 버튼을 생성 할때 사용)
+            that.ACTIVE_BTN_ID = "#"+e.currentTarget.id
             that.openPopupEventBinding();
         }
     }
-    //NOTE : 파일 업로드 CLOSE 이벤트 (취소)
+    //CLASS : 파일 업로드 CLOSE 이벤트 (취소)
     fileUploadPopupCloseBtnClickEvent() {
         let that = this;
         $(this.CANCEL_BTN)
@@ -148,7 +150,7 @@ class createFileUploadHTML{
             that.resetVariable();
         }
     }
-    //NOTE : 파일 최종 업로드
+    //CLASS : 파일 최종 업로드
     fileUploadBtnClickEvent(){
         let that = this;
         $(that.UPLOAD_BTN)
@@ -158,6 +160,7 @@ class createFileUploadHTML{
             that.commonFileUpload();
         }
     }
+    //CLASS : 파일 최종 업로드 이벤트 핸들러
     dragAndDropAreaChangeEvent(){
         let that = this;
         $(that.DRAG_N_DROP_INPUT)
@@ -202,7 +205,7 @@ class createFileUploadHTML{
             //NOTE : 팝업내에 업로드할 파일 삭제 이벤트
             fileDeleteBtnClickEvent();
         }
-        //NOTE : 파일 업로드 영역 변경 이벤트
+        //FUN : 파일 업로드 영역 변경 이벤트
         function dragAndDropAreaChangeEventHandler(e){
             let fileSettingsList = Array.from(e.target.files);
 
@@ -222,17 +225,17 @@ class createFileUploadHTML{
             //NOTE : 화면에 파일리스트 노출
             showFileList();
         }
-        //NOTE : 팝업내에 업로드할 파일 삭제 이벤트
+        //FUN : 팝업내에 업로드할 파일 삭제 이벤트
         function fileDeleteBtnClickEvent(){
             $(".formUtil-file_delete").off("click.fileDeleteBtnClickEventHandler")
                 .on("click.fileDeleteBtnClickEventHandler",fileDeleteBtnClickEventHandler);
         }
+        //FUN : 팝업내에 업로드할 파일 삭제 이벤트 핸들러
         function fileDeleteBtnClickEventHandler(e){
             const target = $(e.currentTarget).parent().parent();
             let fileName = $(e.currentTarget).parent().siblings(".formUtil-file_name").text();
             let fileExtension = $(e.currentTarget).parent().siblings(".formUtil-file_extension").text();
             formUtil.popup("deleteFileBtn",fileName+" 파일을 삭제 하시겠습니까?",remove);
-            // console.log(that.TOTAL_FILE_LIST);
             function remove(){
                 //NOTE : 해당 파일 삭제
                 $(target).remove();
@@ -247,7 +250,7 @@ class createFileUploadHTML{
             }
         }
     }
-    //NOTE : 공통파일 업로드
+    //CLASS : 공통파일 업로드
      commonFileUpload(){
         let that = this;
         let url = that.COMMON_UPLOAD_PATH;
@@ -278,7 +281,16 @@ class createFileUploadHTML{
                     'Content-Type':'multipart/form-data'
                 }
             }).then(response=>{
-                console.log(response);
+                let status = response.status;
+                if(status === 200 && response.data.length > 0){
+                    let data = response.data;
+                    let file_uuid = data[0].file_uuid;
+
+                    //NOTE : 파일을 저장 후 전달 받은 COMMON_FILE의 FILE_UUID를 설정한 값에 전달
+                    $("#"+that.ID_TO_RECEIVE_VALUE).val(file_uuid);
+                    //NOTE : 파일업로드 팝업 초기화
+                    $("#formUtil_fileUpload").empty();
+                }
             })
 
         }
