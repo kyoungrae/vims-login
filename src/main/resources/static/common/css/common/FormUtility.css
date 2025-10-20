@@ -803,6 +803,9 @@ label[for="fileElem"]:hover {
     border: none;
     width: 100%;
 }
+input[data-file-upload-btn]{
+
+}
 @keyframes l3-1 {
     50%,
     100% {transform:rotate(180deg)}

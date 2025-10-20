@@ -1,4 +1,5 @@
 @import "animation.css";
+@import "Button.css";
 @font-face {
     font-family: 'Pretendard-Regular';
     src: url('../../../assets/pretendard/Pretendard-Regular.woff') format('woff');
@@ -2474,7 +2475,8 @@ html{
     cursor: pointer;
 }
 .gi-cursor-open-folder{
-    cursor:url("../../../common/img/open_folder_32.png") 1 4, pointer;
+    /*cursor:url("../../../common/img/open_folder_32.png") 1 4, pointer;*/
+    cursor:pointer;
 }
 .gi-cursor-default{
     cursor: default;
